@@ -6,10 +6,11 @@ import { cn } from "@/lib/utils";
 import ScrollRotatingAsterisk from "../custom/ScrollingRotatingAsterisk";
 
 const navItems = [
-  { label: "L*3", href: "/about", text: "About Us", active: true },
-  { label: "Creating", href: "/projects", text: "Projects", active: false },
+  // { label: "L*3", href: "/about", text: "About Us", active: true },
+  // { label: "Creating", href: "/projects", text: "Projects", active: false },
   { label: "Sharing", href: "/events", text: "Events", active: false },
-  { label: "Innovation", href: "/research", text: "Research", active: true },
+  { label: "Innovation", href: "/forums", text: "Forums", active: true },
+  { label: "Dashboard", href: "/dashboard", text: "Dashboard", active: false },
 ];
 
 export function Navbar() {
