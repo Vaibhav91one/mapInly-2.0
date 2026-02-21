@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,7 +20,8 @@ import { DateTimePicker } from "./date-time-picker";
 import { TagsInput } from "./tags-input";
 import { ImageOrGradientPicker } from "./image-or-gradient-picker";
 import { eventFormSchema, type EventFormSchema } from "@/lib/validations/event";
-import type { EventFormData, EventLocation } from "@/types/event";
+import type { Event, EventFormData, EventLocation } from "@/types/event";
+import { eventToFormDateTime } from "@/lib/parse-event-date";
 import { formInputClasses } from "@/lib/form-styles";
 
 const defaultLocation: EventLocation = {
@@ -38,23 +40,49 @@ function getDefaultDateTime(): Date {
 interface CreateEventFormProps {
   onSubmit: (data: EventFormData) => void;
   onCancel?: () => void;
+  disabled?: boolean;
+  defaultEvent?: Event | null;
 }
 
-export function CreateEventForm({ onSubmit, onCancel }: CreateEventFormProps) {
+export function CreateEventForm({ onSubmit, onCancel, disabled, defaultEvent }: CreateEventFormProps) {
   const form = useForm<EventFormSchema>({
     resolver: zodResolver(eventFormSchema),
-    defaultValues: {
-      title: "",
-      tagline: "",
-      shortDescription: "",
-      dateTime: getDefaultDateTime(),
-      location: defaultLocation,
-      tags: [],
-      image: "",
-    },
+    defaultValues: defaultEvent
+      ? {
+          title: defaultEvent.title,
+          tagline: defaultEvent.tagline,
+          shortDescription: defaultEvent.shortDescription,
+          dateTime: eventToFormDateTime(defaultEvent),
+          location: defaultEvent.location,
+          tags: defaultEvent.tags ?? [],
+          image: defaultEvent.image,
+        }
+      : {
+          title: "",
+          tagline: "",
+          shortDescription: "",
+          dateTime: getDefaultDateTime(),
+          location: defaultLocation,
+          tags: [],
+          image: "",
+        },
   });
 
-  function handleSubmit(values: EventFormSchema) {
+  useEffect(() => {
+    if (defaultEvent) {
+      form.reset({
+        title: defaultEvent.title,
+        tagline: defaultEvent.tagline,
+        shortDescription: defaultEvent.shortDescription,
+        dateTime: eventToFormDateTime(defaultEvent),
+        location: defaultEvent.location,
+        tags: defaultEvent.tags ?? [],
+        image: defaultEvent.image,
+      });
+    }
+  }, [defaultEvent, form]);
+
+  async function handleSubmit(values: EventFormSchema) {
     const data: EventFormData = {
       title: values.title.trim(),
       tagline: values.tagline.trim(),
@@ -65,7 +93,7 @@ export function CreateEventForm({ onSubmit, onCancel }: CreateEventFormProps) {
       tags: values.tags,
       image: values.image.trim(),
     };
-    onSubmit(data);
+    await onSubmit(data);
   }
 
   return (
@@ -221,9 +249,10 @@ export function CreateEventForm({ onSubmit, onCancel }: CreateEventFormProps) {
           )}
           <Button
             type="submit"
+            disabled={disabled}
             className="rounded-none focus-visible:ring-0 focus-visible:ring-offset-0"
           >
-            Create event
+            {defaultEvent ? "Save changes" : "Create event"}
           </Button>
         </div>
       </form>

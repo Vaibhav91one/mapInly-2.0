@@ -29,6 +29,8 @@ interface EventCardProps {
   image: string;
   imageOverlay?: string;
   href?: string;
+  /** When true, applies disabled/muted styling */
+  isPast?: boolean;
   className?: string;
 }
 
@@ -43,6 +45,7 @@ export function EventCard({
   image,
   imageOverlay,
   href = "#",
+  isPast = false,
   className,
 }: EventCardProps) {
   const [isHovered, setIsHovered] = useState(false);
@@ -51,7 +54,8 @@ export function EventCard({
   return (
     <article
       className={cn(
-        "group/card flex w-full gap-0 overflow-hidden rounded-none bg-secondary/50 pr-6 transition-colors hover:bg-secondary/70",
+        "group/card flex w-full gap-0 overflow-hidden rounded-none bg-secondary/50 pr-6 transition-colors",
+        isPast ? "opacity-60 hover:bg-secondary/50" : "hover:bg-secondary/70",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -104,7 +108,7 @@ export function EventCard({
             <span className="rounded border border-white/40 px-2 py-1 text-sm font-medium text-white">
               {date}
             </span>
-            <span className="text-sm text-white/80">@{location}</span>
+            <span className="text-sm text-white/80 line-clamp-1 max-w-sm">@{location}</span>
           </div>
           <div className="flex flex-wrap gap-1.5 text-sm text-primary">
             {tags.map((tag) => (
@@ -119,18 +123,22 @@ export function EventCard({
         {/* Bottom: title, description; arrow at right end (visible on hover) */}
         <div className="flex items-end justify-between gap-4">
           <div className="min-w-0 flex-1">
-            <h3 className="text-xl font-regular leading-tight tracking-tight text-white md:text-4xl">
+            <h3 className="text-xl font-regular leading-tight tracking-tight mb-2 text-white md:text-4xl">
               {title}
             </h3>
-            <p className="mt-1 text-base font-regular leading-tight tracking-tight text-secondary">{displayDescription}</p>
+            <p className="mt-1 text-base line-clamp-2 font-regular leading-tight tracking-tight text-secondary">{displayDescription}</p>
           </div>
           {href && (
             <motion.div
-              className="shrink-0"
-              animate={{
-                opacity: isHovered ? 1 : 0,
-                scale: isHovered ? 1 : 0.8,
-              }}
+              className={cn("shrink-0", isPast && "opacity-70")}
+              animate={
+                isPast
+                  ? { opacity: 0.7, scale: 1 }
+                  : {
+                      opacity: isHovered ? 1 : 0,
+                      scale: isHovered ? 1 : 0.8,
+                    }
+              }
               transition={{
                 duration: 0.5,
                 ease: [0.585, 0.039, 0.26, 0.681],

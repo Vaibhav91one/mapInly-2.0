@@ -64,10 +64,12 @@ export function ImageOrGradientPicker({
     [value, isGradient]
   );
 
+  const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
   const handleFileChange = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
-      if (!file || !file.type.startsWith("image/")) return;
+      if (!file || !ALLOWED_IMAGE_TYPES.includes(file.type)) return;
       try {
         const dataUrl = await fileToDataUrl(file);
         onChange(dataUrl);
@@ -106,7 +108,7 @@ export function ImageOrGradientPicker({
         <input
           ref={inputRef}
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/jpg,image/png,image/webp"
           onChange={handleFileChange}
           className="hidden"
           aria-invalid={!!error}

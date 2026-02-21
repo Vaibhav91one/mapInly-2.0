@@ -32,13 +32,14 @@ export function ForumCard({
 }: ForumCardProps) {
   const displayDescription = shortDescription ?? description ?? "";
   const [isHovered, setIsHovered] = useState(false);
-
-  const statusLabel = status === "active" ? "Active" : "Closed";
+  const isClosed = status === "closed";
+  const statusLabel = isClosed ? "Closed" : "Active";
 
   return (
     <article
       className={cn(
-        "group/card flex w-full gap-0 overflow-hidden rounded-none bg-secondary/50 pr-6 pl-6 py-4 transition-colors hover:bg-secondary/70",
+        "group/card flex w-full gap-0 overflow-hidden rounded-none bg-secondary/50 pr-6 pl-6 py-4 transition-colors",
+        isClosed ? "opacity-60 hover:bg-secondary/50" : "hover:bg-secondary/70",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -79,11 +80,15 @@ export function ForumCard({
           </div>
           {href && (
             <motion.div
-              className="shrink-0"
-              animate={{
-                opacity: isHovered ? 1 : 0,
-                scale: isHovered ? 1 : 0.8,
-              }}
+              className={cn("shrink-0", isClosed && "opacity-70")}
+              animate={
+                isClosed
+                  ? { opacity: 0.7, scale: 1 }
+                  : {
+                      opacity: isHovered ? 1 : 0,
+                      scale: isHovered ? 1 : 0.8,
+                    }
+              }
               transition={{
                 duration: 0.5,
                 ease: [0.585, 0.039, 0.26, 0.681],

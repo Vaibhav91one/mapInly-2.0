@@ -9,78 +9,50 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { ProjectCard } from "@/components/home/project-card";
+import { Pencil, Trash2 } from "lucide-react";
+import { StaticMeshGradient } from "@paper-design/shaders-react";
+import { useAuthStore } from "@/stores/auth-store";
 import { cn } from "@/lib/utils";
+import type { Event } from "@/types/event";
 
-interface OrganizedEvent {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  href: string;
-  variant: "simple" | "detailed";
-  timing: string;
-  location: string;
-  locationUrl?: string;
-  active: boolean;
+function isGradient(src: string): boolean {
+  return src?.startsWith("gradient:") ?? false;
 }
 
-const MOCK_ORGANIZED_EVENTS: OrganizedEvent[] = [
-  {
-    id: "1",
-    title: "App MyLugano",
-    description: "Discover Lugano through our official city app.",
-    image: "https://picsum.photos/seed/mylugano/600/400",
-    href: "/events/app-mylugano",
-    variant: "simple",
-    timing: "Mar 15, 2025 - 6:00 PM",
-    location: "Piazza della Riforma, Lugano",
-    locationUrl: "https://www.google.com/maps/search/?api=1&query=Piazza+della+Riforma,+Lugano",
-    active: true,
-  },
-  {
-    id: "2",
-    title: "Earn Your Destination",
-    description: "A cultural gamification initiative to enhance Lugano's cultural heritage.",
-    image: "https://picsum.photos/seed/destination/600/400",
-    href: "/events/earn-your-destination",
-    variant: "detailed",
-    timing: "Apr 20, 2025 - 10:00 AM",
-    location: "LAC Lugano Arte e Cultura",
-    locationUrl: "https://www.google.com/maps/search/?api=1&query=LAC+Lugano+Arte+e+Cultura",
-    active: true,
-  },
-  {
-    id: "3",
-    title: "Lugano University City",
-    description: "Connecting academia with the city.",
-    image: "https://picsum.photos/seed/university/600/400",
-    href: "/events/university-city",
-    variant: "simple",
-    timing: "May 5, 2025 - 2:00 PM",
-    location: "USI Campus, Lugano",
-    locationUrl: "https://www.google.com/maps/search/?api=1&query=USI+Campus,+Lugano",
-    active: false,
-  },
-  {
-    id: "4",
-    title: "Past Event One",
-    description: "A completed showcase event.",
-    image: "https://picsum.photos/seed/past1/600/400",
-    href: "/events/past-one",
-    variant: "simple",
-    timing: "Jan 10, 2025 - 5:00 PM",
-    location: "Parco Ciani, Lugano",
-    active: false,
-  },
-];
+function parseGradientColors(src: string): string[] {
+  const colors = src.slice(9).split(",").map((c) => c.trim());
+  return colors.length === 4 ? colors : ["#b8cd65", "#6200ff", "#e2a3ff", "#ff99fd"];
+}
 
-export function DashboardEventsCarousel() {
+interface DashboardEventsCarouselProps {
+  activeEvents: Event[];
+  inactiveEvents: Event[];
+  onEditEvent?: (event: Event) => void;
+  onDeleteEvent?: (event: Event) => void;
+}
+
+export function DashboardEventsCarousel({
+  activeEvents,
+  inactiveEvents,
+  onEditEvent,
+  onDeleteEvent,
+}: DashboardEventsCarouselProps) {
+  const user = useAuthStore((s) => s.user);
   const [activeTab, setActiveTab] = useState<"active" | "inactive">("active");
+  const [eventToDelete, setEventToDelete] = useState<Event | null>(null);
 
-  const filteredEvents = MOCK_ORGANIZED_EVENTS.filter((e) =>
-    activeTab === "active" ? e.active : !e.active
-  );
+  const events = activeTab === "active" ? activeEvents : inactiveEvents;
 
   return (
     <div className="space-y-6">
@@ -110,16 +82,27 @@ export function DashboardEventsCarousel() {
       </div>
 
       <div className="relative">
-        <Carousel
-          opts={{
-            loop: false,
-            align: "start",
-            slidesToScroll: 1,
-          }}
-          className="w-full"
-        >
-          <CarouselContent className="-ml-4">
-            {filteredEvents.map((event, index) => (
+        {events.length === 0 ? (
+          <div
+            className="flex aspect-[21/6] w-full items-center justify-center rounded-none border border-secondary bg-black"
+            role="status"
+          >
+            <p className="text-lg text-white/60">
+              {activeTab === "active" ? "No active events" : "No inactive events"}
+            </p>
+          </div>
+        ) : (
+          <Carousel
+            key={`events-${activeTab}-${events.length}`}
+            opts={{
+              loop: false,
+              align: "start",
+              slidesToScroll: 1,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-4">
+            {events.map((event, index) => (
               <CarouselItem
                 key={event.id}
                 className={cn(
@@ -127,32 +110,119 @@ export function DashboardEventsCarousel() {
                   "basis-full sm:basis-[85%] md:basis-1/2 lg:basis-1/3"
                 )}
               >
-                <div className="aspect-[4/5]">
+                <div className="relative aspect-[4/5]">
+                  {user && event.createdBy === user.id && (onEditEvent || onDeleteEvent) && (
+                    <div className="absolute top-4 right-4 z-10 flex gap-2">
+                      {onEditEvent && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            onEditEvent(event);
+                          }}
+                          className="flex size-10 items-center justify-center rounded-none bg-white text-black hover:bg-white/90"
+                          aria-label={`Edit ${event.title}`}
+                        >
+                          <Pencil className="size-5" />
+                        </button>
+                      )}
+                      {onDeleteEvent && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setEventToDelete(event);
+                          }}
+                          className="flex size-10 items-center justify-center rounded-none bg-white text-black hover:bg-white/90"
+                          aria-label={`Delete ${event.title}`}
+                        >
+                          <Trash2 className="size-5" />
+                        </button>
+                      )}
+                    </div>
+                  )}
                   <ProjectCard
                     index={index + 1}
                     title={event.title}
-                    description={event.description}
-                    image={event.image}
-                    href={event.href}
-                    variant={event.variant}
-                    timing={event.timing}
-                    location={event.location}
-                    locationUrl={event.locationUrl}
+                    description={event.shortDescription}
+                    image={isGradient(event.image) ? undefined : event.image}
+                    media={
+                      isGradient(event.image) ? (
+                        <StaticMeshGradient
+                          width="100%"
+                          height="100%"
+                          fit="cover"
+                          colors={parseGradientColors(event.image)}
+                          positions={2}
+                          waveX={1}
+                          waveXShift={0.6}
+                          waveY={1}
+                          waveYShift={0.21}
+                          mixing={0.93}
+                          grainMixer={0.31}
+                          grainOverlay={0.48}
+                          rotation={270}
+                        />
+                      ) : undefined
+                    }
+                    href={`/events/${event.slug}`}
+                    variant="simple"
+                    timing={`${event.date} · ${event.timeRange}`}
+                    location={event.location.displayName}
+                    locationUrl={event.location.mapsUrl}
                   />
                 </div>
               </CarouselItem>
             ))}
-          </CarouselContent>
-          <CarouselPrevious
-            size="icon"
-            className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-none border-0 bg-white text-black hover:bg-white/90 disabled:opacity-50"
-          />
-          <CarouselNext
-            size="icon"
-            className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-none border-0 bg-white text-black hover:bg-white/90 disabled:opacity-50"
-          />
-        </Carousel>
+            </CarouselContent>
+            {events.length > 1 && (
+              <>
+                <CarouselPrevious
+                  size="icon"
+                  className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-none border-0 bg-white text-black hover:bg-white/90 disabled:opacity-50"
+                />
+                <CarouselNext
+                  size="icon"
+                  className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-none border-0 bg-white text-black hover:bg-white/90 disabled:opacity-50"
+                />
+              </>
+            )}
+          </Carousel>
+        )}
       </div>
+      <AlertDialog
+        open={!!eventToDelete}
+        onOpenChange={(open: boolean) => !open && setEventToDelete(null)}
+      >
+        <AlertDialogContent className="bg-black border-white/20 text-white rounded-none">
+          <AlertDialogHeader className="gap-4">
+            <AlertDialogTitle className="text-2xl font-regular leading-tight tracking-tight text-white md:text-3xl">Delete event?</AlertDialogTitle>
+            <AlertDialogDescription className="text-sm font-regular leading-tight tracking-tight text-white/70">
+              This will permanently delete the event and all its registrations.
+              This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel variant="secondary" className="bg-secondary rounded-none text-secondary-foreground border-0">
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              className="rounded-none"
+              onClick={() => {
+                if (eventToDelete && onDeleteEvent) {
+                  onDeleteEvent(eventToDelete);
+                  setEventToDelete(null);
+                }
+              }}
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

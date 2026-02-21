@@ -12,6 +12,8 @@ interface TagsInputProps {
   onChange: (tags: string[]) => void;
   placeholder?: string;
   className?: string;
+  maxTags?: number;
+  maxTagLength?: number;
 }
 
 export function TagsInput({
@@ -19,18 +21,21 @@ export function TagsInput({
   onChange,
   placeholder = "e.g. AI, community, innovation",
   className,
+  maxTags = 3,
+  maxTagLength = 10,
 }: TagsInputProps) {
   const [inputValue, setInputValue] = useState("");
 
   const addTag = useCallback(() => {
-    const trimmed = inputValue.trim().replace(/^#/, "");
+    const trimmed = inputValue.trim().replace(/^#/, "").slice(0, maxTagLength);
     if (!trimmed || value.includes(trimmed)) {
       setInputValue("");
       return;
     }
+    if (value.length >= maxTags) return;
     onChange([...value, trimmed]);
     setInputValue("");
-  }, [inputValue, value, onChange]);
+  }, [inputValue, value, onChange, maxTags, maxTagLength]);
 
   const removeTag = useCallback(
     (tag: string) => {
@@ -62,7 +67,7 @@ export function TagsInput({
           type="button"
           variant="secondary"
           onClick={addTag}
-          disabled={!canAdd}
+          disabled={!canAdd || value.length >= maxTags}
           className="shrink-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0"
         >
           Add

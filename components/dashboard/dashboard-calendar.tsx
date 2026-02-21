@@ -18,11 +18,10 @@ export function DashboardCalendar({
   datesWithEvents = [],
   className,
 }: DashboardCalendarProps) {
-  const [internalDate, setInternalDate] = useState<Date | undefined>(
-    date ?? new Date()
-  );
+  const [internalDate, setInternalDate] = useState<Date | undefined>(undefined);
 
-  const displayedDate = date ?? internalDate;
+  const isControlled = onDateChange !== undefined;
+  const selected = isControlled ? date : internalDate;
   const handleDateChange = onDateChange ?? setInternalDate;
 
   const hasEvent = (day: Date) =>
@@ -32,8 +31,9 @@ export function DashboardCalendar({
     <div className={cn("w-full space-y-2", className)}>
       <Calendar
         mode="single"
-        selected={displayedDate}
+        selected={selected}
         onSelect={handleDateChange}
+        defaultMonth={new Date()}
         fixedWeeks
         className="!bg-transparent w-full [--cell-size:2.75rem]"
         classNames={{
@@ -55,10 +55,12 @@ export function DashboardCalendar({
         }}
         modifiers={{
           hasEvent: (day) => hasEvent(day),
+          today: (day) => isSameDay(day, new Date()),
         }}
         modifiersClassNames={{
           hasEvent:
             "relative after:absolute after:bottom-0.5 after:left-1/2 after:-translate-x-1/2 after:size-2 after:rounded-full after:bg-primary",
+          today: "!bg-white/20 !text-white rounded-md",
         }}
       />
     </div>

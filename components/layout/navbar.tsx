@@ -1,13 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown, ArrowUpRight, LogOut, LayoutDashboard, PlusCircle, MessageSquarePlus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/utils/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import ScrollRotatingAsterisk from "../custom/ScrollingRotatingAsterisk";
+import { useAuthStore } from "@/stores/auth-store";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -19,12 +20,16 @@ import { CreateEventDialog } from "@/components/dialogs/create-event-dialog";
 import { CreateForumDialog } from "@/components/dialogs/create-forum-dialog";
 
 const navItems = [
-  // { label: "L*3", href: "/about", text: "About Us", active: true },
-  // { label: "Creating", href: "/projects", text: "Projects", active: false },
-  { label: "Sharing", href: "/events", text: "Events", active: false },
-  { label: "Innovation", href: "/forums", text: "Forums", active: true },
-  { label: "Dashboard", href: "/dashboard", text: "Dashboard", active: false },
+  { label: "Sharing", href: "/events", text: "Events" },
+  { label: "Innovation", href: "/forums", text: "Forums" },
+  { label: "Dashboard", href: "/dashboard", text: "Dashboard" },
 ];
+
+function isNavItemActive(pathname: string, href: string): boolean {
+  if (pathname === href) return true;
+  if (href !== "/" && pathname.startsWith(href + "/")) return true;
+  return false;
+}
 
 function getInitials(user: User) {
   const name = user.user_metadata?.full_name ?? user.user_metadata?.name ?? user.email ?? "";
@@ -40,22 +45,12 @@ function getInitials(user: User) {
 }
 
 export function Navbar() {
-  const [user, setUser] = useState<User | null>(null);
+  const pathname = usePathname();
+  const user = useAuthStore((s) => s.user);
   const [createEventOpen, setCreateEventOpen] = useState(false);
   const [createForumOpen, setCreateForumOpen] = useState(false);
   const router = useRouter();
   const supabase = createClient();
-
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user: u } }) => setUser(u));
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-    return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- auth subscription runs once on mount
-  }, []);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -86,30 +81,33 @@ export function Navbar() {
           "bg-black/70 backdrop-blur-md text-white"
         )}
       >
-        {navItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="flex flex-col gap-0.5 group"
-          >
-            <span
-              className={cn(
-                "text-xs",
-                item.active ? "text-white/70" : "text-white/50"
-              )}
+        {navItems.map((item) => {
+          const active = isNavItemActive(pathname ?? "", item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="flex flex-col gap-0.5 group"
             >
-              {item.label}
-            </span>
-            <span
-              className={cn(
-                "font-medium transition-colors",
-                item.active ? "text-white" : "text-white/60 group-hover:text-white"
-              )}
-            >
-              {item.text}
-            </span>
-          </Link>
-        ))}
+              <span
+                className={cn(
+                  "text-xs",
+                  active ? "text-white/70" : "text-white/50"
+                )}
+              >
+                {item.label}
+              </span>
+              <span
+                className={cn(
+                  "font-medium transition-colors",
+                  active ? "text-white" : "text-white/60 group-hover:text-white"
+                )}
+              >
+                {item.text}
+              </span>
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Right: Language + Contact */}

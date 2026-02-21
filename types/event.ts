@@ -23,3 +23,12 @@ export interface EventFormData {
   image: string;
   imageOverlay?: string;
 }
+
+/** Stored event with DB metadata */
+export interface Event extends EventFormData {
+  id: string;
+  slug: string;
+  createdBy: string;
+  createdAt: string;
+  registrations?: string[];
+}

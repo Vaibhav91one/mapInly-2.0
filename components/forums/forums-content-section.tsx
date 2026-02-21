@@ -1,42 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { Search } from "lucide-react";
+import { useMemo, useState } from "react";
+import { MessageSquareX, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { ForumCard } from "./forum-card";
 import { cn } from "@/lib/utils";
 import { sectionClasses } from "@/lib/layout-classes";
+import type { Forum } from "@/types/forum";
 
-const MOCK_FORUMS = [
-  {
-    id: "1",
-    title: "Lugano AI Community",
-    description: "Discuss AI trends, share projects, and connect with local experts",
-    status: "active" as const,
-    tags: ["AI", "community", "innovation"],
-    href: "/forums/lugano-ai-community",
-  },
-  {
-    id: "2",
-    title: "Blockchain & Art",
-    description: "Exploring the intersection of blockchain technology and digital art",
-    status: "active" as const,
-    tags: ["blockchain", "art", "NFT"],
-    href: "/forums/blockchain-art",
-  },
-  {
-    id: "3",
-    title: "Ticino Tech Hub",
-    description: "Monthly discussions for developers and tech enthusiasts",
-    status: "closed" as const,
-    tags: ["tech", "meetup", "development"],
-    href: "/forums/ticino-tech-hub",
-  },
-];
+interface ForumsContentSectionProps {
+  forums: Forum[];
+}
 
-export function ForumsContentSection() {
+export function ForumsContentSection({ forums }: ForumsContentSectionProps) {
   const [mainForumsOnly, setMainForumsOnly] = useState(false);
+  const [showInactiveForums, setShowInactiveForums] = useState(false);
+
+  const filteredForums = useMemo(() => {
+    if (showInactiveForums) return forums;
+    return forums.filter((f) => f.status !== "closed");
+  }, [forums, showInactiveForums]);
 
   return (
     <section
@@ -64,7 +48,7 @@ export function ForumsContentSection() {
       {/* Two columns: 1/3 sticky sidebar | 2/3 forum cards */}
       <div className="flex flex-col gap-8 lg:flex-row lg:gap-12">
         {/* Left: Sticky sidebar (1/3) */}
-        <aside className="w-full shrink-0 lg:sticky lg:top-28 lg:w-1/4">
+        <aside className="flex w-full shrink-0 flex-col gap-4 lg:sticky lg:top-28 lg:w-1/4">
           <div className="flex items-center justify-between gap-4 rounded-none bg-secondary/50 px-5 py-4 hover:bg-secondary/80 transition-colors">
             <span className="text-base font-medium text-background">
               Main Forums
@@ -75,20 +59,45 @@ export function ForumsContentSection() {
               aria-label="Filter main forums only"
             />
           </div>
+          <div className="flex items-center justify-between gap-4 rounded-none bg-secondary/50 px-5 py-4 hover:bg-secondary/80 transition-colors">
+            <span className="text-base font-medium text-background">
+              Inactive forums
+            </span>
+            <Switch
+              checked={showInactiveForums}
+              onCheckedChange={setShowInactiveForums}
+              aria-label="Show inactive forums"
+            />
+          </div>
         </aside>
 
         {/* Right: Forum cards (2/3) */}
         <div className="flex min-w-0 flex-1 flex-col gap-6 lg:w-3/4">
-          {MOCK_FORUMS.map((forum) => (
-            <ForumCard
-              key={forum.id}
-              title={forum.title}
-              description={forum.description}
-              status={forum.status}
-              tags={forum.tags}
-              href={forum.href}
-            />
-          ))}
+          {filteredForums.length === 0 ? (
+            <div className="flex flex-col items-center justify-center rounded-none border border-secondary/50 bg-secondary/20 px-8 py-16 text-center">
+              <MessageSquareX className="mb-4 size-16 text-background/50" aria-hidden />
+              <h3 className="mb-2 text-xl font-medium text-background">
+                No forums to show
+              </h3>
+              <p className="max-w-md text-background/70">
+                {showInactiveForums
+                  ? "There are no forums in the system yet."
+                  : "There are no active forums. Try enabling Inactive forums to see closed forums."}
+              </p>
+            </div>
+          ) : (
+            filteredForums.map((forum) => (
+              <ForumCard
+                key={forum.id}
+                title={forum.title}
+                shortDescription={forum.shortDescription}
+                tagline={forum.tagline}
+                status={forum.status}
+                tags={forum.tags}
+                href={`/forums/${forum.slug}`}
+              />
+            ))
+          )}
         </div>
       </div>
     </section>

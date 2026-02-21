@@ -125,7 +125,7 @@ export function ProjectCard({
               </div>
               {(timing || location) && (
                 <motion.div
-                  className="mt-2 flex flex-col gap-y-1.5 text-xs font-medium text-black/70"
+                  className="mt-2 flex min-w-0 flex-col gap-y-1.5 text-xs font-medium text-black/70"
                   animate={{ opacity: isHovered ? 1 : 0 }}
                   transition={{
                     duration: 0.4,
@@ -140,16 +140,16 @@ export function ProjectCard({
                         href={locationUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex w-fit items-center gap-1.5 border-b border-black/40 pb-0.5 transition-colors hover:border-black hover:text-black"
+                        className="flex min-w-0 max-w-full items-center gap-1.5 border-b border-black/40 pb-0.5 transition-colors hover:border-black hover:text-black"
                         aria-label={`View ${location} on Google Maps`}
                       >
                         <MapPin className="size-3.5 shrink-0" />
-                        {location}
+                        <span className="min-w-0 truncate">{location}</span>
                       </a>
                     ) : (
-                      <span className="inline-flex items-center gap-1.5 border-b border-black/40 pb-0.5">
+                      <span className="flex min-w-0 max-w-full items-center gap-1.5 border-b border-black/40 pb-0.5">
                         <MapPin className="size-3.5 shrink-0" />
-                        {location}
+                        <span className="min-w-0 truncate">{location}</span>
                       </span>
                     )
                   )}

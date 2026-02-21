@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 import { Navbar } from "@/components/layout";
+import { AuthProvider } from "@/components/providers/auth-provider";
+import { Toaster } from "@/components/ui/sonner";
 import { containerClasses } from "@/lib/layout-classes";
 import "./globals.css";
 
@@ -21,14 +24,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${poppins.variable} font-sans antialiased min-h-screen flex flex-col bg-foreground text-background`}
       >
-        <Navbar />
-        <div className={`${containerClasses} flex-1 flex flex-col`}>
-          {children}
-        </div>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <AuthProvider>
+            <Navbar />
+            <div className={`${containerClasses} flex-1 flex flex-col`}>
+              {children}
+            </div>
+          </AuthProvider>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -11,3 +11,11 @@ export interface ForumFormData {
   /** Image URL or base64 data URL */
   image?: string;
 }
+
+/** Stored forum with DB metadata */
+export interface Forum extends ForumFormData {
+  id: string;
+  slug: string;
+  createdBy: string;
+  createdAt: string;
+}

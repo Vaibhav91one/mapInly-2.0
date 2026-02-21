@@ -78,7 +78,7 @@ export function UpcomingEventCard({
                     aria-label={`View ${location} on map`}
                   >
                     <MapPin className="size-3.5 shrink-0" />
-                    {location}
+                    <span className="line-clamp-2">{location}</span>
                   </a>
                 ) : (
                   <span className="inline-flex items-center gap-1">

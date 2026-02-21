@@ -1,79 +1,92 @@
 "use client";
 
-import { useState } from "react";
-import { addDays } from "date-fns";
+import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { isSameDay } from "date-fns";
 import { sectionClasses, sectionInnerClasses } from "@/lib/layout-classes";
+import { CreateEventDialog } from "@/components/dialogs/create-event-dialog";
+import { CreateForumDialog } from "@/components/dialogs/create-forum-dialog";
 import { StatCard } from "./stat-card";
 import { DashboardCalendar } from "./dashboard-calendar";
 import { UpcomingEventCard } from "./upcoming-event-card";
 import { DashboardEventsCarousel } from "./dashboard-events-carousel";
+import { DashboardForumsCarousel } from "./dashboard-forums-carousel";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import type { Event } from "@/types/event";
+import type { Forum } from "@/types/forum";
+import {
+  parseEventDate,
+  eventToUpcomingCard,
+} from "@/lib/parse-event-date";
 
-const MOCK_STATS = [
-  {
-    title: "Events Organized",
-    value: 32,
-    trend: { direction: "up" as const, percent: 10, label: "vs last Month" },
-  },
-  {
-    title: "Events Attended",
-    value: 12,
-    trend: { direction: "up" as const, percent: 25, label: "vs last Month" },
-  },
-  {
-    title: "Upcoming Events",
-    value: 28,
-    trend: { direction: "down" as const, percent: 8, label: "vs last Month" },
-  },
-];
+interface Stat {
+  title: string;
+  value: number;
+  trend: { direction: "up" | "down"; percent: number; label: string };
+}
 
-const MOCK_UPCOMING_EVENTS = [
-  {
-    day: 15,
-    dayName: "Sat",
-    title: "App MyLugano Launch",
-    subtitle: "Discover Lugano through our official city app",
-    timeRange: "6:00 PM - 8:00 PM",
-    location: "Piazza della Riforma, Lugano",
-    locationUrl: "https://www.google.com/maps/search/?api=1&query=Piazza+della+Riforma,+Lugano",
-    dateBlockColor: "primary" as const,
-    href: "/events/app-mylugano",
-  },
-  {
-    day: 20,
-    dayName: "Thu",
-    title: "Earn Your Destination",
-    subtitle: "Cultural gamification initiative",
-    timeRange: "10:00 AM - 2:00 PM",
-    location: "LAC Lugano Arte e Cultura",
-    locationUrl: "https://www.google.com/maps/search/?api=1&query=LAC+Lugano+Arte+e+Cultura",
-    dateBlockColor: "blue" as const,
-    href: "/events/earn-your-destination",
-  },
-  {
-    day: 25,
-    dayName: "Tue",
-    title: "Lugano University City",
-    subtitle: "Connecting academia with the city",
-    timeRange: "2:00 PM - 5:00 PM",
-    location: "USI Campus, Lugano",
-    locationUrl: "https://www.google.com/maps/search/?api=1&query=USI+Campus,+Lugano",
-    dateBlockColor: "purple" as const,
-    href: "/events/university-city",
-  },
-];
+interface DashboardContentSectionProps {
+  stats: Stat[];
+  activeOrganizedEvents: Event[];
+  inactiveOrganizedEvents: Event[];
+  activeForums: Forum[];
+  inactiveForums: Forum[];
+  upcomingEventsList: Event[];
+  datesWithEvents: Date[];
+}
 
-const MOCK_DATES_WITH_EVENTS = [
-  addDays(new Date(), 5),
-  addDays(new Date(), 10),
-  addDays(new Date(), 15),
-  addDays(new Date(), 20),
-  addDays(new Date(), 25),
-];
+export function DashboardContentSection({
+  stats,
+  activeOrganizedEvents,
+  inactiveOrganizedEvents,
+  activeForums,
+  inactiveForums,
+  upcomingEventsList,
+  datesWithEvents,
+}: DashboardContentSectionProps) {
+  const router = useRouter();
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
-export function DashboardContentSection() {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const eventsForSelectedDate = useMemo(() => {
+    if (!selectedDate) {
+      return upcomingEventsList
+        .sort((a, b) => {
+          const da = parseEventDate(a.date)?.getTime() ?? 0;
+          const db = parseEventDate(b.date)?.getTime() ?? 0;
+          return da - db;
+        })
+        .map((e, i) => eventToUpcomingCard(e, i));
+    }
+    return upcomingEventsList
+      .filter((e) => {
+        const eventDate = parseEventDate(e.date);
+        return eventDate && isSameDay(eventDate, selectedDate);
+      })
+      .sort((a, b) => {
+        const da = parseEventDate(a.date)?.getTime() ?? 0;
+        const db = parseEventDate(b.date)?.getTime() ?? 0;
+        return da - db;
+      })
+      .map((e, i) => eventToUpcomingCard(e, i));
+  }, [upcomingEventsList, selectedDate]);
+
+  const [editingEvent, setEditingEvent] = useState<Event | null>(null);
+  const [editingForum, setEditingForum] = useState<Forum | null>(null);
+
+  async function handleDeleteEvent(event: Event) {
+    const res = await fetch(`/api/events/${event.slug}`, { method: "DELETE" });
+    if (!res.ok) return;
+    setEditingEvent((current) => (current?.id === event.id ? null : current));
+    router.refresh();
+  }
+
+  async function handleDeleteForum(forum: Forum) {
+    const res = await fetch(`/api/forums/${forum.slug}`, { method: "DELETE" });
+    if (!res.ok) return;
+    setEditingForum((current) => (current?.id === forum.id ? null : current));
+    router.refresh();
+  }
 
   return (
     <section
@@ -95,18 +108,35 @@ export function DashboardContentSection() {
               <DashboardCalendar
                 date={selectedDate}
                 onDateChange={setSelectedDate}
-                datesWithEvents={MOCK_DATES_WITH_EVENTS}
+                datesWithEvents={datesWithEvents}
               />
             </div>
             <div className="space-y-4">
               <h3 className="text-2xl font-regular leading-tight tracking-tight text-white">
                 Upcoming Events
+                {selectedDate && (
+                  <span className="ml-2 text-lg font-normal text-white/70">
+                    {selectedDate.toLocaleDateString("en-US", {
+                      weekday: "short",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </span>
+                )}
               </h3>
-              <ScrollArea className="h-[300px] pr-4">
+              <ScrollArea className="h-[642px] pr-4">
                 <div className="space-y-3">
-                  {MOCK_UPCOMING_EVENTS.map((event) => (
-                    <UpcomingEventCard key={event.title} {...event} />
-                  ))}
+                  {eventsForSelectedDate.length === 0 ? (
+                    <p className="py-8 text-center text-white/60">
+                      {selectedDate
+                        ? "No events on this date"
+                        : "No upcoming events"}
+                    </p>
+                  ) : (
+                    eventsForSelectedDate.map((ev) => (
+                      <UpcomingEventCard key={ev.href} {...ev} />
+                    ))
+                  )}
                 </div>
               </ScrollArea>
             </div>
@@ -114,8 +144,8 @@ export function DashboardContentSection() {
 
           {/* 3/4 Main */}
           <div className="flex flex-col gap-10">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              {MOCK_STATS.map((stat) => (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {stats.map((stat) => (
                 <StatCard
                   key={stat.title}
                   title={stat.title}
@@ -124,10 +154,31 @@ export function DashboardContentSection() {
                 />
               ))}
             </div>
-            <DashboardEventsCarousel />
+            <DashboardEventsCarousel
+              activeEvents={activeOrganizedEvents}
+              inactiveEvents={inactiveOrganizedEvents}
+              onEditEvent={setEditingEvent}
+              onDeleteEvent={handleDeleteEvent}
+            />
+            <DashboardForumsCarousel
+              activeForums={activeForums}
+              inactiveForums={inactiveForums}
+              onEditForum={setEditingForum}
+              onDeleteForum={handleDeleteForum}
+            />
           </div>
         </div>
       </div>
+      <CreateEventDialog
+        open={!!editingEvent}
+        onOpenChange={(open: boolean) => !open && setEditingEvent(null)}
+        event={editingEvent}
+      />
+      <CreateForumDialog
+        open={!!editingForum}
+        onOpenChange={(open: boolean) => !open && setEditingForum(null)}
+        forum={editingForum}
+      />
     </section>
   );
 }

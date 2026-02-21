@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -15,30 +16,54 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { forumFormSchema, type ForumFormSchema } from "@/lib/validations/forum";
-import type { ForumFormData } from "@/types/forum";
+import type { Forum, ForumFormData } from "@/types/forum";
 import { formInputClasses } from "@/lib/form-styles";
 import { TagsInput } from "./tags-input";
 import { ImageOrGradientPicker } from "./image-or-gradient-picker";
 
 interface CreateForumFormProps {
-  onSubmit: (data: ForumFormData) => void;
+  onSubmit: (data: ForumFormData) => void | Promise<void>;
   onCancel?: () => void;
+  disabled?: boolean;
+  defaultForum?: Forum | null;
 }
 
-export function CreateForumForm({ onSubmit, onCancel }: CreateForumFormProps) {
+export function CreateForumForm({ onSubmit, onCancel, disabled, defaultForum }: CreateForumFormProps) {
   const form = useForm<ForumFormSchema>({
     resolver: zodResolver(forumFormSchema),
-    defaultValues: {
-      title: "",
-      tagline: "",
-      shortDescription: "",
-      status: "active",
-      tags: [],
-      image: "",
-    },
+    defaultValues: defaultForum
+      ? {
+          title: defaultForum.title,
+          tagline: defaultForum.tagline,
+          shortDescription: defaultForum.shortDescription,
+          status: defaultForum.status,
+          tags: defaultForum.tags ?? [],
+          image: defaultForum.image ?? "",
+        }
+      : {
+          title: "",
+          tagline: "",
+          shortDescription: "",
+          status: "active",
+          tags: [],
+          image: "",
+        },
   });
 
-  function handleSubmit(values: ForumFormSchema) {
+  useEffect(() => {
+    if (defaultForum) {
+      form.reset({
+        title: defaultForum.title,
+        tagline: defaultForum.tagline,
+        shortDescription: defaultForum.shortDescription,
+        status: defaultForum.status,
+        tags: defaultForum.tags ?? [],
+        image: defaultForum.image ?? "",
+      });
+    }
+  }, [defaultForum, form]);
+
+  async function handleSubmit(values: ForumFormSchema) {
     const data: ForumFormData = {
       title: values.title.trim(),
       tagline: values.tagline.trim(),
@@ -47,7 +72,7 @@ export function CreateForumForm({ onSubmit, onCancel }: CreateForumFormProps) {
       tags: values.tags,
       image: values.image?.trim() || undefined,
     };
-    onSubmit(data);
+    await onSubmit(data);
   }
 
   return (
@@ -182,9 +207,10 @@ export function CreateForumForm({ onSubmit, onCancel }: CreateForumFormProps) {
           )}
           <Button
             type="submit"
+            disabled={disabled}
             className="rounded-none focus-visible:ring-0 focus-visible:ring-offset-0"
           >
-            Create forum
+            {defaultForum ? "Save changes" : "Create forum"}
           </Button>
         </div>
       </form>

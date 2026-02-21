@@ -135,7 +135,7 @@ export function EventHeroSection({ title, date, location, organizer, joiners = [
             </div>
             <div>
               <p className="text-sm font-regular leading-tight tracking-tight text-background/60">Location</p>
-              <p className="mt-1 text-lg font-regular leading-tight tracking-tight text-background">
+              <p className="mt-1 text-lg font-regular leading-tight tracking-tight text-background line-clamp-2">
                 @{location}
               </p>
             </div>

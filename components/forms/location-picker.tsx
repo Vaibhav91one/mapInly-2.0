@@ -185,15 +185,28 @@ export function LocationPicker({
     onChange(location);
   };
 
-  const handleLocate = (coords: { longitude: number; latitude: number }) => {
-    const location: EventLocation = {
-      displayName: value?.displayName ?? "Current location",
-      latitude: coords.latitude,
-      longitude: coords.longitude,
-      mapsUrl: buildMapsUrl(coords.latitude, coords.longitude),
-    };
-    onChange(location);
-  };
+  const handleLocate = useCallback(
+    async (coords: { longitude: number; latitude: number }) => {
+      userTypingRef.current = false;
+      setShowResults(false);
+      const tempLocation: EventLocation = {
+        displayName: `${coords.latitude.toFixed(6)}, ${coords.longitude.toFixed(6)}`,
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+        mapsUrl: buildMapsUrl(coords.latitude, coords.longitude),
+      };
+      onChange(tempLocation);
+      setQuery(tempLocation.displayName);
+
+      const displayName = await reverseGeocode(coords.latitude, coords.longitude);
+      onChange({
+        ...tempLocation,
+        displayName,
+      });
+      setQuery(displayName);
+    },
+    [onChange, reverseGeocode]
+  );
 
   const handleMapClick = useCallback(
     async (lngLat: { lng: number; lat: number }) => {

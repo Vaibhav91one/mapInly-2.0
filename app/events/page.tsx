@@ -1,11 +1,54 @@
 import { EventsHeroSection, EventsContentSection } from "@/components/events";
 import { Footer } from "@/components/layout";
+import { prisma } from "@/lib/prisma";
 
-export default function EventsPage() {
+export const dynamic = "force-dynamic";
+
+function toApiEvent(e: {
+  id: string;
+  slug: string;
+  title: string;
+  tagline: string;
+  shortDescription: string;
+  date: string;
+  timeRange: string;
+  location: unknown;
+  tags: string[];
+  image: string;
+  imageOverlay: string | null;
+  createdBy: string;
+  createdAt: Date;
+  registrations: { userId: string }[];
+}) {
+  return {
+    id: e.id,
+    slug: e.slug,
+    title: e.title,
+    tagline: e.tagline,
+    shortDescription: e.shortDescription,
+    date: e.date,
+    timeRange: e.timeRange,
+    location: e.location as { displayName: string; latitude: number; longitude: number; mapsUrl?: string },
+    tags: e.tags,
+    image: e.image,
+    imageOverlay: e.imageOverlay ?? undefined,
+    createdBy: e.createdBy,
+    createdAt: e.createdAt.toISOString(),
+    registrations: e.registrations.map((r) => r.userId),
+  };
+}
+
+export default async function EventsPage() {
+  const eventsRaw = await prisma.event.findMany({
+    include: { registrations: true },
+    orderBy: { createdAt: "desc" },
+  });
+  const events = eventsRaw.map(toApiEvent);
+
   return (
     <main className="flex flex-1 flex-col pt-20">
       <EventsHeroSection />
-      <EventsContentSection />
+      <EventsContentSection events={events} />
       <Footer />
     </main>
   );
