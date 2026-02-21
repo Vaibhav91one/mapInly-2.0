@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, MapPin } from "lucide-react";
@@ -12,7 +12,9 @@ interface ProjectCardProps {
   index?: number;
   title: string;
   description?: string;
-  image: string;
+  image?: string;
+  /** Custom media component (e.g. gradient) to use instead of image */
+  media?: ReactNode;
   href?: string;
   variant: "simple" | "detailed" | "organizer";
   timing?: string;
@@ -25,6 +27,7 @@ export function ProjectCard({
   title,
   description,
   image,
+  media,
   href,
   variant,
   timing,
@@ -45,15 +48,21 @@ export function ProjectCard({
       onMouseLeave={() => setIsHovered(false)}
     >
       <Card className="relative aspect-[4/5] h-full w-full overflow-hidden border-0 rounded-none p-0 gap-0 shadow-none">
-        {/* Image with zoom on hover */}
+        {/* Image or custom media with zoom on hover */}
         <div className="absolute inset-0 overflow-hidden">
-          <Image
-            src={image}
-            alt={title}
-            fill
-            className="object-cover transition-transform duration-500 ease-out group-hover/card:scale-110"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
+          {media ? (
+            <div className="h-full w-full transition-transform duration-500 ease-out group-hover/card:scale-110 [&>*]:h-full [&>*]:w-full [&>*]:object-cover">
+              {media}
+            </div>
+          ) : image ? (
+            <Image
+              src={image}
+              alt={title}
+              fill
+              className="object-cover transition-transform duration-500 ease-out group-hover/card:scale-110"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          ) : null}
         </div>
         {!isOrganizer && index != null && (
           <span

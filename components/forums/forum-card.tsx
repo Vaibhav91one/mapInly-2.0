@@ -10,7 +10,10 @@ type ForumStatus = "active" | "closed";
 
 interface ForumCardProps {
   title: string;
-  description: string;
+  /** @deprecated Use tagline + shortDescription. Fallback for backward compatibility. */
+  description?: string;
+  tagline?: string;
+  shortDescription?: string;
   status: ForumStatus;
   tags: string[];
   href?: string;
@@ -20,11 +23,14 @@ interface ForumCardProps {
 export function ForumCard({
   title,
   description,
+  tagline,
+  shortDescription,
   status,
   tags,
   href = "#",
   className,
 }: ForumCardProps) {
+  const displayDescription = shortDescription ?? description ?? "";
   const [isHovered, setIsHovered] = useState(false);
 
   const statusLabel = status === "active" ? "Active" : "Closed";
@@ -68,7 +74,7 @@ export function ForumCard({
               {title}
             </h3>
             <p className="mt-1 text-base font-regular leading-tight tracking-tight text-secondary">
-              {description}
+              {displayDescription}
             </p>
           </div>
           {href && (

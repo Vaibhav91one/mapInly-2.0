@@ -39,8 +39,8 @@ export function DashboardCalendar({
         classNames={{
           root: "!w-full",
           month: "!w-full gap-6",
-          table: "mt-4",
-          weekdays: "!w-full [&_[data-slot]]:font-normal [&_[data-slot]]:tracking-tight [&_[data-slot]]:leading-tight",
+          table: "mt-6",
+          weekdays: "!w-full [&_[data-slot]]:font-regular [&_[data-slot]]:tracking-tight [&_[data-slot]]:leading-tight",
           week: "!w-full mt-3 first:mt-2",
           day: "[&_button]:!gap-2",
           weekday:

@@ -8,6 +8,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { ProjectCard } from "./project-card";
+import { GradientCardMedia } from "./gradient-card-media";
 import { ArrowLinkButton } from "@/components/ui/arrow-link-button";
 import { cn } from "@/lib/utils";
 import { sectionClasses } from "@/lib/layout-classes";
@@ -30,6 +31,7 @@ const PROJECTS = [
     description:
       "A cultural gamification initiative to enhance Lugano's cultural heritage, combat overtourism and strengthen the bond between tourists, citizens and territory.",
     image: "https://picsum.photos/seed/destination/600/400",
+    media: <GradientCardMedia />,
     href: "/projects/earn-your-destination",
     variant: "detailed" as const,
     timing: "Apr 20, 2025 · 10:00 AM",
@@ -110,6 +112,7 @@ export function CarouselSection() {
                     title={project.title}
                     description={project.description}
                     image={project.image}
+                    media={project.media}
                     href={project.href}
                     variant={project.variant}
                     timing={project.timing}

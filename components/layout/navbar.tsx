@@ -1,9 +1,22 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ChevronDown, ArrowUpRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ChevronDown, ArrowUpRight, LogOut, LayoutDashboard, PlusCircle, MessageSquarePlus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { createClient } from "@/utils/supabase/client";
+import type { User } from "@supabase/supabase-js";
 import ScrollRotatingAsterisk from "../custom/ScrollingRotatingAsterisk";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { CreateEventDialog } from "@/components/dialogs/create-event-dialog";
+import { CreateForumDialog } from "@/components/dialogs/create-forum-dialog";
 
 const navItems = [
   // { label: "L*3", href: "/about", text: "About Us", active: true },
@@ -13,7 +26,41 @@ const navItems = [
   { label: "Dashboard", href: "/dashboard", text: "Dashboard", active: false },
 ];
 
+function getInitials(user: User) {
+  const name = user.user_metadata?.full_name ?? user.user_metadata?.name ?? user.email ?? "";
+  if (typeof name === "string" && name.includes(" ")) {
+    return name
+      .split(" ")
+      .map((part) => part[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+  }
+  return (name as string).slice(0, 2).toUpperCase() || "U";
+}
+
 export function Navbar() {
+  const [user, setUser] = useState<User | null>(null);
+  const [createEventOpen, setCreateEventOpen] = useState(false);
+  const [createForumOpen, setCreateForumOpen] = useState(false);
+  const router = useRouter();
+  const supabase = createClient();
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user: u } }) => setUser(u));
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- auth subscription runs once on mount
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.refresh();
+  };
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full flex">
       {/* Left: Green box - white asterisk only */}
@@ -77,19 +124,76 @@ export function Navbar() {
             <ChevronDown className="size-4" />
           </button>
         </div>
-        <Link
-          href="/contact"
-          className={cn(
-            "flex items-center justify-center gap-2 px-6",
-            "bg-secondary text-secondary-foreground",
-            "font-medium text-sm",
-            "hover:bg-secondary/90 transition-colors"
-          )}
-        >
-          Contact
-          <ArrowUpRight className="size-4" />
-        </Link>
+        {user ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button" 
+                className="flex items-center gap-2 px-4 focus:outline-none"
+                aria-label="Open user menu"
+              >
+                <Avatar className="size-8">
+                  <AvatarImage src={user.user_metadata?.avatar_url} alt="" />
+                  <AvatarFallback className="bg-secondary text-secondary-foreground text-xs font-medium">
+                    {getInitials(user)}
+                  </AvatarFallback>
+                </Avatar>
+                <ChevronDown className="size-4 text-white/70" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="min-w-40 border border-white/20 bg-black/90 text-white backdrop-blur-md"
+            >
+              <DropdownMenuItem asChild>
+                <Link
+                  href="/dashboard"
+                  className="flex cursor-pointer items-center gap-2 focus:bg-white/10 focus:text-white data-highlighted:bg-white/10"
+                >
+                  <LayoutDashboard className="size-4" />
+                  Dashboard
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setCreateEventOpen(true)}
+                className="flex cursor-pointer items-center gap-2 focus:bg-white/10 focus:text-white data-highlighted:bg-white/10"
+              >
+                <PlusCircle className="size-4" />
+                Create event
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setCreateForumOpen(true)}
+                className="flex cursor-pointer items-center gap-2 focus:bg-white/10 focus:text-white data-highlighted:bg-white/10"
+              >
+                <MessageSquarePlus className="size-4" />
+                Create forum
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={handleSignOut}
+                className="cursor-pointer focus:bg-white/10 focus:text-white data-highlighted:bg-white/10"
+              >
+                <LogOut className="size-4" />
+                Sign out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <Link
+            href="/auth"
+            className={cn(
+              "flex items-center justify-center gap-2 px-6",
+              "bg-secondary text-secondary-foreground",
+              "font-medium text-sm",
+              "hover:bg-secondary/90 transition-colors"
+            )}
+          >
+            Login
+            <ArrowUpRight className="size-4" />
+          </Link>
+        )}
       </div>
+      <CreateEventDialog open={createEventOpen} onOpenChange={setCreateEventOpen} />
+      <CreateForumDialog open={createForumOpen} onOpenChange={setCreateForumOpen} />
     </header>
   );
 }

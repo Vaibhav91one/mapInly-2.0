@@ -4,12 +4,25 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { StaticMeshGradient } from "@paper-design/shaders-react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
+function isGradient(src: string): boolean {
+  return src?.startsWith("gradient:") ?? false;
+}
+
+function parseGradientColors(src: string): string[] {
+  const colors = src.slice(9).split(",").map((c) => c.trim());
+  return colors.length === 4 ? colors : ["#b8cd65", "#6200ff", "#e2a3ff", "#ff99fd"];
+}
+
 interface EventCardProps {
   title: string;
-  description: string;
+  /** @deprecated Use tagline + shortDescription. Fallback for backward compatibility. */
+  description?: string;
+  tagline?: string;
+  shortDescription?: string;
   date: string;
   location: string;
   tags: string[];
@@ -22,6 +35,8 @@ interface EventCardProps {
 export function EventCard({
   title,
   description,
+  tagline,
+  shortDescription,
   date,
   location,
   tags,
@@ -31,6 +46,7 @@ export function EventCard({
   className,
 }: EventCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const displayDescription = shortDescription ?? description ?? "";
 
   return (
     <article
@@ -41,15 +57,35 @@ export function EventCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Image - full left side, no padding */}
+      {/* Image or gradient - full left side, no padding */}
       <div className="relative h-64 w-48 shrink-0 overflow-hidden md:h-80 md:w-56 lg:h-56 lg:w-64">
-        <Image
-          src={image}
-          alt={title}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 192px, (max-width: 1024px) 224px, 256px"
-        />
+        {isGradient(image) ? (
+          <div className="absolute inset-0 w-full h-full">
+            <StaticMeshGradient
+              width="100%"
+              height="100%"
+              fit="cover"
+              colors={parseGradientColors(image)}
+              positions={2}
+              waveX={1}
+              waveXShift={0.6}
+              waveY={1}
+              waveYShift={0.21}
+              mixing={0.93}
+              grainMixer={0.31}
+              grainOverlay={0.48}
+              rotation={270}
+            />
+          </div>
+        ) : (
+          <Image
+            src={image}
+            alt={title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 192px, (max-width: 1024px) 224px, 256px"
+          />
+        )}
         {imageOverlay && (
           <span
             className="absolute bottom-3 left-3 font-bold text-white/90 text-xl leading-tight md:text-2xl"
@@ -86,7 +122,7 @@ export function EventCard({
             <h3 className="text-xl font-regular leading-tight tracking-tight text-white md:text-4xl">
               {title}
             </h3>
-            <p className="mt-1 text-base font-regular leading-tight tracking-tight text-secondary">{description}</p>
+            <p className="mt-1 text-base font-regular leading-tight tracking-tight text-secondary">{displayDescription}</p>
           </div>
           {href && (
             <motion.div
