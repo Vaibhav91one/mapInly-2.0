@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { uniqueSlug } from "@/lib/slugify";
 import { createEventBodySchema } from "@/lib/validations/api";
 
+export const dynamic = "force-dynamic";
+
 function toApiEvent(e: {
   id: string;
   slug: string;

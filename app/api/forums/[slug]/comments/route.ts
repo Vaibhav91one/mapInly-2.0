@@ -3,6 +3,8 @@ import { createClient } from "@/utils/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { createCommentBodySchema } from "@/lib/validations/api";
 
+export const dynamic = "force-dynamic";
+
 export type CommentWithAuthor = {
   id: string;
   forumId: string;

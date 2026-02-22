@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   const idsParam = request.nextUrl.searchParams.get("ids");
   const ids = idsParam ? idsParam.split(",").map((id) => id.trim()).filter(Boolean) : [];

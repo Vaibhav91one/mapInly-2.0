@@ -3,6 +3,8 @@ import { createClient } from "@/utils/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { createForumBodySchema } from "@/lib/validations/api";
 
+export const dynamic = "force-dynamic";
+
 function toApiForum(f: {
   id: string;
   slug: string;

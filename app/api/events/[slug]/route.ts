@@ -3,6 +3,8 @@ import { createClient } from "@/utils/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { createEventBodySchema } from "@/lib/validations/api";
 
+export const dynamic = "force-dynamic";
+
 function toApiEvent(e: {
   id: string;
   slug: string;
