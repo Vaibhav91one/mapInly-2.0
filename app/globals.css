@@ -131,4 +131,14 @@
   .maplibregl-popup-tip {
     @apply hidden!;
   }
+  /* Event chat sheet: remove all outlines, rings, focus borders */
+  [data-slot="event-chat-sheet"],
+  [data-slot="event-chat-sheet"] *,
+  [data-slot="event-chat-sheet"] *:focus,
+  [data-slot="event-chat-sheet"] *:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+    --tw-ring-shadow: none !important;
+    --tw-ring-color: transparent !important;
+  }
 }

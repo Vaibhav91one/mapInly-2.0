@@ -17,7 +17,7 @@ export function GradientThumbnail({
   return (
     <div
       className={cn(
-        "relative h-20 w-full overflow-hidden rounded-md border-2 transition-colors",
+        "relative h-28 w-full overflow-hidden rounded-md border-2 transition-colors",
         selected ? "border-primary" : "border-white/20",
         className
       )}

@@ -43,6 +43,10 @@ export const createCommentBodySchema = z.object({
   parentId: z.string().nullable().optional(),
 });
 
+export const createEventMessageBodySchema = z.object({
+  content: z.string().min(1, "Message cannot be empty").max(2000),
+});
+
 export const voteCommentBodySchema = z.object({
   direction: z.enum(["up", "down"]),
 });

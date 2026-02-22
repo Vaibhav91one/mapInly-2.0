@@ -70,7 +70,9 @@ export function Navbar() {
 
       {/* Mapinly text - outside green box */}
       <div className="flex flex-col justify-center min-h-[80px] pl-6 pr-4 bg-black/70 backdrop-blur-md text-white shrink-0">
-        <span className="font-semibold text-lg leading-tight">Mapinly</span>
+        <Link href="/">
+          <span className="font-semibold text-lg leading-tight">Mapinly</span>
+        </Link>
         {/* <span className="text-white/90 text-sm leading-tight">Living Lab</span> */}
       </div>
 

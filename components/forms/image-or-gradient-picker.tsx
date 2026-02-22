@@ -57,6 +57,7 @@ export function ImageOrGradientPicker({
 }: ImageOrGradientPickerProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [presets, setPresets] = useState<string[][]>(DEFAULT_PRESETS);
+  const [fileName, setFileName] = useState<string | null>(null);
 
   const isGradient = value?.startsWith("gradient:");
   const selectedGradientColors = useMemo(
@@ -72,6 +73,7 @@ export function ImageOrGradientPicker({
       if (!file || !ALLOWED_IMAGE_TYPES.includes(file.type)) return;
       try {
         const dataUrl = await fileToDataUrl(file);
+        setFileName(file.name);
         onChange(dataUrl);
       } catch {
         // ignore
@@ -85,12 +87,14 @@ export function ImageOrGradientPicker({
 
   const handleGradientSelect = useCallback(
     (colors: string[]) => {
+      setFileName(null);
       onChange(gradientToValue(colors));
     },
     [onChange]
   );
 
   const handleRandomize = useCallback(() => {
+    setFileName(null);
     const newPresets = [
       randomPreset(),
       randomPreset(),
@@ -98,7 +102,6 @@ export function ImageOrGradientPicker({
       randomPreset(),
     ];
     setPresets(newPresets);
-    // Optionally select the first new preset
     onChange(gradientToValue(newPresets[0]));
   }, [onChange]);
 
@@ -126,6 +129,28 @@ export function ImageOrGradientPicker({
           <Upload className="size-4" />
           {value && !isGradient ? "Change image" : "Upload image"}
         </Button>
+        {value && (
+          <div className="space-y-2">
+            <div className="h-40 w-full overflow-hidden rounded-md border border-white/20">
+              {isGradient && selectedGradientColors ? (
+                <GradientThumbnail
+                  colors={selectedGradientColors}
+                  selected={false}
+                  className="h-full w-full border-0"
+                />
+              ) : (
+                <img
+                  src={value}
+                  alt="Preview"
+                  className="h-full w-full object-contain"
+                />
+              )}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {isGradient ? "Gradient selected" : `Selected: ${fileName ?? "Image"}`}
+            </p>
+          </div>
+        )}
       </div>
 
       <div className="space-y-2">
@@ -162,11 +187,6 @@ export function ImageOrGradientPicker({
         </div>
       </div>
 
-      {value && (
-        <p className="text-xs text-white/70">
-          {isGradient ? "Gradient selected" : "Image selected"}
-        </p>
-      )}
       {error && <p className="text-sm text-destructive">{error}</p>}
     </div>
   );

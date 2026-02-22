@@ -14,6 +14,7 @@ interface EventDetailsSectionProps {
   description: string;
   hasSignedUp?: boolean;
   isPast?: boolean;
+  eventId?: string;
   eventSlug?: string;
   eventTitle?: string;
   eventImage?: string;
@@ -24,6 +25,7 @@ export function EventDetailsSection({
   description,
   hasSignedUp = false,
   isPast = false,
+  eventId = "",
   eventSlug = "",
   eventTitle = "",
   eventImage,
@@ -84,7 +86,8 @@ export function EventDetailsSection({
             </p>
           ) : hasSignedUp ? (
             <EventChatSheet
-              eventId={eventSlug}
+              eventId={eventId}
+              eventSlug={eventSlug}
               eventTitle={eventTitle}
               eventImage={eventImage}
               className="mt-auto w-fit"

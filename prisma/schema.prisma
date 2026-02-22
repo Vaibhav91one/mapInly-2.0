@@ -19,6 +19,7 @@ model Profile {
   forums             Forum[]             @relation("ForumCreator")
   comments           Comment[]           @relation("CommentAuthor")
   eventRegistrations EventRegistration[] @relation("EventRegistrationUser")
+  eventMessages      EventMessage[]      @relation("EventMessageAuthor")
 
   @@map("profiles")
 }
@@ -40,8 +41,22 @@ model Event {
 
   creator         Profile              @relation("EventCreator", fields: [createdBy], references: [id], onDelete: Restrict)
   registrations   EventRegistration[]
+  messages       EventMessage[]
 
   @@map("events")
+}
+
+model EventMessage {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  eventId   String   @map("event_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  event Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  Profile @relation("EventMessageAuthor", fields: [userId], references: [id], onDelete: Restrict)
+
+  @@map("event_messages")
 }
 
 model Forum {

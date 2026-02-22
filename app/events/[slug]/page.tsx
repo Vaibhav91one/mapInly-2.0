@@ -90,6 +90,7 @@ export default async function EventPage({ params }: EventPageProps) {
         description={event.shortDescription}
         hasSignedUp={hasSignedUp}
         isPast={isPast}
+        eventId={event.id}
         eventSlug={slug}
         eventTitle={event.title}
         eventImage={event.image}
