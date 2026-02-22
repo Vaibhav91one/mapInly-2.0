@@ -31,7 +31,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <AuthProvider>
             <Navbar />
-            <div className={`${containerClasses} flex-1 flex flex-col`}>
+            <div className={`${containerClasses} flex-1 flex flex-col overflow-visible`}>
               {children}
             </div>
           </AuthProvider>

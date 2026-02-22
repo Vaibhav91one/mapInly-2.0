@@ -143,7 +143,7 @@ export function Navbar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="min-w-40 border border-white/20 bg-black/90 text-white backdrop-blur-md"
+              className="min-w-40 border border-white/20 rounded-none bg-black/90 text-white backdrop-blur-md"
             >
               <DropdownMenuItem asChild>
                 <Link

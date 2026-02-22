@@ -108,7 +108,7 @@ export function EventCard({
             <span className="rounded border border-white/40 px-2 py-1 text-sm font-medium text-white">
               {date}
             </span>
-            <span className="text-sm text-white/80 line-clamp-1 max-w-sm">@{location}</span>
+            <span className="text-sm text-white/80 line-clamp-1 max-w-xs">@{location}</span>
           </div>
           <div className="flex flex-wrap gap-1.5 text-sm text-primary">
             {tags.map((tag) => (

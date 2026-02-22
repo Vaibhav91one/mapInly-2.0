@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { EventLocationLink } from "./event-location-link";
 import {
   Popover,
   PopoverContent,
@@ -22,7 +23,7 @@ interface JoinerItem {
 interface EventHeroSectionProps {
   title: string;
   date: string;
-  location: string;
+  location: { displayName: string; latitude?: number; longitude?: number; mapsUrl?: string };
   /** Single organizer for "Organized by" (1 avatar). Popover shows name on click. */
   organizer?: OrganizerItem;
   /** Joiners for "joining" section (max 3 avatars + overflow count circle). */
@@ -135,9 +136,7 @@ export function EventHeroSection({ title, date, location, organizer, joiners = [
             </div>
             <div>
               <p className="text-sm font-regular leading-tight tracking-tight text-background/60">Location</p>
-              <p className="mt-1 text-lg font-regular leading-tight tracking-tight text-background line-clamp-2">
-                @{location}
-              </p>
+              <EventLocationLink location={location} />
             </div>
           </div>
           <div className="flex flex-col items-end gap-4">

@@ -80,7 +80,7 @@ export default async function EventPage({ params }: EventPageProps) {
       <EventHeroSection
         title={event.title}
         date={event.date}
-        location={(event.location as { displayName: string }).displayName}
+        location={event.location as { displayName: string; latitude: number; longitude: number; mapsUrl?: string }}
         organizer={organizer}
         joiners={joiners}
       />

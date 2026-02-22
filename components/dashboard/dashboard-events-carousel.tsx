@@ -171,7 +171,6 @@ export function DashboardEventsCarousel({
                     variant="simple"
                     timing={`${event.date} · ${event.timeRange}`}
                     location={event.location.displayName}
-                    locationUrl={event.location.mapsUrl}
                   />
                 </div>
               </CarouselItem>

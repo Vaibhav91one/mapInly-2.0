@@ -23,12 +23,6 @@ function parseGradientColors(src: string): string[] {
   return colors.length === 4 ? colors : ["#b8cd65", "#6200ff", "#e2a3ff", "#ff99fd"];
 }
 
-function locationUrl(location: Event["location"]): string | undefined {
-  if (location.mapsUrl) return location.mapsUrl;
-  const q = encodeURIComponent(location.displayName);
-  return `https://www.google.com/maps/search/?api=1&query=${q}`;
-}
-
 interface CarouselSectionProps {
   events: Event[];
 }
@@ -114,7 +108,6 @@ export function CarouselSection({ events }: CarouselSectionProps) {
                       variant="simple"
                       timing={`${event.date} · ${event.timeRange}`}
                       location={event.location.displayName}
-                      locationUrl={locationUrl(event.location)}
                     />
                   </CarouselItem>
                 ))}

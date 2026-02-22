@@ -14,7 +14,6 @@ interface ForumsContentSectionProps {
 }
 
 export function ForumsContentSection({ forums }: ForumsContentSectionProps) {
-  const [mainForumsOnly, setMainForumsOnly] = useState(false);
   const [showInactiveForums, setShowInactiveForums] = useState(false);
 
   const filteredForums = useMemo(() => {
@@ -26,7 +25,7 @@ export function ForumsContentSection({ forums }: ForumsContentSectionProps) {
     <section
       className={cn(
         sectionClasses,
-        "min-h-screen bg-foreground px-14"
+        "min-h-screen bg-foreground px-14 overflow-visible"
       )}
     >
       {/* Full-width search bar */}
@@ -48,17 +47,7 @@ export function ForumsContentSection({ forums }: ForumsContentSectionProps) {
       {/* Two columns: 1/3 sticky sidebar | 2/3 forum cards */}
       <div className="flex flex-col gap-8 lg:flex-row lg:gap-12">
         {/* Left: Sticky sidebar (1/3) */}
-        <aside className="flex w-full shrink-0 flex-col gap-4 lg:sticky lg:top-28 lg:w-1/4">
-          <div className="flex items-center justify-between gap-4 rounded-none bg-secondary/50 px-5 py-4 hover:bg-secondary/80 transition-colors">
-            <span className="text-base font-medium text-background">
-              Main Forums
-            </span>
-            <Switch
-              checked={mainForumsOnly}
-              onCheckedChange={setMainForumsOnly}
-              aria-label="Filter main forums only"
-            />
-          </div>
+        <aside className="flex w-full shrink-0 flex-col gap-4 lg:sticky lg:top-28 lg:self-start lg:w-1/4">
           <div className="flex items-center justify-between gap-4 rounded-none bg-secondary/50 px-5 py-4 hover:bg-secondary/80 transition-colors">
             <span className="text-base font-medium text-background">
               Inactive forums

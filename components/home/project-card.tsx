@@ -19,7 +19,6 @@ interface ProjectCardProps {
   variant: "simple" | "detailed" | "organizer";
   timing?: string;
   location?: string;
-  locationUrl?: string;
 }
 
 export function ProjectCard({
@@ -32,7 +31,6 @@ export function ProjectCard({
   variant,
   timing,
   location,
-  locationUrl,
 }: ProjectCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const isOrganizer = variant === "organizer";
@@ -135,23 +133,10 @@ export function ProjectCard({
                 >
                   {timing && <span>{timing}</span>}
                   {location && (
-                    locationUrl ? (
-                      <a
-                        href={locationUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex min-w-0 max-w-full items-center gap-1.5 border-b border-black/40 pb-0.5 transition-colors hover:border-black hover:text-black"
-                        aria-label={`View ${location} on Google Maps`}
-                      >
-                        <MapPin className="size-3.5 shrink-0" />
-                        <span className="min-w-0 truncate">{location}</span>
-                      </a>
-                    ) : (
-                      <span className="flex min-w-0 max-w-full items-center gap-1.5 border-b border-black/40 pb-0.5">
-                        <MapPin className="size-3.5 shrink-0" />
-                        <span className="min-w-0 truncate">{location}</span>
-                      </span>
-                    )
+                    <span className="flex min-w-0 max-w-full items-center gap-1.5">
+                      <MapPin className="size-3.5 shrink-0" />
+                      <span className="min-w-0 truncate">{location}</span>
+                    </span>
                   )}
                 </motion.div>
               )}
