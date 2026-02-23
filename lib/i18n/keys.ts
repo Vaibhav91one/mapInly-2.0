@@ -45,6 +45,7 @@ export const keys = {
   events: {
     search: "events.search",
     searchAria: "events.searchAria",
+    noResults: "events.noResults",
     pastEvents: "events.pastEvents",
     showPastEventsAria: "events.showPastEventsAria",
     showOnMap: "events.showOnMap",
@@ -58,6 +59,7 @@ export const keys = {
   forums: {
     search: "forums.search",
     searchAria: "forums.searchAria",
+    noResults: "forums.noResults",
     inactiveForums: "forums.inactiveForums",
     showInactiveForumsAria: "forums.showInactiveForumsAria",
     noForumsToShow: "forums.noForumsToShow",
@@ -206,6 +208,8 @@ export const keys = {
   dashboard: {
     breadcrumb: "dashboard.breadcrumb",
     title: "dashboard.title",
+    searchPlaceholder: "dashboard.searchPlaceholder",
+    searchNoResults: "dashboard.searchNoResults",
     upcomingEvents: "dashboard.upcomingEvents",
     noEventsOnDate: "dashboard.noEventsOnDate",
     noUpcomingEvents: "dashboard.noUpcomingEvents",

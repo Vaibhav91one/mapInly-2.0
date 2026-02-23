@@ -8,6 +8,9 @@ import { NextResponse, type NextRequest } from "next/server";
  * - DELETE /api/events/[slug], /api/forums/[slug]
  * - POST /api/forums/[slug]/comments, /api/users/sync, /api/translate
  * - PATCH /api/forums/[slug]/comments/[commentId]/vote
+ *
+ * IMPORTANT: When adding new API routes that require user context (POST/PATCH/DELETE
+ * with user-specific operations), add them to isProtectedApiRoute below.
  */
 function isProtectedApiRoute(pathname: string, method: string): boolean {
   if (pathname === "/api/events" && method === "POST") return true;

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Search, Trash2 } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -31,6 +31,7 @@ interface DashboardForumsCarouselProps {
   inactiveForums: Forum[];
   onEditForum?: (forum: Forum) => void;
   onDeleteForum?: (forum: Forum) => void;
+  onOpenSearch?: () => void;
 }
 
 export function DashboardForumsCarousel({
@@ -38,6 +39,7 @@ export function DashboardForumsCarousel({
   inactiveForums,
   onEditForum,
   onDeleteForum,
+  onOpenSearch,
 }: DashboardForumsCarouselProps) {
   const { t } = useTranslation();
   const user = useAuthStore((s) => s.user);
@@ -52,25 +54,37 @@ export function DashboardForumsCarousel({
         <h2 className="text-2xl font-regular leading-tight tracking-tight text-white md:text-3xl">
           {t(keys.dashboard.forumsCreated)}
         </h2>
-        <Tabs
-          value={activeTab}
-          onValueChange={(v) => setActiveTab(v as "active" | "inactive")}
-        >
-          <TabsList className="w-fit border border-white/20 bg-white/10 text-white rounded-none p-0">
-            <TabsTrigger
-              value="active"
-              className="text-white/80 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-none"
+        <div className="flex items-center gap-2">
+          <Tabs
+            value={activeTab}
+            onValueChange={(v) => setActiveTab(v as "active" | "inactive")}
+          >
+            <TabsList className="w-fit border border-white/20 bg-white/10 text-white rounded-none p-0">
+              <TabsTrigger
+                value="active"
+                className="text-white/80 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-none"
+              >
+                {t(keys.dashboard.active)}
+              </TabsTrigger>
+              <TabsTrigger
+                value="inactive"
+                className="text-white/80 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-none"
+              >
+                {t(keys.dashboard.inactive)}
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+          {onOpenSearch && (
+            <button
+              type="button"
+              onClick={onOpenSearch}
+              className="flex size-10 items-center justify-center rounded-none border border-white/20 bg-white/10 text-white hover:bg-white/20 transition-colors"
+              aria-label={t(keys.dashboard.searchPlaceholder)}
             >
-              {t(keys.dashboard.active)}
-            </TabsTrigger>
-            <TabsTrigger
-              value="inactive"
-              className="text-white/80 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-none"
-            >
-              {t(keys.dashboard.inactive)}
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
+              <Search className="size-5" />
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="relative min-w-0 overflow-hidden">

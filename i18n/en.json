@@ -45,6 +45,7 @@
   "events": {
     "search": "Search",
     "searchAria": "Search events",
+    "noResults": "No results found",
     "pastEvents": "Past events",
     "showPastEventsAria": "Show past events",
     "showOnMap": "Show on map",
@@ -58,6 +59,7 @@
   "forums": {
     "search": "Search",
     "searchAria": "Search forums",
+    "noResults": "No results found",
     "inactiveForums": "Inactive forums",
     "showInactiveForumsAria": "Show inactive forums",
     "noForumsToShow": "No forums to show",
@@ -206,6 +208,8 @@
   "dashboard": {
     "breadcrumb": "Dashboard",
     "title": "Dashboard",
+    "searchPlaceholder": "Search your events and forums",
+    "searchNoResults": "No results found",
     "upcomingEvents": "Upcoming Events",
     "noEventsOnDate": "No events on this date",
     "noUpcomingEvents": "No upcoming events",

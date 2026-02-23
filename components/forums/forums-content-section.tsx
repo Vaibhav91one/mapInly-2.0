@@ -18,11 +18,26 @@ interface ForumsContentSectionProps {
 export function ForumsContentSection({ forums }: ForumsContentSectionProps) {
   const { t } = useTranslation();
   const [showInactiveForums, setShowInactiveForums] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredForums = useMemo(() => {
+  const baseForums = useMemo(() => {
     if (showInactiveForums) return forums;
     return forums.filter((f) => f.status !== "closed");
   }, [forums, showInactiveForums]);
+
+  const filteredForums = useMemo(() => {
+    if (!searchQuery.trim()) return baseForums;
+    const q = searchQuery.toLowerCase().trim();
+    return baseForums.filter((f) => {
+      const title = f.title?.toLowerCase() ?? "";
+      const tagline = f.tagline?.toLowerCase() ?? "";
+      const desc = (f.shortDescription ?? "").toLowerCase();
+      const tags = (f.tags ?? []).join(" ").toLowerCase();
+      return (
+        title.includes(q) || tagline.includes(q) || desc.includes(q) || tags.includes(q)
+      );
+    });
+  }, [baseForums, searchQuery]);
 
   return (
     <section
@@ -31,7 +46,7 @@ export function ForumsContentSection({ forums }: ForumsContentSectionProps) {
         "min-h-screen bg-foreground px-14 overflow-visible"
       )}
     >
-      {/* Full-width search bar */}
+      {/* Full-width search bar - filters cards as you type */}
       <div className="mb-8 w-full">
         <div className="relative">
           <Search
@@ -40,9 +55,11 @@ export function ForumsContentSection({ forums }: ForumsContentSectionProps) {
           />
           <Input
             type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={t(keys.forums.search)}
-            className="h-[80px] w-full rounded-none border-secondary pl-16 text-4xl md:pl-20 md:text-4xl font-regular leading-tight tracking-tight text-background placeholder:text-background/60 focus-visible:border-white/40 focus-visible:ring-white/20"
             aria-label={t(keys.forums.searchAria)}
+            className="h-[80px] w-full rounded-none border-secondary pl-16 text-4xl md:pl-20 md:text-4xl font-regular leading-tight tracking-tight text-background placeholder:text-background/60 focus-visible:border-white/40 focus-visible:ring-white/20"
           />
         </div>
       </div>

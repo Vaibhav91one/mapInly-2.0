@@ -22,11 +22,26 @@ export function EventsContentSection({ events }: EventsContentSectionProps) {
   const { t } = useTranslation();
   const [showPastEvents, setShowPastEvents] = useState(false);
   const [showOnMap, setShowOnMap] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredEvents = useMemo(() => {
+  const baseEvents = useMemo(() => {
     if (showPastEvents) return events;
     return events.filter((e) => !isEventPast(e));
   }, [events, showPastEvents]);
+
+  const filteredEvents = useMemo(() => {
+    if (!searchQuery.trim()) return baseEvents;
+    const q = searchQuery.toLowerCase().trim();
+    return baseEvents.filter((e) => {
+      const title = e.title?.toLowerCase() ?? "";
+      const tagline = e.tagline?.toLowerCase() ?? "";
+      const desc = (e.shortDescription ?? "").toLowerCase();
+      const tags = (e.tags ?? []).join(" ").toLowerCase();
+      return (
+        title.includes(q) || tagline.includes(q) || desc.includes(q) || tags.includes(q)
+      );
+    });
+  }, [baseEvents, searchQuery]);
 
   return (
     <section
@@ -35,7 +50,7 @@ export function EventsContentSection({ events }: EventsContentSectionProps) {
         "min-h-screen bg-foreground px-14 overflow-visible"
       )}
     >
-      {/* Full-width search bar */}
+      {/* Full-width search bar - filters cards as you type */}
       <div className="mb-8 w-full">
         <div className="relative">
           <Search
@@ -44,9 +59,11 @@ export function EventsContentSection({ events }: EventsContentSectionProps) {
           />
           <Input
             type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={t(keys.events.search)}
-            className="h-[80px] w-full rounded-none border-secondary pl-16 text-4xl md:pl-20 md:text-4xl font-regular leading-tight tracking-tight text-background placeholder:text-background/60 focus-visible:border-white/40 focus-visible:ring-white/20"
             aria-label={t(keys.events.searchAria)}
+            className="h-[80px] w-full rounded-none border-secondary pl-16 text-4xl md:pl-20 md:text-4xl font-regular leading-tight tracking-tight text-background placeholder:text-background/60 focus-visible:border-white/40 focus-visible:ring-white/20"
           />
         </div>
       </div>

@@ -7,6 +7,7 @@ import { isSameDay } from "date-fns";
 import { sectionClasses, sectionInnerClasses } from "@/lib/layout-classes";
 import { CreateEventDialog } from "@/components/dialogs/create-event-dialog";
 import { CreateForumDialog } from "@/components/dialogs/create-forum-dialog";
+import { DashboardCommandPalette } from "./dashboard-command-palette";
 import { StatCard } from "./stat-card";
 import { DashboardCalendar } from "./dashboard-calendar";
 import { UpcomingEventCard } from "./upcoming-event-card";
@@ -76,6 +77,17 @@ export function DashboardContentSection({
 
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [editingForum, setEditingForum] = useState<Forum | null>(null);
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [commandPaletteMode, setCommandPaletteMode] = useState<"events" | "forums">("events");
+
+  const allOrganizedEvents = useMemo(
+    () => [...activeOrganizedEvents, ...inactiveOrganizedEvents],
+    [activeOrganizedEvents, inactiveOrganizedEvents]
+  );
+  const allOrganizedForums = useMemo(
+    () => [...activeForums, ...inactiveForums],
+    [activeForums, inactiveForums]
+  );
 
   async function handleDeleteEvent(event: Event) {
     const res = await fetch(`/api/events/${event.slug}`, { method: "DELETE" });
@@ -127,7 +139,7 @@ export function DashboardContentSection({
                   </span>
                 )}
               </h3>
-              <ScrollArea className="h-[642px] pr-4">
+              <ScrollArea className="h-[490px] pr-4">
                 <div className="space-y-3">
                   {eventsForSelectedDate.length === 0 ? (
                     <p className="py-8 text-center text-white/60">
@@ -162,16 +174,31 @@ export function DashboardContentSection({
               inactiveEvents={inactiveOrganizedEvents}
               onEditEvent={setEditingEvent}
               onDeleteEvent={handleDeleteEvent}
+              onOpenSearch={() => {
+                setCommandPaletteMode("events");
+                setCommandPaletteOpen(true);
+              }}
             />
             <DashboardForumsCarousel
               activeForums={activeForums}
               inactiveForums={inactiveForums}
               onEditForum={setEditingForum}
               onDeleteForum={handleDeleteForum}
+              onOpenSearch={() => {
+                setCommandPaletteMode("forums");
+                setCommandPaletteOpen(true);
+              }}
             />
           </div>
         </div>
       </div>
+      <DashboardCommandPalette
+        events={allOrganizedEvents}
+        forums={allOrganizedForums}
+        open={commandPaletteOpen}
+        onOpenChange={setCommandPaletteOpen}
+        mode={commandPaletteMode}
+      />
       <CreateEventDialog
         open={!!editingEvent}
         onOpenChange={(open: boolean) => !open && setEditingEvent(null)}
