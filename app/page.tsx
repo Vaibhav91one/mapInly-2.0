@@ -11,6 +11,13 @@ import { prisma } from "@/lib/prisma";
 import { getEventsWithTranslations } from "@/lib/events/get-event-with-translation";
 import { getLocaleFromRequest } from "@/lib/i18n/get-locale-server";
 import { parseEventDate } from "@/lib/parse-event-date";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home",
+  description:
+    "Discover events and community forums. Join in your language with automatic translations.",
+};
 
 function toApiEvent(e: {
   id: string;

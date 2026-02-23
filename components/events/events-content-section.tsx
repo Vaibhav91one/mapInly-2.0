@@ -47,7 +47,7 @@ export function EventsContentSection({ events }: EventsContentSectionProps) {
     <section
       className={cn(
         sectionClasses,
-        "min-h-screen bg-foreground px-14 overflow-visible"
+        "min-h-screen bg-foreground px-4 sm:px-6 md:px-10 lg:px-14 overflow-visible"
       )}
     >
       {/* Full-width search bar - filters cards as you type */}
@@ -63,7 +63,7 @@ export function EventsContentSection({ events }: EventsContentSectionProps) {
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={t(keys.events.search)}
             aria-label={t(keys.events.searchAria)}
-            className="h-[80px] w-full rounded-none border-secondary pl-16 text-4xl md:pl-20 md:text-4xl font-regular leading-tight tracking-tight text-background placeholder:text-background/60 focus-visible:border-white/40 focus-visible:ring-white/20"
+            className="h-[80px] w-full rounded-none border-secondary pl-20 text-4xl md:pl-20 md:text-4xl font-regular leading-tight tracking-tight text-background placeholder:text-background/60 focus-visible:border-white/40 focus-visible:ring-white/20"
           />
         </div>
       </div>

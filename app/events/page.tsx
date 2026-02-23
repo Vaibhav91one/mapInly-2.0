@@ -3,8 +3,14 @@ import { Footer } from "@/components/layout";
 import { prisma } from "@/lib/prisma";
 import { getEventsWithTranslations } from "@/lib/events/get-event-with-translation";
 import { getLocaleFromRequest } from "@/lib/i18n/get-locale-server";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Events",
+  description: "Discover and join events in your community.",
+};
 
 function toApiEvent(e: {
   id: string;

@@ -68,14 +68,17 @@ export function Footer() {
               {t(keys.footer.socials)}
             </h3>
             <nav className="flex flex-col gap-3">
-              <Link href="#" className="text-sm text-white/70 hover:text-white" target="_blank" rel="noopener noreferrer">
+              <Link href="https://github.com/Vaibhav91one" className="text-sm text-white/70 hover:text-white" target="_blank" rel="noopener noreferrer">
+                {t(keys.footer.github)}
+              </Link>
+              <Link href="https://twitter.com/VrsatileVaibhav" className="text-sm text-white/70 hover:text-white" target="_blank" rel="noopener noreferrer">
                 {t(keys.footer.twitter)}
               </Link>
-              <Link href="#" className="text-sm text-white/70 hover:text-white" target="_blank" rel="noopener noreferrer">
+              <Link href="https://www.linkedin.com/in/vaibhav-tomar-a6b2b6255/" className="text-sm text-white/70 hover:text-white" target="_blank" rel="noopener noreferrer">
                 {t(keys.footer.linkedin)}
               </Link>
-              <Link href="#" className="text-sm text-white/70 hover:text-white" target="_blank" rel="noopener noreferrer">
-                {t(keys.footer.github)}
+              <Link href="https://portfolio-v2-rouge-ten-80.vercel.app/" className="text-sm text-white/70 hover:text-white" target="_blank" rel="noopener noreferrer">
+                Portfolio
               </Link>
             </nav>
           </div>

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import {
   ForumHeroSection,
   ForumDetailsSection,
@@ -14,6 +15,26 @@ import { getLocaleFromRequest } from "@/lib/i18n/get-locale-server";
 
 interface ForumPageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: ForumPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const locale = await getLocaleFromRequest();
+  const forumRaw = await prisma.forum.findUnique({ where: { slug } });
+  if (!forumRaw) return {};
+  const forumWithTx = await getForumWithTranslation(forumRaw, locale);
+  const title = forumWithTx.title;
+  const description = forumWithTx.tagline || forumWithTx.shortDescription || undefined;
+  const image = forumRaw.image?.startsWith("http") ? forumRaw.image : undefined;
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      ...(image && { images: [{ url: image, width: 1200, height: 630 }] }),
+    },
+  };
 }
 
 export default async function ForumPage({ params }: ForumPageProps) {

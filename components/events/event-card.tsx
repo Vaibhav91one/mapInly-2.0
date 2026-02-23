@@ -57,15 +57,15 @@ export function EventCard({
   return (
     <article
       className={cn(
-        "group/card flex w-full gap-0 overflow-hidden rounded-none bg-secondary/50 pr-6 transition-colors",
+        "group/card flex w-full flex-col gap-0 overflow-hidden rounded-none bg-secondary/50 pr-0 sm:flex-row sm:pr-6 transition-colors",
         isPast ? "opacity-60 hover:bg-secondary/50" : "hover:bg-secondary/70",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Image or gradient - full left side, no padding */}
-      <div className="relative h-64 w-48 shrink-0 overflow-hidden md:h-80 md:w-56 lg:h-56 lg:w-64">
+      {/* Image or gradient - full width when stacked, left side when row */}
+      <div className="relative h-48 w-full shrink-0 overflow-hidden sm:h-64 sm:w-48 md:h-80 md:w-56 lg:h-56 lg:w-64">
         {isGradient(image) ? (
           <div className="absolute inset-0 w-full h-full">
             <StaticMeshGradient
@@ -104,7 +104,7 @@ export function EventCard({
       </div>
 
       {/* Content */}
-      <div className="flex min-w-0 flex-1 flex-col py-4 pl-6">
+      <div className="flex min-w-0 flex-1 flex-col py-4 px-4 sm:px-0 sm:pl-6 sm:pr-0">
         {/* Top: date, location, hashtags */}
         <div className="flex flex-wrap items-start justify-between gap-2">
           <div className="flex flex-wrap items-center gap-3">
@@ -150,7 +150,7 @@ export function EventCard({
                 className="inline-flex rounded-none text-white hover:text-white/90"
                 aria-label={`View ${title}`}
               >
-                <ArrowUpRight className="size-20" />
+                <ArrowUpRight className="size-12 md:size-20" />
               </Link>
             </motion.div>
           )}

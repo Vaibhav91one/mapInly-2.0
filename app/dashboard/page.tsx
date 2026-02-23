@@ -9,6 +9,12 @@ import { getLocaleFromRequest } from "@/lib/i18n/get-locale-server";
 import { parseEventDate } from "@/lib/parse-event-date";
 import type { Event } from "@/types/event";
 import type { Forum, ForumStatus } from "@/types/forum";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Your events and forums – manage what you create and join.",
+};
 
 function toApiEvent(e: {
   id: string;

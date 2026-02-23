@@ -4,8 +4,14 @@ import { prisma } from "@/lib/prisma";
 import { getForumsWithTranslations } from "@/lib/forums/get-forum-with-translation";
 import { getLocaleFromRequest } from "@/lib/i18n/get-locale-server";
 import type { Forum } from "@/types/forum";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Forums",
+  description: "Community forums – discuss and share in your language.",
+};
 
 export default async function ForumsPage() {
   const locale = await getLocaleFromRequest();

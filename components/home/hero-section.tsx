@@ -14,10 +14,10 @@ export function HeroSection() {
 
   return (
     <section className={cn(sectionClasses, "min-h-screen relative")}>
-      {/* LiquidMetal - absolute, behind text, scroll-driven rotation */}
-      <div className="absolute left-0 top-40 z-0 flex items-center justify-center overflow-hidden">
+      {/* LiquidMetal - absolute, behind text, scroll-driven rotation; smaller on mobile */}
+      <div className="absolute left-0 top-24 md:top-40 z-0 flex items-center justify-center overflow-hidden w-full">
         <motion.div
-          className="origin-center"
+          className="origin-center scale-75 md:scale-100"
           style={{ rotate: scrollRotate }}
         >
           <LiquidMetal
@@ -48,11 +48,11 @@ export function HeroSection() {
           "relative z-10 min-h-screen items-start! justify-start! gap-8"
         )}
       >
-        <h1 className="text-8xl tracking-tight font-regular leading-tight text-left">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl tracking-tight font-regular leading-tight text-left">
           {t(keys.hero.heading)}
         </h1>
         <p
-          className="self-end text-left max-w-md text-lg tracking-tight leading-tight"
+          className="self-end text-left max-w-md text-base sm:text-lg tracking-tight leading-tight"
           aria-label={t(keys.hero.subheadingAria)}
         >
           {t(keys.hero.subheading)}

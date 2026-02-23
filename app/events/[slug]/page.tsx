@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import {
   EventHeroSection,
   EventImageSection,
@@ -17,6 +18,26 @@ function avatarPlaceholder(id: string) {
 
 interface EventPageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: EventPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const locale = await getLocaleFromRequest();
+  const eventRaw = await prisma.event.findUnique({ where: { slug } });
+  if (!eventRaw) return {};
+  const eventWithTx = await getEventWithTranslation(eventRaw, locale);
+  const title = eventWithTx.title;
+  const description = eventWithTx.tagline || eventWithTx.shortDescription || undefined;
+  const image = eventRaw.image?.startsWith("http") ? eventRaw.image : undefined;
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      ...(image && { images: [{ url: image, width: 1200, height: 630 }] }),
+    },
+  };
 }
 
 export default async function EventPage({ params }: EventPageProps) {
