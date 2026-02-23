@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -18,6 +19,7 @@ import { Switch } from "@/components/ui/switch";
 import { forumFormSchema, type ForumFormSchema } from "@/lib/validations/forum";
 import type { Forum, ForumFormData } from "@/types/forum";
 import { formInputClasses } from "@/lib/form-styles";
+import { keys } from "@/lib/i18n/keys";
 import { TagsInput } from "./tags-input";
 import { ImageOrGradientPicker } from "./image-or-gradient-picker";
 
@@ -29,6 +31,7 @@ interface CreateForumFormProps {
 }
 
 export function CreateForumForm({ onSubmit, onCancel, disabled, defaultForum }: CreateForumFormProps) {
+  const { t } = useTranslation();
   const form = useForm<ForumFormSchema>({
     resolver: zodResolver(forumFormSchema),
     defaultValues: defaultForum
@@ -86,11 +89,11 @@ export function CreateForumForm({ onSubmit, onCancel, disabled, defaultForum }: 
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-white">Title</FormLabel>
+              <FormLabel className="text-white">{t(keys.createForum.title)}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
-                  placeholder="Forum title"
+                  placeholder={t(keys.createForum.title)}
                   className={formInputClasses}
                 />
               </FormControl>
@@ -104,11 +107,11 @@ export function CreateForumForm({ onSubmit, onCancel, disabled, defaultForum }: 
           name="tagline"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-white">Tagline</FormLabel>
+              <FormLabel className="text-white">{t(keys.createForum.tagline)}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
-                  placeholder="Primary one-line headline"
+                  placeholder={t(keys.createForum.taglinePlaceholder)}
                   className={formInputClasses}
                 />
               </FormControl>
@@ -122,11 +125,11 @@ export function CreateForumForm({ onSubmit, onCancel, disabled, defaultForum }: 
           name="shortDescription"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-white">Short description</FormLabel>
+              <FormLabel className="text-white">{t(keys.createForum.shortDescription)}</FormLabel>
               <FormControl>
                 <Textarea
                   {...field}
-                  placeholder="Short paragraph description"
+                  placeholder={t(keys.createForum.shortDescPlaceholder)}
                   rows={3}
                   className={formInputClasses}
                 />
@@ -142,7 +145,7 @@ export function CreateForumForm({ onSubmit, onCancel, disabled, defaultForum }: 
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center justify-between rounded-none border border-white/20 px-4 py-3">
-                <FormLabel className="text-white !mb-0">Active</FormLabel>
+                <FormLabel className="text-white !mb-0">{t(keys.createForum.statusActive)}</FormLabel>
                 <FormControl>
                   <Switch
                     checked={field.value === "active"}
@@ -162,7 +165,7 @@ export function CreateForumForm({ onSubmit, onCancel, disabled, defaultForum }: 
           name="image"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-white">Image (optional)</FormLabel>
+              <FormLabel className="text-white">{t(keys.createForum.image)}</FormLabel>
               <FormControl>
                 <ImageOrGradientPicker
                   value={field.value ?? ""}
@@ -181,12 +184,12 @@ export function CreateForumForm({ onSubmit, onCancel, disabled, defaultForum }: 
           name="tags"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-white">Tags</FormLabel>
+              <FormLabel className="text-white">{t(keys.createForum.tags)}</FormLabel>
               <FormControl>
                 <TagsInput
                   value={field.value}
                   onChange={field.onChange}
-                  placeholder="e.g. AI, community, innovation"
+                  placeholder={t(keys.createForum.tagsPlaceholder)}
                 />
               </FormControl>
               <FormMessage className="text-destructive" />
@@ -202,7 +205,7 @@ export function CreateForumForm({ onSubmit, onCancel, disabled, defaultForum }: 
               onClick={onCancel}
               className="rounded-none focus-visible:ring-0 focus-visible:ring-offset-0"
             >
-              Cancel
+              {t(keys.createForum.cancel)}
             </Button>
           )}
           <Button
@@ -210,7 +213,7 @@ export function CreateForumForm({ onSubmit, onCancel, disabled, defaultForum }: 
             disabled={disabled}
             className="rounded-none focus-visible:ring-0 focus-visible:ring-offset-0"
           >
-            {defaultForum ? "Save changes" : "Create forum"}
+            {defaultForum ? t(keys.createForum.saveChanges) : t(keys.createForum.createForum)}
           </Button>
         </div>
       </form>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Search } from "lucide-react";
 import {
   Map,
@@ -13,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { keys } from "@/lib/i18n/keys";
 import type { EventLocation } from "@/types/event";
 
 function FlyToOnChange({
@@ -65,6 +67,7 @@ export function LocationPicker({
   className,
   inputClassName,
 }: LocationPickerProps) {
+  const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<NominatimResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -236,7 +239,7 @@ export function LocationPicker({
   return (
     <div className={cn("space-y-3", className)}>
       <div className="space-y-2">
-        <Label htmlFor="location-search">Search location</Label>
+        <Label htmlFor="location-search">{t(keys.forms.searchLocation)}</Label>
         <div className="relative">
           <Search
             className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
@@ -245,7 +248,7 @@ export function LocationPicker({
           <Input
             id="location-search"
             type="search"
-            placeholder="Search for a place..."
+            placeholder={t(keys.forms.searchLocation)}
             value={query}
             onChange={(e) => {
               userTypingRef.current = true;
@@ -284,7 +287,7 @@ export function LocationPicker({
         </div>
       </div>
       <p className="text-xs text-muted-foreground">
-        Or click on the map to set a location
+        {t(keys.forms.clickMapToSetLocation)}
       </p>
       <div className="h-[240px] w-full overflow-hidden rounded-md border">
         <Map

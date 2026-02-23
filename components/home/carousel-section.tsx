@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
 import {
   Carousel,
   CarouselContent,
@@ -12,6 +13,7 @@ import { ArrowLinkButton } from "@/components/ui/arrow-link-button";
 import { StaticMeshGradient } from "@paper-design/shaders-react";
 import { cn } from "@/lib/utils";
 import { sectionClasses } from "@/lib/layout-classes";
+import { keys } from "@/lib/i18n/keys";
 import type { Event } from "@/types/event";
 
 function isGradient(src: string): boolean {
@@ -28,6 +30,7 @@ interface CarouselSectionProps {
 }
 
 export function CarouselSection({ events }: CarouselSectionProps) {
+  const { t } = useTranslation();
   const count = events.length;
 
   return (
@@ -40,16 +43,16 @@ export function CarouselSection({ events }: CarouselSectionProps) {
       <div className="px-6 md:px-8 lg:px-12">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-10">
           <p className="text-sm text-background/80 order-2 md:order-1">
-            Events {count}
+            {t(keys.carousel.eventsCount, { count })}
           </p>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-regular tracking-tight leading-tight text-background text-center order-1 md:order-2">
-            Upcoming Events
+            {t(keys.carousel.upcomingEvents)}
           </h2>
           <div className="order-3">
             <ArrowLinkButton
               href="/events"
-              text="All Events"
-              ariaLabel="View all events"
+              text={t(keys.carousel.allEvents)}
+              ariaLabel={t(keys.carousel.viewAllEventsAria)}
               className="bg-primary text-primary-foreground hover:bg-primary/90"
             />
           </div>
@@ -63,7 +66,7 @@ export function CarouselSection({ events }: CarouselSectionProps) {
               className="flex aspect-[21/6] w-full items-center justify-center bg-foreground/50"
               role="status"
             >
-              <p className="text-lg text-background/70">No upcoming events</p>
+              <p className="text-lg text-background/70">{t(keys.carousel.noUpcomingEvents)}</p>
             </div>
           ) : (
             <Carousel

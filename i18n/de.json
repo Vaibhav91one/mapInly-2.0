@@ -1,0 +1,227 @@
+{
+  "hero": {
+    "heading": "Verbinden durch Sprache & Kultur",
+    "subheading": "Eine neue Art, sich mit der Welt zu verbinden. Mit Mapinly kannst du neue Sprachen und Kulturen lernen und dich mit Menschen aus der ganzen Welt vernetzen.",
+    "subheadingAria": "Hero-Unterüberschrift"
+  },
+  "nav": {
+    "brand": "Mapinly",
+    "sharing": "Teilen",
+    "innovation": "Innovation",
+    "dashboard": "Dashboard",
+    "events": "Events",
+    "forums": "Foren",
+    "selectLanguage": "Sprache auswählen",
+    "openUserMenu": "Benutzermenü öffnen",
+    "createEvent": "Event erstellen",
+    "createForum": "Forum erstellen",
+    "signOut": "Abmelden",
+    "login": "Anmelden"
+  },
+  "text": {
+    "paragraph1a": "Mapinly bringt Menschen über Sprachen und Kulturen hinweg zusammen.",
+    "paragraph1b": "Lernen, vernetzen und entdecken",
+    "paragraph2a": "Egal, ob du eine neue Sprache lernst oder Kulturen entdeckst,",
+    "paragraph2b": "Mapinly bietet die Tools und die Community, um es möglich zu machen."
+  },
+  "values": {
+    "weListen": "Wir hören zu",
+    "weExperiment": "Wir experimentieren",
+    "weMeasure": "Wir messen",
+    "weShare": "Wir teilen"
+  },
+  "connecting": {
+    "title": "Vernetzen war noch nie so einfach",
+    "seeAllEvents": "Alle Events ansehen",
+    "seeAllEventsAria": "Alle Events ansehen"
+  },
+  "carousel": {
+    "eventsCount": "Events {{count}}",
+    "upcomingEvents": "Kommende Events",
+    "allEvents": "Alle Events",
+    "viewAllEventsAria": "Alle Veranstaltungen anzeigen",
+    "noUpcomingEvents": "Keine bevorstehenden Veranstaltungen"
+  },
+  "events": {
+    "search": "Suchen",
+    "searchAria": "Veranstaltungen suchen",
+    "pastEvents": "Vergangene Veranstaltungen",
+    "showPastEventsAria": "Vergangene Veranstaltungen anzeigen",
+    "showOnMap": "Auf Karte anzeigen",
+    "showOnMapAria": "Veranstaltungen auf Karte anzeigen",
+    "noEventsToShow": "Keine Veranstaltungen zum Anzeigen",
+    "noEventsInSystem": "Es sind noch keine Veranstaltungen im System vorhanden.",
+    "noUpcomingTryPast": "Es gibt keine bevorstehenden Veranstaltungen. Aktivieren Sie vergangene Veranstaltungen, um frühere Veranstaltungen zu sehen.",
+    "gettingLocation": "Ihr Standort wird ermittelt...",
+    "noEventsOnMap": "Keine Veranstaltungen mit Standortdaten zur Anzeige auf der Karte vorhanden."
+  },
+  "forums": {
+    "search": "Suchen",
+    "searchAria": "Foren durchsuchen",
+    "inactiveForums": "Inaktive Foren",
+    "showInactiveForumsAria": "Inaktive Foren anzeigen",
+    "noForumsToShow": "Keine Foren zum Anzeigen",
+    "noForumsInSystem": "Es gibt noch keine Foren im System.",
+    "noActiveForumsTryInactive": "Es gibt keine aktiven Foren. Versuche, inaktive Foren zu aktivieren, um geschlossene Foren zu sehen."
+  },
+  "event": {
+    "label": "Veranstaltung",
+    "seeRoutePlan": "Routenplan anzeigen"
+  },
+  "eventDetail": {
+    "breadcrumb": "/ Events",
+    "organizedBy": "Organisiert von",
+    "organizerAria": "Organisator",
+    "joining": "nehmen teil",
+    "date": "Datum",
+    "location": "Ort",
+    "signUp": "Anmelden",
+    "signingUp": "Anmeldung läuft…",
+    "signUpAria": "Für dieses Event anmelden",
+    "chat": "Chat",
+    "chatAria": "Event-Chat öffnen",
+    "eventEnded": "Dieses Event ist beendet"
+  },
+  "forumDetail": {
+    "breadcrumb": "/ Forum",
+    "createdBy": "Erstellt von",
+    "creatorAria": "Ersteller",
+    "chat": "Chat",
+    "chatAria": "Forum-Chat öffnen"
+  },
+  "forum": {
+    "statusActive": "Aktiv",
+    "statusClosed": "Geschlossen"
+  },
+  "createEvent": {
+    "title": "Titel",
+    "tagline": "Tagline",
+    "shortDescription": "Kurzbeschreibung",
+    "taglinePlaceholder": "Einzeilige Überschrift",
+    "shortDescPlaceholder": "Kurze Absatzbeschreibung",
+    "dateTime": "Datum & Uhrzeit",
+    "location": "Standort",
+    "tags": "Tags",
+    "tagsPlaceholder": "z. B. KI, Community, Innovation",
+    "image": "Bild",
+    "cancel": "Abbrechen",
+    "createEvent": "Event erstellen",
+    "saveChanges": "Änderungen speichern"
+  },
+  "createForum": {
+    "title": "Titel",
+    "tagline": "Tagline",
+    "shortDescription": "Kurzbeschreibung",
+    "taglinePlaceholder": "Einzeilige Überschrift",
+    "shortDescPlaceholder": "Kurze Absatzbeschreibung",
+    "tags": "Tags",
+    "tagsPlaceholder": "z. B. KI, Community, Innovation",
+    "image": "Bild (optional)",
+    "cancel": "Abbrechen",
+    "createForum": "Forum erstellen",
+    "saveChanges": "Änderungen speichern",
+    "statusActive": "Aktiv"
+  },
+  "forms": {
+    "searchLocation": "Standort suchen",
+    "clickMapToSetLocation": "Oder klicken Sie auf die Karte, um einen Standort festzulegen"
+  },
+  "forumComments": {
+    "title": "Kommentare",
+    "joinConversation": "An der Unterhaltung teilnehmen",
+    "loadingComments": "Kommentare werden geladen...",
+    "noCommentsFound": "Keine Kommentare gefunden.",
+    "sortBy": "Sortieren nach",
+    "newestToOldest": "Neueste zuerst",
+    "reply": "Antworten",
+    "writeReply": "Schreibe eine Antwort...",
+    "writeComment": "Schreibe einen Kommentar",
+    "submit": "Absenden",
+    "hideReplies": "{{count}} Antworten ausblenden",
+    "showMoreReplies": "{{count}} weitere Antworten anzeigen",
+    "upvoteAria": "Positiv bewerten",
+    "downvoteAria": "Negativ bewerten"
+  },
+  "eventChat": {
+    "loadingMessages": "Nachrichten werden geladen...",
+    "noMessagesYet": "Noch keine Nachrichten. Sag Hallo!",
+    "messagePlaceholder": "Nachricht...",
+    "messageInputAria": "Nachrichteneingabe",
+    "emojiAria": "Emoji"
+  },
+  "auth": {
+    "welcome": "Willkommen",
+    "signInDescription": "Melde dich mit deinem bevorzugten Anbieter an, um fortzufahren",
+    "signInGoogle": "Mit Google anmelden",
+    "signInGitHub": "Mit GitHub anmelden",
+    "or": "ODER",
+    "loading": "Laden...",
+    "tagline1": "Finde deine Leute.",
+    "tagline2": "Gestalte deine Welt."
+  },
+  "locale": {
+    "chooseLanguage": "Wählen Sie Ihre Sprache",
+    "en": "English",
+    "es": "Español",
+    "de": "Deutsch",
+    "fr": "Français",
+    "it": "Italiano",
+    "pt": "Português",
+    "zh": "中文"
+  },
+  "common": {
+    "openInMaps": "In Karten öffnen",
+    "findMyLocation": "Meinen Standort finden",
+    "gettingLocation": "Standort wird ermittelt ...",
+    "geolocationNotSupported": "Standortermittlung wird nicht unterstützt",
+    "couldNotGetLocation": "Standort konnte nicht ermittelt werden",
+    "enableLocationAccess": "Aktivieren Sie den Standortzugriff, um die Route zu sehen.",
+    "cancel": "Abbrechen",
+    "delete": "Löschen"
+  },
+  "footer": {
+    "tagline": "Entdecke Events auf der Karte, tritt Communities bei und vernetze dich mit Menschen in deiner Nähe. Mehrsprachige Event- und Community-Plattform.",
+    "getStarted": "Loslegen",
+    "getStartedAria": "Loslegen",
+    "legal": "Rechtliches",
+    "privacyPolicy": "Datenschutzerklärung",
+    "termsConditions": "Allgemeine Geschäftsbedingungen",
+    "pages": "Seiten",
+    "home": "Startseite",
+    "socials": "Soziale Medien",
+    "twitter": "Twitter",
+    "linkedin": "LinkedIn",
+    "github": "GitHub"
+  },
+  "eventsHero": {
+    "breadcrumb": "Events",
+    "title": "Events"
+  },
+  "forumsHero": {
+    "breadcrumb": "Foren",
+    "title": "Foren"
+  },
+  "dashboard": {
+    "breadcrumb": "Dashboard",
+    "title": "Dashboard",
+    "upcomingEvents": "Kommende Events",
+    "noEventsOnDate": "Keine Veranstaltungen an diesem Datum",
+    "noUpcomingEvents": "Keine bevorstehenden Veranstaltungen",
+    "eventsOrganized": "Von Ihnen organisierte Veranstaltungen",
+    "forumsCreated": "Von Ihnen erstellte Foren",
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
+    "noActiveEvents": "Keine aktiven Veranstaltungen",
+    "noInactiveEvents": "Keine inaktiven Veranstaltungen",
+    "noActiveForums": "Keine aktiven Foren",
+    "noInactiveForums": "Keine inaktiven Foren",
+    "deleteEventTitle": "Veranstaltung löschen?",
+    "deleteEventDescription": "Dadurch werden die Veranstaltung und alle zugehörigen Anmeldungen dauerhaft gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.",
+    "deleteForumTitle": "Forum löschen?",
+    "deleteForumDescription": "Dadurch werden das Forum und alle zugehörigen Kommentare dauerhaft gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.",
+    "statsEventsOrganized": "Organisierte Veranstaltungen",
+    "statsForumsCreated": "Erstellte Foren",
+    "statsEventsAttended": "Besuchte Veranstaltungen",
+    "statsUpcomingEvents": "Kommende Events"
+  }
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "next/navigation";
 
 import { motion } from "motion/react";
@@ -17,6 +18,7 @@ import { MaskTextEffect } from "@/components/ui/mask-text-effect";
 import ScrollRotatingAsterisk from "@/components/custom/ScrollingRotatingAsterisk";
 import { sectionClasses, sectionInnerClasses } from "@/lib/layout-classes";
 import { Separator } from "@/components/ui/separator";
+import { keys } from "@/lib/i18n/keys";
 
 const GoogleIcon = () => (
   <svg
@@ -55,6 +57,7 @@ const GitHubIcon = () => (
 );
 
 function AuthPageContent() {
+  const { t } = useTranslation();
   const searchParams = useSearchParams();
   const next = searchParams.get("next") ?? "/events";
   const [authError, setAuthError] = useState<string | null>(null);
@@ -86,13 +89,13 @@ function AuthPageContent() {
             <CardHeader className="mb-4 space-y-2">
               <CardTitle className="text-4xl font-normal leading-tight tracking-tight text-white">
                 <MaskTextEffect
-                  phrases={["Welcome"]}
+                  phrases={[t(keys.auth.welcome)]}
                   textClassName="text-4xl font-normal leading-tight tracking-tight text-white"
                 />
               </CardTitle>
               <CardDescription className="text-lg font-normal leading-tight tracking-tight text-white/70">
                 <MaskTextEffect
-                  phrases={["Sign in with your preferred provider to continue"]}
+                  phrases={[t(keys.auth.signInDescription)]}
                   textClassName="text-lg font-normal leading-tight tracking-tight text-white/70"
                 />
               </CardDescription>
@@ -116,13 +119,13 @@ function AuthPageContent() {
                   >
                     <GoogleIcon />
                     <span className="text-lg font-normal leading-tight tracking-tight">
-                      Sign in with Google
+                      {t(keys.auth.signInGoogle)}
                     </span>
                   </Button>
                 </motion.div>
                 <div className="relative flex items-center">
                   <Separator className="flex-1 bg-white/30" />
-                  <span className="px-3 text-sm text-white/60">OR</span>
+                  <span className="px-3 text-sm text-white/60">{t(keys.auth.or)}</span>
                   <Separator className="flex-1 bg-white/30" />
                 </div>
                 <motion.div
@@ -139,7 +142,7 @@ function AuthPageContent() {
                   >
                     <GitHubIcon />
                     <span className="text-lg font-normal leading-tight tracking-tight">
-                      Sign in with GitHub
+                      {t(keys.auth.signInGitHub)}
                     </span>
                   </Button>
                 </motion.div>
@@ -165,7 +168,7 @@ function AuthPageContent() {
             color="text-white"
           />
           <MaskTextEffect
-            phrases={["Find your people.", "Shape your world."]}
+            phrases={[t(keys.auth.tagline1), t(keys.auth.tagline2)]}
             className="flex flex-col gap-2 text-center"
             textClassName="text-lg font-normal leading-tight tracking-tight text-white/70 md:text-4xl"
           />
@@ -176,10 +179,11 @@ function AuthPageContent() {
 }
 
 export default function AuthPage() {
+  const { t } = useTranslation();
   return (
     <Suspense fallback={
       <section className={`${sectionClasses} min-h-screen bg-black text-white pt-20 flex items-center justify-center`}>
-        <div className="animate-pulse text-white/60">Loading...</div>
+        <div className="animate-pulse text-white/60">{t(keys.auth.loading)}</div>
       </section>
     }>
       <AuthPageContent />

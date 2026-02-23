@@ -10,6 +10,8 @@ export interface ForumFormData {
   tags: string[];
   /** Image URL or base64 data URL */
   image?: string;
+  /** Creator's locale when submitting (for translation) */
+  sourceLocale?: string;
 }
 
 /** Stored forum with DB metadata */

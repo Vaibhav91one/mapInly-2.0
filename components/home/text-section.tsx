@@ -1,20 +1,11 @@
 "use client";
 
 import { useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, useInView } from "motion/react";
 import { cn } from "@/lib/utils";
 import { sectionClasses, sectionInnerClasses } from "@/lib/layout-classes";
 import ScrollRotatingAsterisk from "../custom/ScrollingRotatingAsterisk";
-
-const paragraph1 = [
-  "Mapinly brings people together across languages and cultures.",
-  "Learn, connect, and explore",
-];
-
-const paragraph2 = [
-  "Whether you're learning a new language or discovering cultures,",
-  "Mapinly provides the tools and community to make it happen.",
-];
 
 function MaskText({
   phrases,
@@ -58,6 +49,10 @@ function MaskText({
 }
 
 export function TextSection() {
+  const { t } = useTranslation();
+  const paragraph1 = [t("text.paragraph1a"), t("text.paragraph1b")];
+  const paragraph2 = [t("text.paragraph2a"), t("text.paragraph2b")];
+
   return (
     <section className={cn(sectionClasses, "min-h-screen")}>
       <div

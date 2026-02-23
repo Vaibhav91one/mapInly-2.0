@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Loader2 } from "lucide-react";
 import {
   Map,
@@ -10,6 +11,7 @@ import {
   MapControls,
 } from "@/components/ui/map";
 import { EventMarkerPopup } from "./event-marker-popup";
+import { keys } from "@/lib/i18n/keys";
 import type { Event } from "@/types/event";
 
 const DEFAULT_CENTER: [number, number] = [0, 20];
@@ -60,6 +62,7 @@ interface EventsMapSectionProps {
 }
 
 export function EventsMapSection({ events }: EventsMapSectionProps) {
+  const { t } = useTranslation();
   const [userCoords, setUserCoords] = useState<{
     longitude: number;
     latitude: number;
@@ -103,7 +106,7 @@ export function EventsMapSection({ events }: EventsMapSectionProps) {
       <div className="relative flex h-[700px] w-full min-h-[500px] items-center justify-center overflow-hidden rounded-none border border-secondary/50 bg-zinc-950">
         <div className="flex flex-col items-center gap-3 text-zinc-400">
           <Loader2 className="size-10 animate-spin" aria-hidden />
-          <p>Getting your location...</p>
+          <p>{t(keys.events.gettingLocation)}</p>
         </div>
       </div>
     );
@@ -134,7 +137,7 @@ export function EventsMapSection({ events }: EventsMapSectionProps) {
       {eventsWithCoords.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center bg-background/60 backdrop-blur-sm">
           <p className="text-center text-muted-foreground px-4">
-            No events with location data to display on the map.
+            {t(keys.events.noEventsOnMap)}
           </p>
         </div>
       )}

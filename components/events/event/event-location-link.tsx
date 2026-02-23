@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   HoverCard,
   HoverCardContent,
@@ -8,6 +9,7 @@ import {
 } from "@/components/ui/hover-card";
 import { RoutePlanSheet } from "@/components/map/route-plan-sheet";
 import { cn } from "@/lib/utils";
+import { keys } from "@/lib/i18n/keys";
 
 interface EventLocationLinkProps {
   location: {
@@ -20,6 +22,7 @@ interface EventLocationLinkProps {
 }
 
 export function EventLocationLink({ location, className }: EventLocationLinkProps) {
+  const { t } = useTranslation();
   const [sheetOpen, setSheetOpen] = useState(false);
 
   const hasValidCoords =
@@ -59,7 +62,7 @@ export function EventLocationLink({ location, className }: EventLocationLinkProp
           className="w-auto rounded-md border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-100"
           side="top"
         >
-          See route plan
+          {t(keys.event.seeRoutePlan)}
         </HoverCardContent>
       </HoverCard>
       <RoutePlanSheet

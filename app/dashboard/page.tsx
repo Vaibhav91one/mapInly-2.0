@@ -1,7 +1,11 @@
 import { DashboardHeroSection, DashboardContentSection } from "@/components/dashboard";
+import { keys } from "@/lib/i18n/keys";
 import { Footer } from "@/components/layout";
 import { createClient } from "@/utils/supabase/server";
 import { prisma } from "@/lib/prisma";
+import { getEventsWithTranslations } from "@/lib/events/get-event-with-translation";
+import { getForumsWithTranslations } from "@/lib/forums/get-forum-with-translation";
+import { getLocaleFromRequest } from "@/lib/i18n/get-locale-server";
 import { parseEventDate } from "@/lib/parse-event-date";
 import type { Event } from "@/types/event";
 import type { Forum, ForumStatus } from "@/types/forum";
@@ -21,6 +25,7 @@ function toApiEvent(e: {
   createdBy: string;
   createdAt: Date;
   registrations: { userId: string }[];
+  sourceLocale?: string;
 }) {
   return {
     id: e.id,
@@ -37,6 +42,7 @@ function toApiEvent(e: {
     createdBy: e.createdBy,
     createdAt: e.createdAt.toISOString(),
     registrations: e.registrations.map((r) => r.userId),
+    sourceLocale: e.sourceLocale ?? "en",
   };
 }
 
@@ -46,13 +52,18 @@ export default async function DashboardPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const locale = await getLocaleFromRequest();
   const [eventsRaw, forumsRaw] = await Promise.all([
     prisma.event.findMany({ include: { registrations: true } }),
     prisma.forum.findMany(),
   ]);
-  const events = eventsRaw.map(toApiEvent) as Event[];
-  type ForumRow = (typeof forumsRaw)[number];
-  const forums = forumsRaw.map((f: ForumRow) => ({
+  const [eventsWithTx, forumsWithTx] = await Promise.all([
+    getEventsWithTranslations(eventsRaw, locale),
+    getForumsWithTranslations(forumsRaw, locale),
+  ]);
+  const events = eventsWithTx.map(toApiEvent) as Event[];
+  type ForumRow = (typeof forumsWithTx)[number];
+  const forums = forumsWithTx.map((f: ForumRow) => ({
     id: f.id,
     slug: f.slug,
     title: f.title,
@@ -63,6 +74,7 @@ export default async function DashboardPage() {
     image: f.image ?? undefined,
     createdBy: f.createdBy,
     createdAt: f.createdAt.toISOString(),
+    sourceLocale: f.sourceLocale ?? "en",
   })) as Forum[];
 
   const organizedEvents = user
@@ -107,24 +119,24 @@ export default async function DashboardPage() {
 
   const stats = [
     {
-      title: "Events Organized",
+      titleKey: keys.dashboard.statsEventsOrganized,
       value: organizedEvents.length,
       trend: { direction: "up" as const, percent: 0, label: "total" },
     },
     {
-      title: "Forums Created",
+      titleKey: keys.dashboard.statsForumsCreated,
       value: organizedForums.length,
       trend: { direction: "up" as const, percent: 0, label: "total" },
     },
     {
-      title: "Events Attended",
+      titleKey: keys.dashboard.statsEventsAttended,
       value: user
         ? events.filter((e: Event) => e.registrations?.includes(user.id)).length
         : 0,
       trend: { direction: "up" as const, percent: 0, label: "total" },
     },
     {
-      title: "Upcoming Events",
+      titleKey: keys.dashboard.statsUpcomingEvents,
       value: upcomingEventsList.length,
       trend: { direction: "down" as const, percent: 0, label: "total" },
     },

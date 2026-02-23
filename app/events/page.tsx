@@ -1,6 +1,8 @@
 import { EventsHeroSection, EventsContentSection } from "@/components/events";
 import { Footer } from "@/components/layout";
 import { prisma } from "@/lib/prisma";
+import { getEventsWithTranslations } from "@/lib/events/get-event-with-translation";
+import { getLocaleFromRequest } from "@/lib/i18n/get-locale-server";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +21,7 @@ function toApiEvent(e: {
   createdBy: string;
   createdAt: Date;
   registrations: { userId: string }[];
+  sourceLocale?: string;
 }) {
   return {
     id: e.id,
@@ -35,15 +38,18 @@ function toApiEvent(e: {
     createdBy: e.createdBy,
     createdAt: e.createdAt.toISOString(),
     registrations: e.registrations.map((r) => r.userId),
+    sourceLocale: e.sourceLocale ?? "en",
   };
 }
 
 export default async function EventsPage() {
+  const locale = await getLocaleFromRequest();
   const eventsRaw = await prisma.event.findMany({
     include: { registrations: true },
     orderBy: { createdAt: "desc" },
   });
-  const events = eventsRaw.map(toApiEvent);
+  const withTranslations = await getEventsWithTranslations(eventsRaw, locale);
+  const events = withTranslations.map(toApiEvent);
 
   return (
     <main className="flex flex-1 flex-col pt-20">

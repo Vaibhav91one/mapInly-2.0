@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { keys } from "@/lib/i18n/keys";
 
 interface CommentInputProps {
   placeholder?: string;
@@ -16,7 +18,7 @@ interface CommentInputProps {
 }
 
 export function CommentInput({
-  placeholder = "Join the conversation",
+  placeholder,
   value: controlledValue,
   onChange,
   onSubmit,
@@ -25,6 +27,8 @@ export function CommentInput({
   showCancel = false,
   className,
 }: CommentInputProps) {
+  const { t } = useTranslation();
+  const resolvedPlaceholder = placeholder ?? t(keys.forumComments.joinConversation);
   const [internalValue, setInternalValue] = useState("");
   const isControlled = controlledValue !== undefined;
   const value = isControlled ? controlledValue : internalValue;
@@ -60,7 +64,7 @@ export function CommentInput({
   return (
     <div className={cn("flex w-full min-w-0 flex-col gap-2", className)}>
       <textarea
-        placeholder={placeholder}
+        placeholder={resolvedPlaceholder}
         value={value}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
@@ -72,7 +76,7 @@ export function CommentInput({
           "focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50",
           "transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         )}
-        aria-label="Write a comment"
+        aria-label={t(keys.forumComments.writeComment)}
       />
       <div className="flex gap-2">
         <Button
@@ -81,7 +85,7 @@ export function CommentInput({
           onClick={handleSubmit}
           disabled={disabled || !value.trim()}
         >
-          Submit
+          {t(keys.forumComments.submit)}
         </Button>
         {showCancel && onCancel && (
           <Button
@@ -90,7 +94,7 @@ export function CommentInput({
             className="rounded-none bg-secondary hover:bg-secondary/80"
             onClick={onCancel}
           >
-            Cancel
+            {t(keys.common.cancel)}
           </Button>
         )}
       </div>

@@ -3,17 +3,20 @@ import { NextResponse, type NextRequest } from "next/server";
 
 /**
  * API routes that require authentication (middleware returns 401 if no session).
- * - POST /api/events, /api/forums, /api/events/[slug]/register
- * - PATCH /api/events/[slug], /api/forums/[slug]
+ * - POST /api/events, /api/forums, /api/events/[slug]/register, /api/events/[slug]/messages
+ * - PATCH /api/events/[slug], /api/forums/[slug], /api/users/locale
  * - DELETE /api/events/[slug], /api/forums/[slug]
- * - POST /api/forums/[slug]/comments, /api/users/sync
+ * - POST /api/forums/[slug]/comments, /api/users/sync, /api/translate
  * - PATCH /api/forums/[slug]/comments/[commentId]/vote
  */
 function isProtectedApiRoute(pathname: string, method: string): boolean {
   if (pathname === "/api/events" && method === "POST") return true;
   if (pathname === "/api/forums" && method === "POST") return true;
+  if (pathname === "/api/translate" && method === "POST") return true;
   if (pathname === "/api/users/sync" && method === "POST") return true;
+  if (pathname === "/api/users/locale" && method === "PATCH") return true;
   if (/^\/api\/events\/[^/]+\/register\/?$/.test(pathname) && method === "POST") return true;
+  if (/^\/api\/events\/[^/]+\/messages\/?$/.test(pathname) && method === "POST") return true;
   if (/^\/api\/events\/[^/]+\/?$/.test(pathname) && (method === "PATCH" || method === "DELETE")) return true;
   if (/^\/api\/forums\/[^/]+\/?$/.test(pathname) && (method === "PATCH" || method === "DELETE")) return true;
   if (/^\/api\/forums\/[^/]+\/comments\/?$/.test(pathname) && method === "POST") return true;

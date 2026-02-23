@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import { ArrowUp, ArrowDown, MessageCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { keys } from "@/lib/i18n/keys";
+import { formatRelativeTime } from "@/lib/i18n/format";
 import { CommentInput } from "./comment-input";
 
 export interface CommentAuthor {
@@ -48,8 +51,16 @@ export function CommentCard({
   onCancelReply,
   className,
 }: CommentCardProps) {
+  const { t, i18n } = useTranslation();
   const [expandedReplies, setExpandedReplies] = useState(false);
   const [replyDraft, setReplyDraft] = useState("");
+  const locale = (i18n.language?.split("-")[0] ?? "en") as string;
+
+  const displayTimestamp =
+    comment.createdAt && locale !== "en"
+      ? formatRelativeTime(new Date(comment.createdAt), locale)
+      : comment.timestamp;
+
   const score = comment.upvotes - (comment.downvotes ?? 0);
   const replies = comment.replies ?? [];
   const showTruncate = replies.length > 3;
@@ -86,7 +97,7 @@ export function CommentCard({
           />
         </div>
 
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 max-w-full flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-semibold text-background">{comment.author.name}</span>
             {comment.author.role && (
@@ -94,10 +105,10 @@ export function CommentCard({
                 {comment.author.role}
               </span>
             )}
-            <span className="text-sm text-background/60">{comment.timestamp}</span>
+            <span className="text-sm text-background/60">{displayTimestamp}</span>
           </div>
 
-          <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-background/90">
+          <p className="mt-2 break-words whitespace-pre-wrap text-sm leading-relaxed text-background/90">
             {comment.content}
           </p>
 
@@ -108,7 +119,7 @@ export function CommentCard({
                 size="icon"
                 className="size-8 rounded-none text-background/70 hover:bg-green-500/20 hover:text-background"
                 onClick={() => onVote?.(comment.id, "up")}
-                aria-label="Upvote"
+                aria-label={t(keys.forumComments.upvoteAria)}
               >
                 <ArrowUp className="size-4" />
               </Button>
@@ -120,7 +131,7 @@ export function CommentCard({
                 size="icon"
                 className="size-8 rounded-none text-background/70 hover:bg-red-500/20 hover:text-background"
                 onClick={() => onVote?.(comment.id, "down")}
-                aria-label="Downvote"
+                aria-label={t(keys.forumComments.downvoteAria)}
               >
                 <ArrowDown className="size-4" />
               </Button>
@@ -132,7 +143,7 @@ export function CommentCard({
               onClick={() => onReply?.(comment.id)}
             >
               <MessageCircle className="size-4" />
-              Reply
+              {t(keys.forumComments.reply)}
             </Button>
           </div>
         </div>
@@ -149,7 +160,7 @@ export function CommentCard({
             style={{ paddingLeft: (depth + 1) * REPLY_INDENT }}
           >
             <CommentInput
-              placeholder="Write a reply..."
+              placeholder={t(keys.forumComments.writeReply)}
               value={replyDraft}
               onChange={setReplyDraft}
               onSubmit={handleSubmitReply}
@@ -190,12 +201,12 @@ export function CommentCard({
           {expandedReplies ? (
             <>
               <ChevronUp className="size-4" />
-              Hide {hiddenCount} replies
+              {t(keys.forumComments.hideReplies, { count: hiddenCount })}
             </>
           ) : (
             <>
               <ChevronDown className="size-4" />
-              Show {hiddenCount} more replies
+              {t(keys.forumComments.showMoreReplies, { count: hiddenCount })}
             </>
           )}
         </Button>

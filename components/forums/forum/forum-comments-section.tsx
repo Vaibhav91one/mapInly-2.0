@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion } from "motion/react";
 import {
   CommentInput,
@@ -11,6 +12,8 @@ import {
 } from "./comment";
 import { cn } from "@/lib/utils";
 import { sectionClasses, sectionInnerClasses } from "@/lib/layout-classes";
+import { keys } from "@/lib/i18n/keys";
+import { SUPPORTED_LOCALES } from "@/lib/i18n/locale-cookie";
 
 type ApiComment = {
   id: string;
@@ -71,16 +74,28 @@ export function ForumCommentsSection({
   isActive = true,
   className,
 }: ForumCommentsSectionProps) {
+  const { t, i18n } = useTranslation();
   const [sortBy, setSortBy] = useState<SortOption>("newest");
   const [comments, setComments] = useState<ApiComment[]>([]);
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [replyingToId, setReplyingToId] = useState<string | null>(null);
+
+  const locale =
+    (SUPPORTED_LOCALES as readonly string[]).includes(
+      (i18n.language?.split("-")[0] ?? "en") as string
+    )
+      ? (i18n.language?.split("-")[0] ?? "en")
+      : "en";
 
   const fetchComments = useCallback(async () => {
     if (!forumId) return;
     setLoading(true);
     try {
-      const res = await fetch(`/api/forums/${forumId}/comments`);
+      const res = await fetch(
+        `/api/forums/${forumId}/comments?locale=${encodeURIComponent(locale)}`,
+        { credentials: "include" }
+      );
       if (res.ok) {
         const data = (await res.json()) as ApiComment[];
         setComments(data);
@@ -88,11 +103,11 @@ export function ForumCommentsSection({
     } finally {
       setLoading(false);
     }
-  }, [forumId]);
+  }, [forumId, locale]);
 
   useEffect(() => {
     fetchComments();
-  }, [fetchComments]);
+  }, [locale, fetchComments]);
 
   const tree = useMemo(() => buildCommentTree(comments), [comments]);
   const sortedTree = useMemo(
@@ -138,37 +153,49 @@ export function ForumCommentsSection({
 
   const handleSubmitComment = useCallback(
     async (content: string) => {
-      if (!forumId) return;
-      const res = await fetch(`/api/forums/${forumId}/comments`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content }),
-      });
-      if (res.ok) {
-        const enriched = (await res.json()) as ApiComment;
-        addEnrichedComment(enriched);
+      if (!forumId || submitting) return;
+      setSubmitting(true);
+      try {
+        const res = await fetch(`/api/forums/${forumId}/comments`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ content, sourceLocale: locale }),
+        });
+        if (res.ok) {
+          const enriched = (await res.json()) as ApiComment;
+          addEnrichedComment(enriched);
+        }
+      } finally {
+        setSubmitting(false);
       }
     },
-    [forumId, addEnrichedComment]
+    [forumId, locale, addEnrichedComment, submitting]
   );
 
   const handleSubmitReply = useCallback(
     async (parentId: string, content: string) => {
-      if (!forumId) return;
+      if (!forumId || submitting) return;
       setReplyingToId(null);
-      const res = await fetch(`/api/forums/${forumId}/comments`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content, parentId }),
-      });
-      if (res.ok) {
-        const enriched = (await res.json()) as ApiComment;
-        addEnrichedComment(enriched);
-      } else {
-        setReplyingToId(parentId);
+      setSubmitting(true);
+      try {
+        const res = await fetch(`/api/forums/${forumId}/comments`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ content, parentId, sourceLocale: locale }),
+        });
+        if (res.ok) {
+          const enriched = (await res.json()) as ApiComment;
+          addEnrichedComment(enriched);
+        } else {
+          setReplyingToId(parentId);
+        }
+      } finally {
+        setSubmitting(false);
       }
     },
-    [forumId, addEnrichedComment]
+    [forumId, locale, addEnrichedComment, submitting]
   );
 
   return (
@@ -182,14 +209,23 @@ export function ForumCommentsSection({
         )}
       >
         <h2 className="text-2xl font-regular tracking-tight text-background md:text-3xl">
-          Comments
+          {t(keys.forumComments.title)}
         </h2>
 
         {isActive && (
-          <CommentInput
-            placeholder="Join the conversation"
-            onSubmit={handleSubmitComment}
-          />
+          <div className="flex flex-col gap-1 w-full">
+            <CommentInput
+              placeholder={t(keys.forumComments.joinConversation)}
+              onSubmit={handleSubmitComment}
+              disabled={submitting}
+            />
+            {submitting && (
+              <p className="text-xs text-background/60">
+                {t(keys.forumComments.posting)}
+                <span className="inline-block animate-pulse">...</span>
+              </p>
+            )}
+          </div>
         )}
 
         <CommentControls
@@ -198,11 +234,11 @@ export function ForumCommentsSection({
         />
 
         {loading ? (
-          <p className="text-background/60">Loading comments...</p>
+          <p className="text-background/60">{t(keys.forumComments.loadingComments)}</p>
         ) : (
           <div className="flex flex-col gap-4">
             {sortedTree.length === 0 ? (
-              <p className="text-background/60">No comments found.</p>
+              <p className="text-background/60">{t(keys.forumComments.noCommentsFound)}</p>
             ) : (
               <>
                 {sortedTree.map((comment) => (

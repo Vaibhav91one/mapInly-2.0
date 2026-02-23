@@ -6,6 +6,8 @@ import {
 } from "@/components/events/event";
 import { Footer } from "@/components/layout";
 import { prisma } from "@/lib/prisma";
+import { getEventWithTranslation } from "@/lib/events/get-event-with-translation";
+import { getLocaleFromRequest } from "@/lib/i18n/get-locale-server";
 import { isEventPast } from "@/lib/event-date";
 import { createClient } from "@/utils/supabase/server";
 
@@ -19,6 +21,7 @@ interface EventPageProps {
 
 export default async function EventPage({ params }: EventPageProps) {
   const { slug } = await params;
+  const locale = await getLocaleFromRequest();
   const eventRaw = await prisma.event.findUnique({
     where: { slug },
     include: { registrations: true },
@@ -28,8 +31,12 @@ export default async function EventPage({ params }: EventPageProps) {
     notFound();
   }
 
+  const eventWithTx = await getEventWithTranslation(eventRaw, locale);
   const event = {
     ...eventRaw,
+    title: eventWithTx.title,
+    tagline: eventWithTx.tagline,
+    shortDescription: eventWithTx.shortDescription,
     registrations: eventRaw.registrations.map((r) => r.userId),
     createdAt: eventRaw.createdAt.toISOString(),
   };

@@ -1,9 +1,11 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Navigation, Clock, ExternalLink, ArrowUpRight } from "lucide-react";
+import { keys } from "@/lib/i18n/keys";
 import type { Event } from "@/types/event";
 
 function isGradient(src: string): boolean {
@@ -30,6 +32,7 @@ interface EventMarkerPopupProps {
 }
 
 export function EventMarkerPopup({ event }: EventMarkerPopupProps) {
+  const { t } = useTranslation();
   return (
     <>
       <div className="relative h-32 overflow-hidden rounded-none bg-zinc-900/80">
@@ -54,7 +57,7 @@ export function EventMarkerPopup({ event }: EventMarkerPopupProps) {
       <div className="space-y-2 p-3 bg-zinc-950/95 text-zinc-100">
         <div>
           <span className="text-xs font-medium text-zinc-400 uppercase tracking-wide">
-            Event
+            {t(keys.event.label)}
           </span>
           <h3 className="font-semibold text-white leading-tight">
             {event.title}
@@ -83,7 +86,7 @@ export function EventMarkerPopup({ event }: EventMarkerPopupProps) {
               className="inline-flex items-center"
             >
               <Navigation className="size-3.5 mr-1.5" />
-              Open in Maps
+              {t(keys.common.openInMaps)}
             </a>
           </Button>
           <Button

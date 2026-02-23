@@ -1,8 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
+import { formatRelativeTime } from "@/lib/i18n/format";
 
 export interface ChatMessageData {
   id: string;
@@ -10,6 +12,7 @@ export interface ChatMessageData {
   sender: string;
   avatarUrl?: string;
   timestamp: string;
+  createdAt?: string;
   isCurrentUser: boolean;
   readReceipt?: string;
 }
@@ -20,6 +23,14 @@ interface ChatMessageProps {
 }
 
 export function ChatMessage({ message, className }: ChatMessageProps) {
+  const { i18n } = useTranslation();
+  const locale = (i18n.language?.split("-")[0] ?? "en") as string;
+
+  const displayTimestamp =
+    message.createdAt && locale !== "en"
+      ? formatRelativeTime(new Date(message.createdAt), locale)
+      : message.timestamp;
+
   return (
     <div
       className={cn(
@@ -60,7 +71,7 @@ export function ChatMessage({ message, className }: ChatMessageProps) {
         >
           <p className="text-sm leading-relaxed">{message.content}</p>
         </div>
-        <span className="text-xs text-background/50">{message.timestamp}</span>
+        <span className="text-xs text-background/50">{displayTimestamp}</span>
       </div>
     </div>
   );

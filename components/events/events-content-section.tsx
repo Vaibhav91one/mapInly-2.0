@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "motion/react";
 import { CalendarX2, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -9,6 +10,7 @@ import { EventCard } from "./event-card";
 import { EventsMapSection } from "./events-map-section";
 import { cn } from "@/lib/utils";
 import { sectionClasses } from "@/lib/layout-classes";
+import { keys } from "@/lib/i18n/keys";
 import { isEventPast } from "@/lib/event-date";
 import type { Event } from "@/types/event";
 
@@ -17,6 +19,7 @@ interface EventsContentSectionProps {
 }
 
 export function EventsContentSection({ events }: EventsContentSectionProps) {
+  const { t } = useTranslation();
   const [showPastEvents, setShowPastEvents] = useState(false);
   const [showOnMap, setShowOnMap] = useState(false);
 
@@ -41,9 +44,9 @@ export function EventsContentSection({ events }: EventsContentSectionProps) {
           />
           <Input
             type="search"
-            placeholder="Search"
+            placeholder={t(keys.events.search)}
             className="h-[80px] w-full rounded-none border-secondary pl-16 text-4xl md:pl-20 md:text-4xl font-regular leading-tight tracking-tight text-background placeholder:text-background/60 focus-visible:border-white/40 focus-visible:ring-white/20"
-            aria-label="Search events"
+            aria-label={t(keys.events.searchAria)}
           />
         </div>
       </div>
@@ -54,22 +57,22 @@ export function EventsContentSection({ events }: EventsContentSectionProps) {
         <aside className="flex w-full shrink-0 flex-col gap-4 lg:sticky lg:top-28 lg:self-start lg:w-1/4">
           <div className="flex items-center justify-between gap-4 rounded-none bg-secondary/50 px-5 py-4 hover:bg-secondary/80 transition-colors">
             <span className="text-base font-medium text-background">
-              Past events
+              {t(keys.events.pastEvents)}
             </span>
             <Switch
               checked={showPastEvents}
               onCheckedChange={setShowPastEvents}
-              aria-label="Show past events"
+              aria-label={t(keys.events.showPastEventsAria)}
             />
           </div>
           <div className="flex items-center justify-between gap-4 rounded-none bg-secondary/50 px-5 py-4 hover:bg-secondary/80 transition-colors">
             <span className="text-base font-medium text-background">
-              Show on map
+              {t(keys.events.showOnMap)}
             </span>
             <Switch
               checked={showOnMap}
               onCheckedChange={setShowOnMap}
-              aria-label="Show events on map"
+              aria-label={t(keys.events.showOnMapAria)}
             />
           </div>
         </aside>
@@ -101,12 +104,12 @@ export function EventsContentSection({ events }: EventsContentSectionProps) {
                   <div className="flex flex-col items-center justify-center rounded-none border border-secondary/50 bg-secondary/20 px-8 py-16 text-center">
                     <CalendarX2 className="mb-4 size-16 text-background/50" aria-hidden />
                     <h3 className="mb-2 text-xl font-medium text-background">
-                      No events to show
+                      {t(keys.events.noEventsToShow)}
                     </h3>
                     <p className="max-w-md text-background/70">
                       {showPastEvents
-                        ? "There are no events in the system yet."
-                        : "There are no upcoming events. Try enabling Past events to see previous events."}
+                        ? t(keys.events.noEventsInSystem)
+                        : t(keys.events.noUpcomingTryPast)}
                     </p>
                   </div>
                 ) : (
@@ -123,6 +126,7 @@ export function EventsContentSection({ events }: EventsContentSectionProps) {
                       imageOverlay={event.imageOverlay}
                       href={`/events/${event.slug}`}
                       isPast={isEventPast(event)}
+                      sourceLocale={event.sourceLocale}
                     />
                   ))
                 )}

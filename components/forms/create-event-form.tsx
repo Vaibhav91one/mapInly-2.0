@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { format } from "date-fns";
+import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -23,6 +24,7 @@ import { eventFormSchema, type EventFormSchema } from "@/lib/validations/event";
 import type { Event, EventFormData, EventLocation } from "@/types/event";
 import { eventToFormDateTime } from "@/lib/parse-event-date";
 import { formInputClasses } from "@/lib/form-styles";
+import { keys } from "@/lib/i18n/keys";
 
 const defaultLocation: EventLocation = {
   displayName: "",
@@ -45,6 +47,7 @@ interface CreateEventFormProps {
 }
 
 export function CreateEventForm({ onSubmit, onCancel, disabled, defaultEvent }: CreateEventFormProps) {
+  const { t } = useTranslation();
   const form = useForm<EventFormSchema>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: defaultEvent
@@ -107,11 +110,11 @@ export function CreateEventForm({ onSubmit, onCancel, disabled, defaultEvent }: 
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-white">Title</FormLabel>
+              <FormLabel className="text-white">{t(keys.createEvent.title)}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
-                  placeholder="Event title"
+                  placeholder={t(keys.createEvent.title)}
                   className={formInputClasses}
                 />
               </FormControl>
@@ -125,11 +128,11 @@ export function CreateEventForm({ onSubmit, onCancel, disabled, defaultEvent }: 
           name="tagline"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-white">Tagline</FormLabel>
+              <FormLabel className="text-white">{t(keys.createEvent.tagline)}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
-                  placeholder="Primary one-line headline"
+                  placeholder={t(keys.createEvent.taglinePlaceholder)}
                   className={formInputClasses}
                 />
               </FormControl>
@@ -143,11 +146,11 @@ export function CreateEventForm({ onSubmit, onCancel, disabled, defaultEvent }: 
           name="shortDescription"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-white">Short description</FormLabel>
+              <FormLabel className="text-white">{t(keys.createEvent.shortDescription)}</FormLabel>
               <FormControl>
                 <Textarea
                   {...field}
-                  placeholder="Short paragraph description"
+                  placeholder={t(keys.createEvent.shortDescPlaceholder)}
                   rows={3}
                   className={formInputClasses}
                 />
@@ -166,7 +169,7 @@ export function CreateEventForm({ onSubmit, onCancel, disabled, defaultEvent }: 
                 <DateTimePicker
                   value={field.value}
                   onChange={field.onChange}
-                  label="Date & time"
+                  label={t(keys.createEvent.dateTime)}
                   error={form.formState.errors.dateTime?.message}
                 />
               </FormControl>
@@ -180,7 +183,7 @@ export function CreateEventForm({ onSubmit, onCancel, disabled, defaultEvent }: 
           name="location"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-white">Location</FormLabel>
+              <FormLabel className="text-white">{t(keys.createEvent.location)}</FormLabel>
               <FormControl>
                 <LocationPicker
                   value={
@@ -204,12 +207,12 @@ export function CreateEventForm({ onSubmit, onCancel, disabled, defaultEvent }: 
           name="tags"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-white">Tags</FormLabel>
+              <FormLabel className="text-white">{t(keys.createEvent.tags)}</FormLabel>
               <FormControl>
                 <TagsInput
                   value={field.value}
                   onChange={field.onChange}
-                  placeholder="e.g. AI, community, innovation"
+                  placeholder={t(keys.createEvent.tagsPlaceholder)}
                 />
               </FormControl>
               <FormMessage className="text-destructive" />
@@ -222,7 +225,7 @@ export function CreateEventForm({ onSubmit, onCancel, disabled, defaultEvent }: 
           name="image"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-white">Image</FormLabel>
+              <FormLabel className="text-white">{t(keys.createEvent.image)}</FormLabel>
               <FormControl>
                 <ImageOrGradientPicker
                   value={field.value}
@@ -244,7 +247,7 @@ export function CreateEventForm({ onSubmit, onCancel, disabled, defaultEvent }: 
               onClick={onCancel}
               className="rounded-none focus-visible:ring-0 focus-visible:ring-offset-0"
             >
-              Cancel
+              {t(keys.createEvent.cancel)}
             </Button>
           )}
           <Button
@@ -252,7 +255,7 @@ export function CreateEventForm({ onSubmit, onCancel, disabled, defaultEvent }: 
             disabled={disabled}
             className="rounded-none focus-visible:ring-0 focus-visible:ring-offset-0"
           >
-            {defaultEvent ? "Save changes" : "Create event"}
+            {defaultEvent ? t(keys.createEvent.saveChanges) : t(keys.createEvent.createEvent)}
           </Button>
         </div>
       </form>

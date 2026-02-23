@@ -1,12 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { MessageSquareX, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { ForumCard } from "./forum-card";
 import { cn } from "@/lib/utils";
 import { sectionClasses } from "@/lib/layout-classes";
+import { keys } from "@/lib/i18n/keys";
 import type { Forum } from "@/types/forum";
 
 interface ForumsContentSectionProps {
@@ -14,6 +16,7 @@ interface ForumsContentSectionProps {
 }
 
 export function ForumsContentSection({ forums }: ForumsContentSectionProps) {
+  const { t } = useTranslation();
   const [showInactiveForums, setShowInactiveForums] = useState(false);
 
   const filteredForums = useMemo(() => {
@@ -37,9 +40,9 @@ export function ForumsContentSection({ forums }: ForumsContentSectionProps) {
           />
           <Input
             type="search"
-            placeholder="Search"
+            placeholder={t(keys.forums.search)}
             className="h-[80px] w-full rounded-none border-secondary pl-16 text-4xl md:pl-20 md:text-4xl font-regular leading-tight tracking-tight text-background placeholder:text-background/60 focus-visible:border-white/40 focus-visible:ring-white/20"
-            aria-label="Search forums"
+            aria-label={t(keys.forums.searchAria)}
           />
         </div>
       </div>
@@ -50,12 +53,12 @@ export function ForumsContentSection({ forums }: ForumsContentSectionProps) {
         <aside className="flex w-full shrink-0 flex-col gap-4 lg:sticky lg:top-28 lg:self-start lg:w-1/4">
           <div className="flex items-center justify-between gap-4 rounded-none bg-secondary/50 px-5 py-4 hover:bg-secondary/80 transition-colors">
             <span className="text-base font-medium text-background">
-              Inactive forums
+              {t(keys.forums.inactiveForums)}
             </span>
             <Switch
               checked={showInactiveForums}
               onCheckedChange={setShowInactiveForums}
-              aria-label="Show inactive forums"
+              aria-label={t(keys.forums.showInactiveForumsAria)}
             />
           </div>
         </aside>
@@ -66,12 +69,12 @@ export function ForumsContentSection({ forums }: ForumsContentSectionProps) {
             <div className="flex flex-col items-center justify-center rounded-none border border-secondary/50 bg-secondary/20 px-8 py-16 text-center">
               <MessageSquareX className="mb-4 size-16 text-background/50" aria-hidden />
               <h3 className="mb-2 text-xl font-medium text-background">
-                No forums to show
+                {t(keys.forums.noForumsToShow)}
               </h3>
               <p className="max-w-md text-background/70">
                 {showInactiveForums
-                  ? "There are no forums in the system yet."
-                  : "There are no active forums. Try enabling Inactive forums to see closed forums."}
+                  ? t(keys.forums.noForumsInSystem)
+                  : t(keys.forums.noActiveForumsTryInactive)}
               </p>
             </div>
           ) : (
@@ -84,6 +87,7 @@ export function ForumsContentSection({ forums }: ForumsContentSectionProps) {
                 status={forum.status}
                 tags={forum.tags}
                 href={`/forums/${forum.slug}`}
+                sourceLocale={forum.sourceLocale}
               />
             ))
           )}

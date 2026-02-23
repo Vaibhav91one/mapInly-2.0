@@ -1,8 +1,13 @@
+"use client";
+
+import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { sectionClasses, sectionInnerClasses } from "@/lib/layout-classes";
+import { keys } from "@/lib/i18n/keys";
 
 export function EventsHeroSection() {
+  const { t } = useTranslation();
   return (
     <section
       className={cn(
@@ -20,10 +25,10 @@ export function EventsHeroSection() {
           <Link href="/" className="hover:text-background transition-colors">
             /
           </Link>{" "}
-          <span className="text-white">Events</span>
+          <span className="text-white">{t(keys.eventsHero.breadcrumb)}</span>
         </p>
         <h1 className="text-6xl font-regular tracking-tight leading-tight text-background md:text-8xl lg:text-9xl">
-          Events
+          {t(keys.eventsHero.title)}
         </h1>
       </div>
     </section>

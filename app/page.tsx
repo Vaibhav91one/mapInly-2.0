@@ -8,6 +8,8 @@ import {
 } from "@/components/home";
 import { Footer } from "@/components/layout";
 import { prisma } from "@/lib/prisma";
+import { getEventsWithTranslations } from "@/lib/events/get-event-with-translation";
+import { getLocaleFromRequest } from "@/lib/i18n/get-locale-server";
 import { parseEventDate } from "@/lib/parse-event-date";
 
 function toApiEvent(e: {
@@ -25,6 +27,7 @@ function toApiEvent(e: {
   createdBy: string;
   createdAt: Date;
   registrations: { userId: string }[];
+  sourceLocale?: string;
 }) {
   return {
     id: e.id,
@@ -46,14 +49,17 @@ function toApiEvent(e: {
     createdBy: e.createdBy,
     createdAt: e.createdAt.toISOString(),
     registrations: e.registrations.map((r) => r.userId),
+    sourceLocale: e.sourceLocale ?? "en",
   };
 }
 
 export default async function Home() {
+  const locale = await getLocaleFromRequest();
   const eventsRaw = await prisma.event.findMany({
     include: { registrations: true },
   });
-  const all = eventsRaw.map(toApiEvent);
+  const withTranslations = await getEventsWithTranslations(eventsRaw, locale);
+  const all = withTranslations.map(toApiEvent);
   const now = Date.now();
   const upcomingEvents = all
     .filter((e) => (parseEventDate(e.date)?.getTime() ?? 0) >= now)

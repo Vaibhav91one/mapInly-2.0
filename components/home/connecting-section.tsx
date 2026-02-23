@@ -1,17 +1,17 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
 import { ArrowLinkButton } from "@/components/ui/arrow-link-button";
 import { MeshGradient } from "@paper-design/shaders-react";
 import ScrollRotatingAsterisk from "@/components/custom/ScrollingRotatingAsterisk";
 import { cn } from "@/lib/utils";
 import { sectionClasses, sectionInnerClasses } from "@/lib/layout-classes";
+import { keys } from "@/lib/i18n/keys";
 
-const EVENT_DATE = "1-5.12.2025";
-const EVENT_LOCATION = "Asilo Ciani, Lugano";
-const EVENT_TITLE = "Connecting has never been easier";
 const EVENT_PAGE_URL = "/events";
 
 export function ConnectingSection() {
+  const { t } = useTranslation();
   return (
     <section className={cn(sectionClasses, "h-[90dvh] relative flex flex-col")}>
       {/* MeshGradient background - full width and height */}
@@ -37,7 +37,7 @@ export function ConnectingSection() {
       >
         <div className="flex flex-row items-center justify-center gap-6 flex-wrap w-full">
           <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-regular text-center text-white max-w-2xl">
-            {EVENT_TITLE}
+            {t(keys.connecting.title)}
           </h2>
           <ScrollRotatingAsterisk
             mode="default"
@@ -48,8 +48,8 @@ export function ConnectingSection() {
           />
           <ArrowLinkButton
             href={EVENT_PAGE_URL}
-            text="See All Events"
-            ariaLabel="See all events"
+            text={t(keys.connecting.seeAllEvents)}
+            ariaLabel={t(keys.connecting.seeAllEventsAria)}
           />
         </div>
       </div>

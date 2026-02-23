@@ -1,12 +1,15 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import ScrollRotatingAsterisk from "@/components/custom/ScrollingRotatingAsterisk";
 import { sectionClasses } from "@/lib/layout-classes";
 import { cn } from "@/lib/utils";
+import { keys } from "@/lib/i18n/keys";
 
 export function Footer() {
+  const { t } = useTranslation();
   return (
     <footer className={cn(sectionClasses, "bg-black")}>
       {/* Primary content: left (tagline + CTA) | right (links) */}
@@ -14,15 +17,14 @@ export function Footer() {
         {/* Left: Tagline + Get Started */}
         <div className="flex flex-col gap-6">
           <p className="max-w-md text-sm leading-relaxed text-white/70">
-            Discover events on the map, join communities, and connect with
-            people near you. Multilingual events and community platform.
+            {t(keys.footer.tagline)}
           </p>
           <Link
             href="/get-started"
             className="inline-flex w-fit items-center gap-2 bg-white px-5 py-3 text-sm font-medium text-black transition-colors hover:bg-white/90"
-            aria-label="Get started"
+            aria-label={t(keys.footer.getStartedAria)}
           >
-            Get Started
+            {t(keys.footer.getStarted)}
             <ArrowUpRight className="size-4 shrink-0" />
           </Link>
         </div>
@@ -31,49 +33,49 @@ export function Footer() {
         <div className="flex flex-wrap gap-12 md:gap-16">
           <div className="flex flex-col gap-4">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
-              Legal
+              {t(keys.footer.legal)}
             </h3>
             <nav className="flex flex-col gap-3">
               <Link href="/privacy" className="text-sm text-white/70 hover:text-white">
-                Privacy Policy
+                {t(keys.footer.privacyPolicy)}
               </Link>
               <Link href="/terms" className="text-sm text-white/70 hover:text-white">
-                Terms & Conditions
+                {t(keys.footer.termsConditions)}
               </Link>
             </nav>
           </div>
           <div className="flex flex-col gap-4">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
-              Pages
+              {t(keys.footer.pages)}
             </h3>
             <nav className="flex flex-col gap-3">
               <Link href="/" className="text-sm text-white/70 hover:text-white">
-                Home
+                {t(keys.footer.home)}
               </Link>
               <Link href="/events" className="text-sm text-white/70 hover:text-white">
-                Events
+                {t(keys.nav.events)}
               </Link>
               <Link href="/forums" className="text-sm text-white/70 hover:text-white">
-                Forums
+                {t(keys.nav.forums)}
               </Link>
               <Link href="/dashboard" className="text-sm text-white/70 hover:text-white">
-                Dashboard
+                {t(keys.nav.dashboard)}
               </Link>
             </nav>
           </div>
           <div className="flex flex-col gap-4">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
-              Socials
+              {t(keys.footer.socials)}
             </h3>
             <nav className="flex flex-col gap-3">
               <Link href="#" className="text-sm text-white/70 hover:text-white" target="_blank" rel="noopener noreferrer">
-                Twitter
+                {t(keys.footer.twitter)}
               </Link>
               <Link href="#" className="text-sm text-white/70 hover:text-white" target="_blank" rel="noopener noreferrer">
-                LinkedIn
+                {t(keys.footer.linkedin)}
               </Link>
               <Link href="#" className="text-sm text-white/70 hover:text-white" target="_blank" rel="noopener noreferrer">
-                GitHub
+                {t(keys.footer.github)}
               </Link>
             </nav>
           </div>
@@ -90,7 +92,7 @@ export function Footer() {
             color="text-white"
           />
           <h2 className="text-5xl font-light tracking-tight text-white md:text-7xl lg:text-8xl">
-            MapInly
+            {t(keys.nav.brand)}
           </h2>
         </div>
       </div>

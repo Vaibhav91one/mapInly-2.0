@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { keys } from "@/lib/i18n/keys";
 import { ChevronDown, ArrowUpRight, LogOut, LayoutDashboard, PlusCircle, MessageSquarePlus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/utils/supabase/client";
@@ -18,11 +20,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CreateEventDialog } from "@/components/dialogs/create-event-dialog";
 import { CreateForumDialog } from "@/components/dialogs/create-forum-dialog";
+import { LanguageSwitcher } from "@/components/locale/language-switcher";
 
 const navItems = [
-  { label: "Sharing", href: "/events", text: "Events" },
-  { label: "Innovation", href: "/forums", text: "Forums" },
-  { label: "Dashboard", href: "/dashboard", text: "Dashboard" },
+  { labelKey: keys.nav.sharing, href: "/events", textKey: keys.nav.events },
+  { labelKey: keys.nav.innovation, href: "/forums", textKey: keys.nav.forums },
+  { labelKey: keys.nav.dashboard, href: "/dashboard", textKey: keys.nav.dashboard },
 ];
 
 function isNavItemActive(pathname: string, href: string): boolean {
@@ -45,6 +48,7 @@ function getInitials(user: User) {
 }
 
 export function Navbar() {
+  const { t } = useTranslation();
   const pathname = usePathname();
   const user = useAuthStore((s) => s.user);
   const [createEventOpen, setCreateEventOpen] = useState(false);
@@ -71,7 +75,7 @@ export function Navbar() {
       {/* Mapinly text - outside green box */}
       <div className="flex flex-col justify-center min-h-[80px] pl-6 pr-4 bg-black/70 backdrop-blur-md text-white shrink-0">
         <Link href="/">
-          <span className="font-semibold text-lg leading-tight">Mapinly</span>
+          <span className="font-semibold text-lg leading-tight">{t(keys.nav.brand)}</span>
         </Link>
         {/* <span className="text-white/90 text-sm leading-tight">Living Lab</span> */}
       </div>
@@ -97,7 +101,7 @@ export function Navbar() {
                   active ? "text-white/70" : "text-white/50"
                 )}
               >
-                {item.label}
+                {t(item.labelKey)}
               </span>
               <span
                 className={cn(
@@ -105,7 +109,7 @@ export function Navbar() {
                   active ? "text-white" : "text-white/60 group-hover:text-white"
                 )}
               >
-                {item.text}
+                {t(item.textKey)}
               </span>
             </Link>
           );
@@ -115,14 +119,7 @@ export function Navbar() {
       {/* Right: Language + Contact */}
       <div className="flex items-stretch shrink-0 bg-black/70 backdrop-blur-md text-white">
         <div className="flex items-center gap-4 px-6">
-          <button
-            type="button"
-            className="flex items-center gap-1 text-sm hover:text-white/80 transition-colors"
-            aria-label="Select language"
-          >
-            EN
-            <ChevronDown className="size-4" />
-          </button>
+          <LanguageSwitcher />
         </div>
         {user ? (
           <DropdownMenu>
@@ -130,7 +127,7 @@ export function Navbar() {
               <button
                 type="button" 
                 className="flex items-center gap-2 px-4 focus:outline-none"
-                aria-label="Open user menu"
+                aria-label={t(keys.nav.openUserMenu)}
               >
                 <Avatar className="size-8">
                   <AvatarImage src={user.user_metadata?.avatar_url} alt="" />
@@ -151,7 +148,7 @@ export function Navbar() {
                   className="flex cursor-pointer items-center gap-2 focus:bg-white/10 focus:text-white data-highlighted:bg-white/10"
                 >
                   <LayoutDashboard className="size-4" />
-                  Dashboard
+                  {t(keys.nav.dashboard)}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
@@ -159,21 +156,21 @@ export function Navbar() {
                 className="flex cursor-pointer items-center gap-2 focus:bg-white/10 focus:text-white data-highlighted:bg-white/10"
               >
                 <PlusCircle className="size-4" />
-                Create event
+                {t(keys.nav.createEvent)}
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => setCreateForumOpen(true)}
                 className="flex cursor-pointer items-center gap-2 focus:bg-white/10 focus:text-white data-highlighted:bg-white/10"
               >
                 <MessageSquarePlus className="size-4" />
-                Create forum
+                {t(keys.nav.createForum)}
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={handleSignOut}
                 className="cursor-pointer focus:bg-white/10 focus:text-white data-highlighted:bg-white/10"
               >
                 <LogOut className="size-4" />
-                Sign out
+                {t(keys.nav.signOut)}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -187,7 +184,7 @@ export function Navbar() {
               "hover:bg-secondary/90 transition-colors"
             )}
           >
-            Login
+            {t(keys.nav.login)}
             <ArrowUpRight className="size-4" />
           </Link>
         )}

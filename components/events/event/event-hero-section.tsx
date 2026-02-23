@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import Image from "next/image";
 import { EventLocationLink } from "./event-location-link";
@@ -10,6 +11,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { sectionClasses, sectionInnerClasses } from "@/lib/layout-classes";
+import { keys } from "@/lib/i18n/keys";
 
 interface OrganizerItem {
   image: string;
@@ -33,6 +35,7 @@ interface EventHeroSectionProps {
 const MAX_VISIBLE_JOINERS = 3;
 
 export function EventHeroSection({ title, date, location, organizer, joiners = [] }: EventHeroSectionProps) {
+  const { t } = useTranslation();
   const visibleJoiners = joiners.slice(0, MAX_VISIBLE_JOINERS);
   const joinersRestCount = Math.max(0, joiners.length - MAX_VISIBLE_JOINERS);
 
@@ -53,19 +56,19 @@ export function EventHeroSection({ title, date, location, organizer, joiners = [
         <div className="grid w-full grid-cols-1 gap-8 lg:grid-cols-[1fr_3fr] lg:items-center lg:gap-16">
           <p className="text-sm font-regular leading-tight tracking-tight text-white md:text-2xl">
             <Link href="/events" className="hover:text-background transition-colors">
-              / Events
+              {t(keys.eventDetail.breadcrumb)}
             </Link>
           </p>
           <div className="flex w-full items-center justify-between gap-4">
             {organizer && (
               <div className="flex items-center gap-3 shrink-0">
-                <p className="text-sm font-medium tracking-tight text-background/70">Organized by</p>
+                <p className="text-sm font-medium tracking-tight text-background/70">{t(keys.eventDetail.organizedBy)}</p>
                 <Popover>
                   <PopoverTrigger asChild>
                     <button
                       type="button"
                       className="relative size-12 shrink-0 cursor-pointer overflow-hidden rounded-full"
-                      aria-label={organizer.name ?? "Organizer"}
+                      aria-label={organizer.name ?? t(keys.eventDetail.organizerAria)}
                     >
                       <Image
                         src={organizer.image}
@@ -121,7 +124,7 @@ export function EventHeroSection({ title, date, location, organizer, joiners = [
                     </div>
                   )}
                 </div>
-                <p className="text-sm font-medium tracking-tight text-background/70 shrink-0">joining</p>
+                <p className="text-sm font-medium tracking-tight text-background/70 shrink-0">{t(keys.eventDetail.joining)}</p>
               </div>
             )}
           </div>
@@ -131,11 +134,11 @@ export function EventHeroSection({ title, date, location, organizer, joiners = [
         <div className="grid w-full grid-cols-1 gap-8 lg:grid-cols-[1fr_3fr] lg:items-start lg:gap-16">
           <div className="flex flex-col gap-6">
             <div>
-              <p className="text-sm font-regular leading-tight tracking-tight text-background/60">Date</p>
+              <p className="text-sm font-regular leading-tight tracking-tight text-background/60">{t(keys.eventDetail.date)}</p>
               <p className="mt-1 text-lg font-regular leading-tight tracking-tight text-background">{date}</p>
             </div>
             <div>
-              <p className="text-sm font-regular leading-tight tracking-tight text-background/60">Location</p>
+              <p className="text-sm font-regular leading-tight tracking-tight text-background/60">{t(keys.eventDetail.location)}</p>
               <EventLocationLink location={location} />
             </div>
           </div>

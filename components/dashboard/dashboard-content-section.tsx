@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import { isSameDay } from "date-fns";
 import { sectionClasses, sectionInnerClasses } from "@/lib/layout-classes";
 import { CreateEventDialog } from "@/components/dialogs/create-event-dialog";
@@ -19,9 +20,10 @@ import {
   parseEventDate,
   eventToUpcomingCard,
 } from "@/lib/parse-event-date";
+import { keys } from "@/lib/i18n/keys";
 
 interface Stat {
-  title: string;
+  titleKey: string;
   value: number;
   trend: { direction: "up" | "down"; percent: number; label: string };
 }
@@ -45,6 +47,7 @@ export function DashboardContentSection({
   upcomingEventsList,
   datesWithEvents,
 }: DashboardContentSectionProps) {
+  const { t, i18n } = useTranslation();
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
@@ -101,7 +104,7 @@ export function DashboardContentSection({
           "items-stretch gap-8 lg:gap-16"
         )}
       >
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_3fr] lg:gap-16">
+        <div className="grid min-w-0 grid-cols-1 gap-8 lg:grid-cols-[1fr_minmax(0,3fr)] lg:gap-16">
           {/* 1/4 Sidebar */}
           <div className="flex flex-col gap-8">
             <div className="rounded-lg border border-white/20 bg-white/10 p-4">
@@ -113,10 +116,10 @@ export function DashboardContentSection({
             </div>
             <div className="space-y-4">
               <h3 className="text-2xl font-regular leading-tight tracking-tight text-white">
-                Upcoming Events
+                {t(keys.dashboard.upcomingEvents)}
                 {selectedDate && (
                   <span className="ml-2 text-lg font-normal text-white/70">
-                    {selectedDate.toLocaleDateString("en-US", {
+                    {selectedDate.toLocaleDateString(i18n.language || "en", {
                       weekday: "short",
                       month: "short",
                       day: "numeric",
@@ -129,8 +132,8 @@ export function DashboardContentSection({
                   {eventsForSelectedDate.length === 0 ? (
                     <p className="py-8 text-center text-white/60">
                       {selectedDate
-                        ? "No events on this date"
-                        : "No upcoming events"}
+                        ? t(keys.dashboard.noEventsOnDate)
+                        : t(keys.dashboard.noUpcomingEvents)}
                     </p>
                   ) : (
                     eventsForSelectedDate.map((ev) => (
@@ -143,12 +146,12 @@ export function DashboardContentSection({
           </div>
 
           {/* 3/4 Main */}
-          <div className="flex flex-col gap-10">
+          <div className="flex min-w-0 flex-col gap-10 overflow-hidden">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {stats.map((stat) => (
                 <StatCard
-                  key={stat.title}
-                  title={stat.title}
+                  key={stat.titleKey}
+                  title={t(stat.titleKey)}
                   value={stat.value}
                   trend={stat.trend}
                 />

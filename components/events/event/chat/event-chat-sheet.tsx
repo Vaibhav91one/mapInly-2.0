@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { ArrowUpRight } from "lucide-react";
+import { SUPPORTED_LOCALES } from "@/lib/i18n/locale-cookie";
 import {
   Sheet,
   SheetContent,
@@ -14,6 +16,7 @@ import { ChatMessageInput } from "./chat-message-input";
 import type { ChatMessageData } from "./chat-message";
 import { createClient } from "@/utils/supabase/client";
 import { cn } from "@/lib/utils";
+import { keys } from "@/lib/i18n/keys";
 import type { EventMessageWithAuthor } from "@/app/api/events/[slug]/messages/route";
 
 interface EventChatSheetProps {
@@ -34,6 +37,7 @@ function toChatMessageData(
     sender: m.author.displayName || "Anonymous",
     avatarUrl: m.author.avatarUrl ?? undefined,
     timestamp: m.timestamp,
+    createdAt: m.createdAt,
     isCurrentUser: currentUserId ? m.userId === currentUserId : false,
   };
 }
@@ -45,12 +49,20 @@ export function EventChatSheet({
   eventImage,
   className,
 }: EventChatSheetProps) {
+  const { t, i18n } = useTranslation();
   const [messages, setMessages] = useState<ChatMessageData[]>([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const locale =
+    (SUPPORTED_LOCALES as readonly string[]).includes(
+      (i18n.language?.split("-")[0] ?? "en") as string
+    )
+      ? (i18n.language?.split("-")[0] ?? "en")
+      : "en";
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -61,7 +73,10 @@ export function EventChatSheet({
       if (!eventSlug) return;
       if (showLoading) setLoading(true);
       try {
-        const res = await fetch(`/api/events/${eventSlug}/messages`);
+        const res = await fetch(
+          `/api/events/${eventSlug}/messages?locale=${encodeURIComponent(locale)}`,
+          { credentials: "include" }
+        );
         if (!res.ok) {
           setMessages([]);
           return;
@@ -81,14 +96,14 @@ export function EventChatSheet({
         if (showLoading) setLoading(false);
       }
     },
-    [eventSlug, scrollToBottom]
+    [eventSlug, locale, scrollToBottom]
   );
 
   useEffect(() => {
     if (open && eventSlug) {
       fetchMessages(true);
     }
-  }, [open, eventSlug, fetchMessages]);
+  }, [open, eventSlug, locale, fetchMessages]);
 
   useEffect(() => {
     if (!open || !eventId) return;
@@ -122,7 +137,8 @@ export function EventChatSheet({
       const res = await fetch(`/api/events/${eventSlug}/messages`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: trimmed }),
+        credentials: "include",
+        body: JSON.stringify({ content: trimmed, sourceLocale: locale }),
       });
       if (res.status === 401) {
         window.location.href = `/auth?next=${encodeURIComponent(window.location.pathname)}`;
@@ -133,11 +149,7 @@ export function EventChatSheet({
         console.error(data.error ?? "Failed to send message");
         return;
       }
-      const newMsg: EventMessageWithAuthor = await res.json();
-      setMessages((prev) => [
-        ...prev,
-        toChatMessageData(newMsg, currentUserId),
-      ]);
+      await fetchMessages(false);
       setTimeout(scrollToBottom, 50);
     } catch (err) {
       console.error("Failed to send message", err);
@@ -157,9 +169,9 @@ export function EventChatSheet({
             "font-medium text-base md:text-lg",
             className
           )}
-          aria-label="Open event chat"
+          aria-label={t(keys.eventDetail.chatAria)}
         >
-          <span>Chat</span>
+          <span>{t(keys.eventDetail.chat)}</span>
           <ArrowUpRight className="size-5 md:size-6 shrink-0 text-white" />
         </button>
       </SheetTrigger>
@@ -175,20 +187,29 @@ export function EventChatSheet({
           <div className="flex flex-col gap-4 pb-2">
             {loading ? (
               <p className="text-center text-sm text-background/50">
-                Loading messages...
+                {t(keys.eventChat.loadingMessages)}
               </p>
             ) : messages.length === 0 ? (
               <p className="text-center text-sm text-background/50">
-                No messages yet. Say hello!
+                {t(keys.eventChat.noMessagesYet)}
               </p>
             ) : (
               messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)
+            )}
+            {sending && (
+              <p className="text-center text-sm text-background/50">
+                {t(keys.eventChat.sending)}
+                <span className="inline-block animate-pulse">...</span>
+              </p>
             )}
             <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
         <div className="shrink-0 border-t border-secondary/50">
           <ChatMessageInput
+            placeholder={t(keys.eventChat.messagePlaceholder)}
+            messageInputAria={t(keys.eventChat.messageInputAria)}
+            emojiAria={t(keys.eventChat.emojiAria)}
             onSubmit={handleSendMessage}
             disabled={sending}
           />

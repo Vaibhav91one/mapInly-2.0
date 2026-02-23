@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogContent,
@@ -21,6 +22,7 @@ interface CreateForumDialogProps {
 
 export function CreateForumDialog({ open, onOpenChange, forum }: CreateForumDialogProps) {
   const router = useRouter();
+  const { i18n } = useTranslation();
   const user = useAuthStore((s) => s.user);
   const createForum = useDataStore((s) => s.createForum);
   const updateForum = useDataStore((s) => s.updateForum);
@@ -34,13 +36,16 @@ export function CreateForumDialog({ open, onOpenChange, forum }: CreateForumDial
       return;
     }
 
+    const sourceLocale = (i18n.language?.split("-")[0] ?? "en") as string;
+    const dataWithLocale = { ...data, sourceLocale };
+
     setError(null);
     setIsSubmitting(true);
     try {
       if (forum) {
-        await updateForum(forum.slug, data);
+        await updateForum(forum.slug, dataWithLocale);
       } else {
-        await createForum(data);
+        await createForum(dataWithLocale);
       }
       router.refresh();
       onOpenChange(false);

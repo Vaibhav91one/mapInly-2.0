@@ -2,9 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 import { ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
+import { keys } from "@/lib/i18n/keys";
+import { TranslatedTag } from "@/components/shared/translated-tag";
 
 type ForumStatus = "active" | "closed";
 
@@ -17,6 +20,7 @@ interface ForumCardProps {
   status: ForumStatus;
   tags: string[];
   href?: string;
+  sourceLocale?: string;
   className?: string;
 }
 
@@ -28,12 +32,14 @@ export function ForumCard({
   status,
   tags,
   href = "#",
+  sourceLocale,
   className,
 }: ForumCardProps) {
-  const displayDescription = shortDescription ?? description ?? "";
+  const { t } = useTranslation();
   const [isHovered, setIsHovered] = useState(false);
+  const displayDescription = shortDescription ?? description ?? "";
   const isClosed = status === "closed";
-  const statusLabel = isClosed ? "Closed" : "Active";
+  const statusLabel = isClosed ? t(keys.forum.statusClosed) : t(keys.forum.statusActive);
 
   return (
     <article
@@ -60,7 +66,7 @@ export function ForumCard({
           </span>
           <div className="flex flex-wrap gap-1.5 text-sm text-primary">
             {tags.map((tag) => (
-              <span key={tag}>#{tag}</span>
+              <TranslatedTag key={tag} tag={tag} sourceLocale={sourceLocale} />
             ))}
           </div>
         </div>

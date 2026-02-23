@@ -1,11 +1,14 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
 import { LiquidMetal } from "@paper-design/shaders-react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { cn } from "@/lib/utils";
 import { sectionClasses, sectionInnerClasses } from "@/lib/layout-classes";
+import { keys } from "@/lib/i18n/keys";
 
 export function HeroSection() {
+  const { t } = useTranslation();
   const { scrollYProgress } = useScroll();
   const scrollRotate = useTransform(scrollYProgress, [0, 1], [0, 1080]);
 
@@ -46,15 +49,13 @@ export function HeroSection() {
         )}
       >
         <h1 className="text-8xl tracking-tight font-regular leading-tight text-left">
-          Connect Through Language & Culture
+          {t(keys.hero.heading)}
         </h1>
         <p
           className="self-end text-left max-w-md text-lg tracking-tight leading-tight"
-          aria-label="Hero subheading"
+          aria-label={t(keys.hero.subheadingAria)}
         >
-          A new way to connect with the world. With Mapinly, you can learn new
-          languages and cultures, and connect with people from all over the
-          world.
+          {t(keys.hero.subheading)}
         </p>
       </div>
     </section>

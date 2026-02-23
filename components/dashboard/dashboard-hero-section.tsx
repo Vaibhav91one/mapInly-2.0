@@ -1,16 +1,13 @@
+"use client";
+
+import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { sectionClasses, sectionInnerClasses } from "@/lib/layout-classes";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import { keys } from "@/lib/i18n/keys";
 
 export function DashboardHeroSection() {
+  const { t } = useTranslation();
   return (
     <section
       className={cn(sectionClasses, "h-[60dvh] bg-black")}
@@ -25,10 +22,10 @@ export function DashboardHeroSection() {
           <Link href="/dashboard" className="hover:text-background transition-colors">
             /
           </Link>{" "}
-          <span className="text-white">Dashboard</span>
+          <span className="text-white">{t(keys.dashboard.breadcrumb)}</span>
         </p>
         <h1 className="text-6xl font-regular tracking-tight leading-tight text-white md:text-8xl lg:text-9xl">
-          Dashboard
+          {t(keys.dashboard.title)}
         </h1>
       </div>
     </section>

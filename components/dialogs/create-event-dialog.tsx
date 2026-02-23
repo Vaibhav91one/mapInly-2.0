@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogContent,
@@ -21,6 +22,7 @@ interface CreateEventDialogProps {
 
 export function CreateEventDialog({ open, onOpenChange, event }: CreateEventDialogProps) {
   const router = useRouter();
+  const { i18n } = useTranslation();
   const user = useAuthStore((s) => s.user);
   const createEvent = useDataStore((s) => s.createEvent);
   const updateEvent = useDataStore((s) => s.updateEvent);
@@ -34,13 +36,16 @@ export function CreateEventDialog({ open, onOpenChange, event }: CreateEventDial
       return;
     }
 
+    const sourceLocale = (i18n.language?.split("-")[0] ?? "en") as string;
+    const dataWithLocale = { ...data, sourceLocale };
+
     setError(null);
     setIsSubmitting(true);
     try {
       if (event) {
-        await updateEvent(event.slug, data);
+        await updateEvent(event.slug, dataWithLocale);
       } else {
-        await createEvent(data);
+        await createEvent(dataWithLocale);
       }
       router.refresh();
       onOpenChange(false);

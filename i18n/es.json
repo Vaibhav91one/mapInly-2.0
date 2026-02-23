@@ -1,0 +1,227 @@
+{
+  "hero": {
+    "heading": "Conecta a través del idioma y la cultura",
+    "subheading": "Una nueva forma de conectar con el mundo. Con Mapinly, puedes aprender nuevos idiomas y culturas, y conectar con personas de todo el mundo.",
+    "subheadingAria": "Subtítulo del hero"
+  },
+  "nav": {
+    "brand": "Mapinly",
+    "sharing": "Compartir",
+    "innovation": "Innovación",
+    "dashboard": "Panel",
+    "events": "Eventos",
+    "forums": "Foros",
+    "selectLanguage": "Seleccionar idioma",
+    "openUserMenu": "Abrir menú de usuario",
+    "createEvent": "Crear evento",
+    "createForum": "Crear foro",
+    "signOut": "Cerrar sesión",
+    "login": "Iniciar sesión"
+  },
+  "text": {
+    "paragraph1a": "Mapinly une a las personas a través de idiomas y culturas.",
+    "paragraph1b": "Aprende, conecta y explora",
+    "paragraph2a": "Ya sea que estés aprendiendo un nuevo idioma o descubriendo culturas,",
+    "paragraph2b": "Mapinly proporciona las herramientas y la comunidad para hacerlo posible."
+  },
+  "values": {
+    "weListen": "Escuchamos",
+    "weExperiment": "Experimentamos",
+    "weMeasure": "Medimos",
+    "weShare": "Compartimos"
+  },
+  "connecting": {
+    "title": "Conectar nunca ha sido tan fácil",
+    "seeAllEvents": "Ver todos los eventos",
+    "seeAllEventsAria": "Ver todos los eventos"
+  },
+  "carousel": {
+    "eventsCount": "Eventos {{count}}",
+    "upcomingEvents": "Próximos eventos",
+    "allEvents": "Todos los eventos",
+    "viewAllEventsAria": "Ver todos los eventos",
+    "noUpcomingEvents": "No hay eventos próximos"
+  },
+  "events": {
+    "search": "Buscar",
+    "searchAria": "Buscar eventos",
+    "pastEvents": "Eventos pasados",
+    "showPastEventsAria": "Mostrar eventos pasados",
+    "showOnMap": "Mostrar en el mapa",
+    "showOnMapAria": "Mostrar eventos en el mapa",
+    "noEventsToShow": "No hay eventos para mostrar",
+    "noEventsInSystem": "Todavía no hay eventos en el sistema.",
+    "noUpcomingTryPast": "No hay eventos próximos. Intenta activar Eventos pasados para ver eventos anteriores.",
+    "gettingLocation": "Obteniendo tu ubicación...",
+    "noEventsOnMap": "No hay eventos con datos de ubicación para mostrar en el mapa."
+  },
+  "forums": {
+    "search": "Buscar",
+    "searchAria": "Buscar foros",
+    "inactiveForums": "Foros inactivos",
+    "showInactiveForumsAria": "Mostrar foros inactivos",
+    "noForumsToShow": "No hay foros para mostrar",
+    "noForumsInSystem": "Todavía no hay foros en el sistema.",
+    "noActiveForumsTryInactive": "No hay foros activos. Intenta habilitar los foros inactivos para ver los foros cerrados."
+  },
+  "event": {
+    "label": "Evento",
+    "seeRoutePlan": "Ver plan de ruta"
+  },
+  "eventDetail": {
+    "breadcrumb": "/ Eventos",
+    "organizedBy": "Organizado por",
+    "organizerAria": "Organizador",
+    "joining": "participando",
+    "date": "Fecha",
+    "location": "Ubicación",
+    "signUp": "Inscribirse",
+    "signingUp": "Inscribiéndose…",
+    "signUpAria": "Inscribirse en este evento",
+    "chat": "Chat",
+    "chatAria": "Abrir chat del evento",
+    "eventEnded": "Este evento ha terminado"
+  },
+  "forumDetail": {
+    "breadcrumb": "/ Foro",
+    "createdBy": "Creado por",
+    "creatorAria": "Creador",
+    "chat": "Chat",
+    "chatAria": "Abrir chat del foro"
+  },
+  "forum": {
+    "statusActive": "Activo",
+    "statusClosed": "Cerrado"
+  },
+  "createEvent": {
+    "title": "Título",
+    "tagline": "Eslogan",
+    "shortDescription": "Descripción corta",
+    "taglinePlaceholder": "Titular de una línea",
+    "shortDescPlaceholder": "Descripción breve en párrafo",
+    "dateTime": "Fecha y hora",
+    "location": "Ubicación",
+    "tags": "Etiquetas",
+    "tagsPlaceholder": "ej. IA, comunidad, innovación",
+    "image": "Imagen",
+    "cancel": "Cancelar",
+    "createEvent": "Crear evento",
+    "saveChanges": "Guardar cambios"
+  },
+  "createForum": {
+    "title": "Título",
+    "tagline": "Eslogan",
+    "shortDescription": "Descripción corta",
+    "taglinePlaceholder": "Titular de una línea",
+    "shortDescPlaceholder": "Descripción breve en párrafo",
+    "tags": "Etiquetas",
+    "tagsPlaceholder": "ej. IA, comunidad, innovación",
+    "image": "Imagen (opcional)",
+    "cancel": "Cancelar",
+    "createForum": "Crear foro",
+    "saveChanges": "Guardar cambios",
+    "statusActive": "Activo"
+  },
+  "forms": {
+    "searchLocation": "Buscar ubicación",
+    "clickMapToSetLocation": "O haz clic en el mapa para establecer una ubicación"
+  },
+  "forumComments": {
+    "title": "Comentarios",
+    "joinConversation": "Únete a la conversación",
+    "loadingComments": "Cargando comentarios...",
+    "noCommentsFound": "No se encontraron comentarios.",
+    "sortBy": "Ordenar por",
+    "newestToOldest": "Más recientes primero",
+    "reply": "Responder",
+    "writeReply": "Escribe una respuesta...",
+    "writeComment": "Escribe un comentario",
+    "submit": "Enviar",
+    "hideReplies": "Ocultar {{count}} respuestas",
+    "showMoreReplies": "Mostrar {{count}} respuestas más",
+    "upvoteAria": "Votar a favor",
+    "downvoteAria": "Votar en contra"
+  },
+  "eventChat": {
+    "loadingMessages": "Cargando mensajes...",
+    "noMessagesYet": "Aún no hay mensajes. ¡Di hola!",
+    "messagePlaceholder": "Mensaje...",
+    "messageInputAria": "Entrada de mensaje",
+    "emojiAria": "Emoji"
+  },
+  "auth": {
+    "welcome": "Bienvenido",
+    "signInDescription": "Inicia sesión con tu proveedor preferido para continuar",
+    "signInGoogle": "Iniciar sesión con Google",
+    "signInGitHub": "Iniciar sesión con GitHub",
+    "or": "O",
+    "loading": "Cargando...",
+    "tagline1": "Encuentra tu gente.",
+    "tagline2": "Moldea tu mundo."
+  },
+  "locale": {
+    "chooseLanguage": "Elige tu idioma",
+    "en": "English",
+    "es": "Español",
+    "de": "Deutsch",
+    "fr": "Français",
+    "it": "Italiano",
+    "pt": "Português",
+    "zh": "中文"
+  },
+  "common": {
+    "openInMaps": "Abrir en Mapas",
+    "findMyLocation": "Encontrar mi ubicación",
+    "gettingLocation": "Obteniendo tu ubicación...",
+    "geolocationNotSupported": "La geolocalización no es compatible",
+    "couldNotGetLocation": "No se pudo obtener tu ubicación",
+    "enableLocationAccess": "Activa el acceso a la ubicación para ver la ruta.",
+    "cancel": "Cancelar",
+    "delete": "Eliminar"
+  },
+  "footer": {
+    "tagline": "Descubre eventos en el mapa, únete a comunidades y conecta con personas cerca de ti. Plataforma multilingüe de eventos y comunidades.",
+    "getStarted": "Comenzar",
+    "getStartedAria": "Comenzar",
+    "legal": "Legal",
+    "privacyPolicy": "Política de privacidad",
+    "termsConditions": "Términos y condiciones",
+    "pages": "Páginas",
+    "home": "Inicio",
+    "socials": "Redes sociales",
+    "twitter": "Twitter",
+    "linkedin": "LinkedIn",
+    "github": "GitHub"
+  },
+  "eventsHero": {
+    "breadcrumb": "Eventos",
+    "title": "Eventos"
+  },
+  "forumsHero": {
+    "breadcrumb": "Foros",
+    "title": "Foros"
+  },
+  "dashboard": {
+    "breadcrumb": "Panel",
+    "title": "Panel",
+    "upcomingEvents": "Próximos eventos",
+    "noEventsOnDate": "No hay eventos en esta fecha",
+    "noUpcomingEvents": "No hay eventos próximos",
+    "eventsOrganized": "Eventos que organizaste",
+    "forumsCreated": "Foros que creaste",
+    "active": "Activos",
+    "inactive": "Inactivos",
+    "noActiveEvents": "No hay eventos activos",
+    "noInactiveEvents": "No hay eventos inactivos",
+    "noActiveForums": "No hay foros activos",
+    "noInactiveForums": "No hay foros inactivos",
+    "deleteEventTitle": "¿Eliminar evento?",
+    "deleteEventDescription": "Esto eliminará permanentemente el evento y todos sus registros. Esta acción no se puede deshacer.",
+    "deleteForumTitle": "¿Eliminar foro?",
+    "deleteForumDescription": "Esto eliminará permanentemente el foro y todos sus comentarios. Esta acción no se puede deshacer.",
+    "statsEventsOrganized": "Eventos organizados",
+    "statsForumsCreated": "Foros creados",
+    "statsEventsAttended": "Eventos a los que asististe",
+    "statsUpcomingEvents": "Próximos eventos"
+  }
+}

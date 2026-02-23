@@ -22,6 +22,8 @@ export interface EventFormData {
   tags: string[];
   image: string;
   imageOverlay?: string;
+  /** Creator's locale when submitting (for translation) */
+  sourceLocale?: string;
 }
 
 /** Stored event with DB metadata */

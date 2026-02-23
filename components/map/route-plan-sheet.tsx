@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { RoutePlanMap } from "./route-plan-map";
 import { Loader2, Navigation } from "lucide-react";
+import { keys } from "@/lib/i18n/keys";
 
 interface RoutePlanSheetProps {
   open: boolean;
@@ -22,6 +24,7 @@ export function RoutePlanSheet({
   mapsUrl,
   origin = null,
 }: RoutePlanSheetProps) {
+  const { t } = useTranslation();
   const [userCoords, setUserCoords] = useState<{
     lng: number;
     lat: number;
@@ -38,7 +41,7 @@ export function RoutePlanSheet({
       return;
     }
     if (!("geolocation" in navigator)) {
-      toast.error("Geolocation is not supported");
+      toast.error(t(keys.common.geolocationNotSupported));
       return;
     }
     setLocationLoading(true);
@@ -51,7 +54,7 @@ export function RoutePlanSheet({
         setLocationLoading(false);
       },
       () => {
-        toast.error("Could not get your location");
+        toast.error(t(keys.common.couldNotGetLocation));
         setLocationLoading(false);
       }
     );
@@ -75,7 +78,7 @@ export function RoutePlanSheet({
               <div className="flex h-[400px] items-center justify-center">
                 <div className="flex flex-col items-center gap-3 text-zinc-400">
                   <Loader2 className="size-10 animate-spin" />
-                  <p>Getting your location...</p>
+                  <p>{t(keys.common.gettingLocation)}</p>
                 </div>
               </div>
             ) : canShowMap ? (
@@ -95,7 +98,7 @@ export function RoutePlanSheet({
             ) : (
               <div className="flex h-[400px] items-center justify-center">
                 <p className="text-zinc-400 text-center px-4">
-                  Enable location access to see the route.
+                  {t(keys.common.enableLocationAccess)}
                 </p>
               </div>
             )}
@@ -113,7 +116,7 @@ export function RoutePlanSheet({
                 className="inline-flex items-center"
               >
                 <Navigation className="size-3.5 mr-1.5" />
-                Open in Maps
+                {t(keys.common.openInMaps)}
               </a>
             </Button>
           </div>

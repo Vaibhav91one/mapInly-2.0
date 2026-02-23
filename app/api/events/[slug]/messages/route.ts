@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { createEventMessageBodySchema } from "@/lib/validations/api";
+import { translateTexts } from "@/lib/translate/server";
+import { getMessagesWithTranslations } from "@/lib/events/get-messages-with-translations";
+import { getLocaleFromRequest } from "@/lib/i18n/get-locale-server";
+import { SUPPORTED_LOCALES } from "@/lib/i18n/locale-cookie";
 
 export const dynamic = "force-dynamic";
 
@@ -24,7 +28,7 @@ function formatTimestamp(iso: string): string {
 }
 
 export async function GET(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
@@ -32,6 +36,13 @@ export async function GET(
   if (!event) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
+
+  const { searchParams } = new URL(request.url);
+  const localeParam = searchParams.get("locale");
+  const locale =
+    localeParam && SUPPORTED_LOCALES.includes(localeParam as (typeof SUPPORTED_LOCALES)[number])
+      ? localeParam
+      : await getLocaleFromRequest();
 
   const messages = await prisma.eventMessage.findMany({
     where: { eventId: event.id },
@@ -52,7 +63,9 @@ export async function GET(
     timestamp: formatTimestamp(m.createdAt.toISOString()),
   }));
 
-  return NextResponse.json(enriched);
+  const withTranslations = await getMessagesWithTranslations(enriched, locale);
+
+  return NextResponse.json(withTranslations);
 }
 
 export async function POST(
@@ -96,13 +109,47 @@ export async function POST(
     );
   }
 
-  const message = await prisma.eventMessage.create({
-    data: {
-      eventId: event.id,
-      userId: user.id,
-      content: parsed.data.content.trim(),
-    },
-    include: { user: true },
+  const trimmedContent = parsed.data.content.trim();
+  const sourceLocale =
+    parsed.data.sourceLocale &&
+    SUPPORTED_LOCALES.includes(parsed.data.sourceLocale as (typeof SUPPORTED_LOCALES)[number])
+      ? parsed.data.sourceLocale
+      : "en";
+
+  const targetLocales = SUPPORTED_LOCALES.filter((l) => l !== sourceLocale);
+  const translatedContents = await Promise.all(
+    targetLocales.map(async (targetLocale) => {
+      const [tContent] = await translateTexts(
+        [trimmedContent],
+        targetLocale,
+        sourceLocale
+      );
+      return { targetLocale, content: tContent };
+    })
+  );
+
+  const message = await prisma.$transaction(async (tx) => {
+    const msg = await tx.eventMessage.create({
+      data: {
+        eventId: event.id,
+        userId: user.id,
+        content: trimmedContent,
+        sourceLocale,
+      },
+      include: { user: true },
+    });
+    await Promise.all(
+      translatedContents.map(({ targetLocale, content }) =>
+        tx.eventMessageTranslation.create({
+          data: {
+            messageId: msg.id,
+            locale: targetLocale,
+            content,
+          },
+        })
+      )
+    );
+    return msg;
   });
 
   const enriched: EventMessageWithAuthor = {

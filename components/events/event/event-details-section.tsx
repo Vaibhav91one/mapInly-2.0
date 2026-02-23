@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,6 +9,7 @@ import { ArrowUpRight } from "lucide-react";
 import { EventChatSheet } from "./chat";
 import { cn } from "@/lib/utils";
 import { sectionClasses, sectionInnerClasses } from "@/lib/layout-classes";
+import { keys } from "@/lib/i18n/keys";
 
 interface EventDetailsSectionProps {
   headline: string;
@@ -30,6 +32,7 @@ export function EventDetailsSection({
   eventTitle = "",
   eventImage,
 }: EventDetailsSectionProps) {
+  const { t } = useTranslation();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -77,12 +80,12 @@ export function EventDetailsSection({
         <div className="flex flex-col justify-between gap-56">
           <p className="text-sm font-regular leading-tight tracking-tight text-background/70 md:text-base">
             <Link href="/events" className="hover:text-background transition-colors">
-              / Events
+              {t(keys.eventDetail.breadcrumb)}
             </Link>
           </p>
           {isPast ? (
             <p className="mt-auto text-sm font-medium text-background/70">
-              This event has ended
+              {t(keys.eventDetail.eventEnded)}
             </p>
           ) : hasSignedUp ? (
             <EventChatSheet
@@ -103,9 +106,9 @@ export function EventDetailsSection({
                 "font-medium text-base md:text-lg",
                 "disabled:opacity-70 disabled:pointer-events-none"
               )}
-              aria-label="Sign up for this event"
+              aria-label={t(keys.eventDetail.signUpAria)}
             >
-              <span>{isLoading ? "Signing up…" : "Sign up"}</span>
+              <span>{isLoading ? t(keys.eventDetail.signingUp) : t(keys.eventDetail.signUp)}</span>
               <ArrowUpRight className="size-5 md:size-6 shrink-0 text-white" />
             </button>
           )}

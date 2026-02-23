@@ -3,6 +3,9 @@ import { createClient } from "@/utils/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { uniqueSlug } from "@/lib/slugify";
 import { createForumBodySchema } from "@/lib/validations/api";
+import { translateTexts } from "@/lib/translate/server";
+import { getLocaleFromRequest } from "@/lib/i18n/get-locale-server";
+import { SUPPORTED_LOCALES } from "@/lib/i18n/locale-cookie";
 
 export const dynamic = "force-dynamic";
 
@@ -59,23 +62,55 @@ export async function POST(request: Request) {
   }
 
   const data = parsed.data;
+  const requestLocale = await getLocaleFromRequest();
+  const sourceLocale = SUPPORTED_LOCALES.includes(
+    (data.sourceLocale ?? requestLocale) as (typeof SUPPORTED_LOCALES)[number]
+  )
+    ? (data.sourceLocale ?? requestLocale) as (typeof SUPPORTED_LOCALES)[number]
+    : "en";
+
   const existingSlugs = (await prisma.forum.findMany({ select: { slug: true } })).map(
     (f) => f.slug
   );
   const slug = uniqueSlug(data.title, existingSlugs);
 
+  const title = data.title.trim();
+  const tagline = data.tagline.trim();
+  const shortDescription = data.shortDescription.trim();
+
   const forum = await prisma.forum.create({
     data: {
       slug,
-      title: data.title.trim(),
-      tagline: data.tagline.trim(),
-      shortDescription: data.shortDescription.trim(),
+      title,
+      tagline,
+      shortDescription,
       status: data.status,
       tags: data.tags,
       image: data.image?.trim() ?? null,
+      sourceLocale,
       createdBy: user.id,
     },
   });
+
+  const targetLocales = SUPPORTED_LOCALES.filter((l) => l !== sourceLocale);
+  await Promise.all(
+    targetLocales.map(async (locale) => {
+      const [tTitle, tTagline, tShortDesc] = await translateTexts(
+        [title, tagline, shortDescription],
+        locale,
+        sourceLocale
+      );
+      await prisma.forumTranslation.create({
+        data: {
+          forumId: forum.id,
+          locale,
+          title: tTitle,
+          tagline: tTagline,
+          shortDescription: tShortDesc,
+        },
+      });
+    })
+  );
 
   return NextResponse.json(toApiForum(forum));
 }

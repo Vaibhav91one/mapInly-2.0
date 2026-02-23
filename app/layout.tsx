@@ -3,6 +3,8 @@ import { Poppins } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Navbar } from "@/components/layout";
 import { AuthProvider } from "@/components/providers/auth-provider";
+import { I18nProvider } from "@/components/providers/i18n-provider";
+import { LocaleProviderWrapper } from "@/components/locale/locale-provider-wrapper";
 import { Toaster } from "@/components/ui/sonner";
 import { containerClasses } from "@/lib/layout-classes";
 import "./globals.css";
@@ -29,12 +31,16 @@ export default function RootLayout({
         className={`${poppins.variable} font-sans antialiased min-h-screen flex flex-col bg-foreground text-background`}
       >
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <I18nProvider>
+          <LocaleProviderWrapper>
           <AuthProvider>
             <Navbar />
             <div className={`${containerClasses} flex-1 flex flex-col overflow-visible`}>
               {children}
             </div>
           </AuthProvider>
+          </LocaleProviderWrapper>
+          </I18nProvider>
           <Toaster />
         </ThemeProvider>
       </body>

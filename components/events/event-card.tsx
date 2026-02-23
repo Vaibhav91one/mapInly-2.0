@@ -7,6 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 import { StaticMeshGradient } from "@paper-design/shaders-react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
+import { TranslatedTag } from "@/components/shared/translated-tag";
 
 function isGradient(src: string): boolean {
   return src?.startsWith("gradient:") ?? false;
@@ -31,6 +32,7 @@ interface EventCardProps {
   href?: string;
   /** When true, applies disabled/muted styling */
   isPast?: boolean;
+  sourceLocale?: string;
   className?: string;
 }
 
@@ -46,6 +48,7 @@ export function EventCard({
   imageOverlay,
   href = "#",
   isPast = false,
+  sourceLocale,
   className,
 }: EventCardProps) {
   const [isHovered, setIsHovered] = useState(false);
@@ -112,7 +115,7 @@ export function EventCard({
           </div>
           <div className="flex flex-wrap gap-1.5 text-sm text-primary">
             {tags.map((tag) => (
-              <span key={tag}>#{tag}</span>
+              <TranslatedTag key={tag} tag={tag} sourceLocale={sourceLocale} />
             ))}
           </div>
         </div>

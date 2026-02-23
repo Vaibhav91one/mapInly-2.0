@@ -36,15 +36,18 @@ export const createEventBodySchema = z.object({
   tags: z.array(z.string().max(10)).max(3),
   image: imageSchema,
   imageOverlay: z.string().optional(),
+  sourceLocale: z.string().optional(),
 });
 
 export const createCommentBodySchema = z.object({
   content: z.string().min(1, "Comment cannot be empty").max(2000),
   parentId: z.string().nullable().optional(),
+  sourceLocale: z.string().optional(),
 });
 
 export const createEventMessageBodySchema = z.object({
   content: z.string().min(1, "Message cannot be empty").max(2000),
+  sourceLocale: z.string().optional(),
 });
 
 export const voteCommentBodySchema = z.object({
@@ -79,4 +82,5 @@ export const createForumBodySchema = z.object({
       },
       "Valid image (JPEG, PNG, WebP) or gradient required"
     ),
+  sourceLocale: z.string().optional(),
 });

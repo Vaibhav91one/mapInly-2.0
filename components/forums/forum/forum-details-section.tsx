@@ -1,7 +1,11 @@
+"use client";
+
+import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { ArrowLinkButton } from "@/components/ui/arrow-link-button";
 import { cn } from "@/lib/utils";
 import { sectionClasses, sectionInnerClasses } from "@/lib/layout-classes";
+import { keys } from "@/lib/i18n/keys";
 
 interface ForumDetailsSectionProps {
   headline: string;
@@ -14,6 +18,7 @@ export function ForumDetailsSection({
   description,
   chatHref = "#",
 }: ForumDetailsSectionProps) {
+  const { t } = useTranslation();
   return (
     <section
       className={cn(
@@ -31,7 +36,7 @@ export function ForumDetailsSection({
         <div className="flex flex-col justify-between gap-56">
           <p className="text-sm font-regular leading-tight tracking-tight text-background/70 md:text-base">
             <Link href="/forums" className="hover:text-background transition-colors">
-              / Forum
+              {t(keys.forumDetail.breadcrumb)}
             </Link>
           </p>
           {/* <ArrowLinkButton

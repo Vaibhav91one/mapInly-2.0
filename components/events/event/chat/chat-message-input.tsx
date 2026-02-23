@@ -1,12 +1,16 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Smile } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { keys } from "@/lib/i18n/keys";
 
 interface ChatMessageInputProps {
   placeholder?: string;
+  messageInputAria?: string;
+  emojiAria?: string;
   onSubmit?: (content: string) => void;
   disabled?: boolean;
   className?: string;
@@ -18,12 +22,18 @@ const EMOJI_LIST = "😀 😃 😄 😁 😆 😅 🤣 😂 🙂 🙃 😉 😊 
 );
 
 export function ChatMessageInput({
-  placeholder = "Message...",
+  placeholder,
+  messageInputAria,
+  emojiAria,
   onSubmit,
   disabled = false,
   className,
   onEmojiSelect,
 }: ChatMessageInputProps) {
+  const { t } = useTranslation();
+  const resolvedPlaceholder = placeholder ?? t(keys.eventChat.messagePlaceholder);
+  const resolvedMessageAria = messageInputAria ?? t(keys.eventChat.messageInputAria);
+  const resolvedEmojiAria = emojiAria ?? t(keys.eventChat.emojiAria);
   const [value, setValue] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const pickerRef = useRef<HTMLDivElement>(null);
@@ -75,7 +85,7 @@ export function ChatMessageInput({
           variant="ghost"
           size="icon"
           className="shrink-0 text-background/70 hover:bg-secondary/50 hover:text-background focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
-          aria-label="Emoji"
+          aria-label={resolvedEmojiAria}
           type="button"
           onClick={() => setShowEmojiPicker((p) => !p)}
         >
@@ -103,10 +113,10 @@ export function ChatMessageInput({
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={placeholder}
+          placeholder={resolvedPlaceholder}
           disabled={disabled}
           className="min-w-0 flex-1 bg-transparent text-sm text-background placeholder:text-background/50 outline-none focus:ring-0 focus:outline-none"
-          aria-label="Message input"
+          aria-label={resolvedMessageAria}
         />
       </div>
     </div>

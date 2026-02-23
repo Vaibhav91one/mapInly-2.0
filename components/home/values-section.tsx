@@ -1,20 +1,23 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion } from "motion/react";
 import { Separator } from "@/components/ui/separator";
 import { ValuesLineMarquee } from "./values-line-marquee";
 import { cn } from "@/lib/utils";
 import { sectionClasses, sectionInnerClasses } from "@/lib/layout-classes";
+import { keys } from "@/lib/i18n/keys";
 
-const LINES = [
-  { text: "We listen", align: "pl-0" },
-  { text: "We experiment", align: "pl-[25%]" },
-  { text: "We measure", align: "pl-[20%]" },
-  { text: "We share", align: "ml-[60%]" },
-];
+const LINE_KEYS = [
+  { key: keys.values.weListen, align: "pl-0" },
+  { key: keys.values.weExperiment, align: "pl-[25%]" },
+  { key: keys.values.weMeasure, align: "pl-[20%]" },
+  { key: keys.values.weShare, align: "ml-[60%]" },
+] as const;
 
 export function ValuesSection() {
+  const { t } = useTranslation();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
@@ -30,9 +33,9 @@ export function ValuesSection() {
           "min-h-0 flex flex-col gap-0 items-stretch"
         )}
       >
-        {LINES.map((line, index) => (
+        {LINE_KEYS.map((line, index) => (
           <div
-            key={line.text}
+            key={line.key}
             className="flex flex-col"
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
@@ -52,7 +55,7 @@ export function ValuesSection() {
                   ease: [0.585, 0.039, 0.26, 0.681],
                 }}
               >
-                {line.text}
+                {t(line.key)}
               </motion.p>
               {/* Marquee - slides up from bottom on hover */}
               <motion.div
@@ -66,14 +69,14 @@ export function ValuesSection() {
                 }}
               >
                 <ValuesLineMarquee
-                  text={line.text}
+                  text={t(line.key)}
                   running={hoveredIndex === index}
                   speed={0.2}
                   className="h-full"
                 />
               </motion.div>
             </div>
-            {index < LINES.length - 1 && (
+            {index < LINE_KEYS.length - 1 && (
               <Separator className="bg-secondary" />
             )}
           </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Carousel,
   CarouselContent,
@@ -23,6 +24,7 @@ import { ProjectCard } from "@/components/home/project-card";
 import { Pencil, Trash2 } from "lucide-react";
 import { StaticMeshGradient } from "@paper-design/shaders-react";
 import { useAuthStore } from "@/stores/auth-store";
+import { keys } from "@/lib/i18n/keys";
 import { cn } from "@/lib/utils";
 import type { Event } from "@/types/event";
 
@@ -48,6 +50,7 @@ export function DashboardEventsCarousel({
   onEditEvent,
   onDeleteEvent,
 }: DashboardEventsCarouselProps) {
+  const { t } = useTranslation();
   const user = useAuthStore((s) => s.user);
   const [activeTab, setActiveTab] = useState<"active" | "inactive">("active");
   const [eventToDelete, setEventToDelete] = useState<Event | null>(null);
@@ -58,7 +61,7 @@ export function DashboardEventsCarousel({
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-2xl font-regular leading-tight tracking-tight text-white md:text-3xl">
-          Events you organized
+          {t(keys.dashboard.eventsOrganized)}
         </h2>
         <Tabs
           value={activeTab}
@@ -69,37 +72,37 @@ export function DashboardEventsCarousel({
               value="active"
               className="text-white/80 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-none"
             >
-              Active
+              {t(keys.dashboard.active)}
             </TabsTrigger>
             <TabsTrigger
               value="inactive"
               className="text-white/80 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-none"
             >
-              Inactive
+              {t(keys.dashboard.inactive)}
             </TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
 
-      <div className="relative">
+      <div className="relative min-w-0 overflow-hidden">
         {events.length === 0 ? (
           <div
             className="flex aspect-[21/6] w-full items-center justify-center rounded-none border border-secondary bg-black"
             role="status"
           >
             <p className="text-lg text-white/60">
-              {activeTab === "active" ? "No active events" : "No inactive events"}
+              {activeTab === "active" ? t(keys.dashboard.noActiveEvents) : t(keys.dashboard.noInactiveEvents)}
             </p>
           </div>
         ) : (
           <Carousel
             key={`events-${activeTab}-${events.length}`}
             opts={{
-              loop: false,
+              loop: true,
               align: "start",
               slidesToScroll: 1,
             }}
-            className="w-full"
+            className="min-w-0 w-full overflow-hidden"
           >
             <CarouselContent className="-ml-4">
             {events.map((event, index) => (
@@ -197,15 +200,14 @@ export function DashboardEventsCarousel({
       >
         <AlertDialogContent className="bg-black border-white/20 text-white rounded-none">
           <AlertDialogHeader className="gap-4">
-            <AlertDialogTitle className="text-2xl font-regular leading-tight tracking-tight text-white md:text-3xl">Delete event?</AlertDialogTitle>
+            <AlertDialogTitle className="text-2xl font-regular leading-tight tracking-tight text-white md:text-3xl">{t(keys.dashboard.deleteEventTitle)}</AlertDialogTitle>
             <AlertDialogDescription className="text-sm font-regular leading-tight tracking-tight text-white/70">
-              This will permanently delete the event and all its registrations.
-              This action cannot be undone.
+              {t(keys.dashboard.deleteEventDescription)}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel variant="secondary" className="bg-secondary rounded-none text-secondary-foreground border-0">
-              Cancel
+              {t(keys.common.cancel)}
             </AlertDialogCancel>
             <AlertDialogAction
               variant="destructive"
@@ -217,7 +219,7 @@ export function DashboardEventsCarousel({
                 }
               }}
             >
-              Delete
+              {t(keys.common.delete)}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

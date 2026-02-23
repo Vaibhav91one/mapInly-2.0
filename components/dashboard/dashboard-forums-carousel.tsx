@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pencil, Trash2 } from "lucide-react";
 import {
   Carousel,
@@ -22,7 +23,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { ForumCard } from "@/components/forums/forum-card";
 import { useAuthStore } from "@/stores/auth-store";
-import { cn } from "@/lib/utils";
+import { keys } from "@/lib/i18n/keys";
 import type { Forum } from "@/types/forum";
 
 interface DashboardForumsCarouselProps {
@@ -38,6 +39,7 @@ export function DashboardForumsCarousel({
   onEditForum,
   onDeleteForum,
 }: DashboardForumsCarouselProps) {
+  const { t } = useTranslation();
   const user = useAuthStore((s) => s.user);
   const [activeTab, setActiveTab] = useState<"active" | "inactive">("active");
   const [forumToDelete, setForumToDelete] = useState<Forum | null>(null);
@@ -48,7 +50,7 @@ export function DashboardForumsCarousel({
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-2xl font-regular leading-tight tracking-tight text-white md:text-3xl">
-          Forums you created
+          {t(keys.dashboard.forumsCreated)}
         </h2>
         <Tabs
           value={activeTab}
@@ -59,48 +61,41 @@ export function DashboardForumsCarousel({
               value="active"
               className="text-white/80 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-none"
             >
-              Active
+              {t(keys.dashboard.active)}
             </TabsTrigger>
             <TabsTrigger
               value="inactive"
               className="text-white/80 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-none"
             >
-              Inactive
+              {t(keys.dashboard.inactive)}
             </TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
 
-      <div className="relative h-[420px]">
+      <div className="relative min-w-0 overflow-hidden">
         {forums.length === 0 ? (
           <div
             className="flex aspect-[21/6] w-full items-center justify-center rounded-none border border-secondary bg-black"
             role="status"
           >
             <p className="text-lg text-white/60">
-              {activeTab === "active" ? "No active forums" : "No inactive forums"}
+              {activeTab === "active" ? t(keys.dashboard.noActiveForums) : t(keys.dashboard.noInactiveForums)}
             </p>
           </div>
         ) : (
           <Carousel
             key={`forums-${activeTab}-${forums.length}`}
             opts={{
-              loop: false,
+              loop: true,
               align: "start",
               slidesToScroll: 1,
             }}
-            orientation="vertical"
-            className="h-full w-full"
+            className="min-w-0 w-full overflow-hidden"
           >
-            <CarouselContent className="-mt-4 flex-col">
+            <CarouselContent className="-ml-4">
               {forums.map((forum) => (
-                <CarouselItem
-                  key={forum.id}
-                  className={cn(
-                    "pt-10",
-                    "basis-auto shrink-0"
-                  )}
-                >
+                <CarouselItem key={forum.id} className="pl-4 basis-full shrink-0">
                   <div className="relative">
                     {user && forum.createdBy === user.id && (onEditForum || onDeleteForum) && (
                       <div className="absolute top-4 right-4 z-10 flex gap-2">
@@ -141,6 +136,7 @@ export function DashboardForumsCarousel({
                       status={forum.status}
                       tags={forum.tags}
                       href={`/forums/${forum.slug}`}
+                      sourceLocale={forum.sourceLocale}
                     />
                   </div>
                 </CarouselItem>
@@ -150,11 +146,11 @@ export function DashboardForumsCarousel({
               <>
                 <CarouselPrevious
                   size="icon"
-                  className="absolute top-2 left-1/2 z-10 -translate-x-1/2 rounded-none border-0 bg-white text-black hover:bg-white/90 disabled:opacity-50"
+                  className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-none border-0 bg-white text-black hover:bg-white/90 disabled:opacity-50"
                 />
                 <CarouselNext
                   size="icon"
-                  className="absolute bottom-2 left-1/2 z-10 -translate-x-1/2 rounded-none border-0 bg-white text-black hover:bg-white/90 disabled:opacity-50"
+                  className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-none border-0 bg-white text-black hover:bg-white/90 disabled:opacity-50"
                 />
               </>
             )}
@@ -167,15 +163,14 @@ export function DashboardForumsCarousel({
       >
         <AlertDialogContent className="bg-black border-white/20 text-white rounded-none">
           <AlertDialogHeader className="gap-4">
-            <AlertDialogTitle className="text-2xl font-regular leading-tight tracking-tight text-white md:text-3xl">Delete forum?</AlertDialogTitle>
+            <AlertDialogTitle className="text-2xl font-regular leading-tight tracking-tight text-white md:text-3xl">{t(keys.dashboard.deleteForumTitle)}</AlertDialogTitle>
             <AlertDialogDescription className="text-sm font-regular leading-tight tracking-tight text-white/70">
-              This will permanently delete the forum and all its comments. This
-              action cannot be undone.
+              {t(keys.dashboard.deleteForumDescription)}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel variant="secondary" className="bg-secondary rounded-none text-secondary-foreground border-0">
-              Cancel
+              {t(keys.common.cancel)}
             </AlertDialogCancel>
             <AlertDialogAction
               variant="destructive"
@@ -187,7 +182,7 @@ export function DashboardForumsCarousel({
                 }
               }}
             >
-              Delete
+              {t(keys.common.delete)}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

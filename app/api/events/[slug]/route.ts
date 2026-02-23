@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { createEventBodySchema } from "@/lib/validations/api";
+import { translateTexts } from "@/lib/translate/server";
+import { getLocaleFromRequest } from "@/lib/i18n/get-locale-server";
+import { SUPPORTED_LOCALES } from "@/lib/i18n/locale-cookie";
 
 export const dynamic = "force-dynamic";
 
@@ -87,21 +90,54 @@ export async function PATCH(
   }
 
   const data = parsed.data;
+  const requestLocale = await getLocaleFromRequest();
+  const sourceLocale = SUPPORTED_LOCALES.includes(
+    (data.sourceLocale ?? requestLocale) as (typeof SUPPORTED_LOCALES)[number]
+  )
+    ? (data.sourceLocale ?? requestLocale) as (typeof SUPPORTED_LOCALES)[number]
+    : "en";
+
+  const title = data.title.trim();
+  const tagline = data.tagline.trim();
+  const shortDescription = data.shortDescription.trim();
+
   const updated = await prisma.event.update({
     where: { slug },
     data: {
-      title: data.title.trim(),
-      tagline: data.tagline.trim(),
-      shortDescription: data.shortDescription.trim(),
+      title,
+      tagline,
+      shortDescription,
       date: data.date,
       timeRange: data.timeRange,
       location: data.location as object,
       tags: data.tags,
       image: data.image.trim(),
       imageOverlay: data.imageOverlay ?? null,
+      sourceLocale,
     },
     include: { registrations: true },
   });
+
+  await prisma.eventTranslation.deleteMany({ where: { eventId: updated.id } });
+  const targetLocales = SUPPORTED_LOCALES.filter((l) => l !== sourceLocale);
+  await Promise.all(
+    targetLocales.map(async (locale) => {
+      const [tTitle, tTagline, tShortDesc] = await translateTexts(
+        [title, tagline, shortDescription],
+        locale,
+        sourceLocale
+      );
+      await prisma.eventTranslation.create({
+        data: {
+          eventId: updated.id,
+          locale,
+          title: tTitle,
+          tagline: tTagline,
+          shortDescription: tShortDesc,
+        },
+      });
+    })
+  );
 
   return NextResponse.json(toApiEvent(updated));
 }
