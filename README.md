@@ -9,7 +9,7 @@ Mapinly is a community platform for discovering events and joining discussions �
 ## Demo
 
 <!-- Add your YouTube demo link below -->
-> 🎬 **Video Demo:** _Coming soon_ — [Watch on YouTube]()
+> 🎬 **Video Demo:**  - [Watch on YouTube](https://youtu.be/wGdOCh-qTPk)
 
 ---
 
