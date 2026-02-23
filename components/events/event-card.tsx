@@ -7,7 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 import { StaticMeshGradient } from "@paper-design/shaders-react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
-import { TranslatedTag } from "@/components/shared/translated-tag";
+import { TranslatedTags } from "@/components/shared/translated-tags";
 
 function isGradient(src: string): boolean {
   return src?.startsWith("gradient:") ?? false;
@@ -114,9 +114,7 @@ export function EventCard({
             <span className="text-sm text-white/80 line-clamp-1 max-w-xs">@{location}</span>
           </div>
           <div className="flex flex-wrap gap-1.5 text-sm text-primary">
-            {tags.map((tag) => (
-              <TranslatedTag key={tag} tag={tag} sourceLocale={sourceLocale} />
-            ))}
+            <TranslatedTags tags={tags} sourceLocale={sourceLocale} />
           </div>
         </div>
 

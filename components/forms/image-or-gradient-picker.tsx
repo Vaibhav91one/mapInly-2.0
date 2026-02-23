@@ -129,7 +129,7 @@ export function ImageOrGradientPicker({
           <Upload className="size-4" />
           {value && !isGradient ? "Change image" : "Upload image"}
         </Button>
-        {value && (
+        {value && !isGradient && (
           <div className="space-y-2">
             <div className="h-40 w-full overflow-hidden rounded-md border border-white/20">
               {isGradient && selectedGradientColors ? (

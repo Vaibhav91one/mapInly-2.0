@@ -84,5 +84,67 @@ export function useTranslate() {
     [i18n.language]
   );
 
-  return { translateText };
+  const translateTexts = useCallback(
+    async (texts: string[], sourceLocale?: string) => {
+      const targetLocale =
+        (i18n.language?.split("-")[0] ?? "en") as string;
+      const resolvedSourceLocale = sourceLocale ?? "en";
+      if (targetLocale === resolvedSourceLocale) return texts;
+
+      const results: string[] = [];
+      const toFetch: { index: number; text: string }[] = [];
+
+      for (let i = 0; i < texts.length; i++) {
+        const text = texts[i];
+        if (!text?.trim()) {
+          results[i] = text ?? "";
+          continue;
+        }
+        const key = cacheKey(text, targetLocale, resolvedSourceLocale);
+        const cached = memoryCache.get(key);
+        if (cached && Date.now() - cached.ts < CACHE_TTL_MS) {
+          results[i] = cached.translated;
+        } else {
+          results[i] = "";
+          toFetch.push({ index: i, text });
+        }
+      }
+
+      if (toFetch.length === 0) return results;
+
+      try {
+        const res = await fetch("/api/translate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            texts: toFetch.map((x) => x.text),
+            targetLocale,
+            sourceLocale: resolvedSourceLocale,
+          }),
+        });
+        const data = await res.json();
+        const translations: string[] = res.ok && Array.isArray(data.translations)
+          ? data.translations
+          : toFetch.map((x) => pseudoTranslate(x.text, targetLocale));
+
+        for (let j = 0; j < toFetch.length; j++) {
+          const { index, text } = toFetch[j];
+          const translated = translations[j] ?? text;
+          results[index] = translated;
+          const key = cacheKey(text, targetLocale, resolvedSourceLocale);
+          memoryCache.set(key, { translated, ts: Date.now() });
+        }
+        pruneCache();
+      } catch {
+        for (const { index, text } of toFetch) {
+          results[index] = pseudoTranslate(text, targetLocale);
+        }
+      }
+
+      return results;
+    },
+    [i18n.language]
+  );
+
+  return { translateText, translateTexts };
 }

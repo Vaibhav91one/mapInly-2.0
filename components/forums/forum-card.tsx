@@ -7,7 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { keys } from "@/lib/i18n/keys";
-import { TranslatedTag } from "@/components/shared/translated-tag";
+import { TranslatedTags } from "@/components/shared/translated-tags";
 
 type ForumStatus = "active" | "closed";
 
@@ -65,9 +65,7 @@ export function ForumCard({
             {statusLabel}
           </span>
           <div className="flex flex-wrap gap-1.5 text-sm text-primary">
-            {tags.map((tag) => (
-              <TranslatedTag key={tag} tag={tag} sourceLocale={sourceLocale} />
-            ))}
+            <TranslatedTags tags={tags} sourceLocale={sourceLocale} />
           </div>
         </div>
 

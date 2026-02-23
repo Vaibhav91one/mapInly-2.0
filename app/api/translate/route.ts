@@ -54,14 +54,14 @@ export async function POST(request: Request) {
 
   try {
     const lingo = new LingoDotDevEngine({ apiKey });
-    const translations = await Promise.all(
-      validTexts.map((text) =>
-        lingo.localizeText(text, {
-          sourceLocale,
-          targetLocale,
-        })
-      )
-    );
+    const translations: string[] = [];
+    for (const text of validTexts) {
+      const t = await lingo.localizeText(text, {
+        sourceLocale,
+        targetLocale,
+      });
+      translations.push(t);
+    }
     return NextResponse.json({ translations });
   } catch (err) {
     console.error("Translate API error:", err);

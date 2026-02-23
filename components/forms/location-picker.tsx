@@ -39,7 +39,6 @@ function FlyToOnChange({
 }
 
 const NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
-const NOMINATIM_REVERSE_URL = "https://nominatim.openstreetmap.org/reverse";
 const DEFAULT_CENTER: [number, number] = [8.9517, 46.0037]; // Lugano
 const DEFAULT_ZOOM = 12;
 
@@ -71,6 +70,7 @@ export function LocationPicker({
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<NominatimResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [isResolvingAddress, setIsResolvingAddress] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const searchAbortRef = useRef<AbortController | null>(null);
@@ -82,15 +82,10 @@ export function LocationPicker({
         const params = new URLSearchParams({
           lat: String(lat),
           lon: String(lon),
-          format: "json",
         });
-        const res = await fetch(`${NOMINATIM_REVERSE_URL}?${params}`, {
-          headers: {
-            "User-Agent": "Mapinly/1.0 (contact@mapinly.app)",
-          },
-        });
-        const data = (await res.json()) as { display_name?: string };
-        return data.display_name ?? `${lat.toFixed(6)}, ${lon.toFixed(6)}`;
+        const res = await fetch(`/api/geocode/reverse?${params}`);
+        const data = (await res.json()) as { displayName?: string };
+        return data.displayName ?? `${lat.toFixed(6)}, ${lon.toFixed(6)}`;
       } catch {
         return `${lat.toFixed(6)}, ${lon.toFixed(6)}`;
       }
@@ -103,6 +98,7 @@ export function LocationPicker({
     : DEFAULT_CENTER;
 
   useEffect(() => {
+    if (isResolvingAddress) return;
     if (value?.displayName) {
       setQuery(value.displayName);
     } else {
@@ -110,7 +106,7 @@ export function LocationPicker({
     }
     userTypingRef.current = false;
     setShowResults(false);
-  }, [value?.displayName, value?.latitude, value?.longitude]);
+  }, [value?.displayName, value?.latitude, value?.longitude, isResolvingAddress]);
 
   const search = useCallback(async (q: string) => {
     if (!q.trim()) {
@@ -192,6 +188,7 @@ export function LocationPicker({
     async (coords: { longitude: number; latitude: number }) => {
       userTypingRef.current = false;
       setShowResults(false);
+      setIsResolvingAddress(true);
       const tempLocation: EventLocation = {
         displayName: `${coords.latitude.toFixed(6)}, ${coords.longitude.toFixed(6)}`,
         latitude: coords.latitude,
@@ -200,13 +197,19 @@ export function LocationPicker({
       };
       onChange(tempLocation);
       setQuery(tempLocation.displayName);
-
-      const displayName = await reverseGeocode(coords.latitude, coords.longitude);
-      onChange({
-        ...tempLocation,
-        displayName,
-      });
-      setQuery(displayName);
+      try {
+        const displayName = await reverseGeocode(coords.latitude, coords.longitude);
+        const resolvedLocation: EventLocation = {
+          ...tempLocation,
+          displayName,
+        };
+        onChange(resolvedLocation);
+        setQuery(displayName);
+      } catch {
+        setQuery(tempLocation.displayName);
+      } finally {
+        setIsResolvingAddress(false);
+      }
     },
     [onChange, reverseGeocode]
   );
@@ -215,7 +218,7 @@ export function LocationPicker({
     async (lngLat: { lng: number; lat: number }) => {
       userTypingRef.current = false;
       setShowResults(false);
-      // Set immediately with coordinates as placeholder
+      setIsResolvingAddress(true);
       const tempLocation: EventLocation = {
         displayName: `${lngLat.lat.toFixed(6)}, ${lngLat.lng.toFixed(6)}`,
         latitude: lngLat.lat,
@@ -224,14 +227,19 @@ export function LocationPicker({
       };
       onChange(tempLocation);
       setQuery(tempLocation.displayName);
-
-      // Reverse geocode to get a proper address
-      const displayName = await reverseGeocode(lngLat.lat, lngLat.lng);
-      onChange({
-        ...tempLocation,
-        displayName,
-      });
-      setQuery(displayName);
+      try {
+        const displayName = await reverseGeocode(lngLat.lat, lngLat.lng);
+        const resolvedLocation: EventLocation = {
+          ...tempLocation,
+          displayName,
+        };
+        onChange(resolvedLocation);
+        setQuery(displayName);
+      } catch {
+        setQuery(tempLocation.displayName);
+      } finally {
+        setIsResolvingAddress(false);
+      }
     },
     [onChange, reverseGeocode]
   );
@@ -279,9 +287,9 @@ export function LocationPicker({
               ))}
             </ul>
           )}
-          {isSearching && (
+          {(isSearching || isResolvingAddress) && (
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
-              Searching...
+              {isResolvingAddress ? "Resolving address..." : "Searching..."}
             </span>
           )}
         </div>
