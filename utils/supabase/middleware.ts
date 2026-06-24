@@ -1,17 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-/**
- * API routes that require authentication (middleware returns 401 if no session).
- * - POST /api/events, /api/forums, /api/events/[slug]/register, /api/events/[slug]/messages
- * - PATCH /api/events/[slug], /api/forums/[slug], /api/users/locale
- * - DELETE /api/events/[slug], /api/forums/[slug]
- * - POST /api/forums/[slug]/comments, /api/users/sync, /api/translate
- * - PATCH /api/forums/[slug]/comments/[commentId]/vote
- *
- * IMPORTANT: When adding new API routes that require user context (POST/PATCH/DELETE
- * with user-specific operations), add them to isProtectedApiRoute below.
- */
 function isProtectedApiRoute(pathname: string, method: string): boolean {
   if (pathname === "/api/events" && method === "POST") return true;
   if (pathname === "/api/forums" && method === "POST") return true;
@@ -28,32 +17,54 @@ function isProtectedApiRoute(pathname: string, method: string): boolean {
 }
 
 export async function updateSession(request: NextRequest) {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+
+  // ponytail: no Supabase config → treat all users as unauthenticated
+  if (!url || !key) {
+    const response = NextResponse.next({ request });
+    const pathname = request.nextUrl.pathname;
+    if (isProtectedApiRoute(pathname, request.method)) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    if (pathname === "/dashboard") {
+      const dest = request.nextUrl.clone();
+      dest.pathname = "/auth";
+      dest.searchParams.set("next", "/dashboard");
+      return NextResponse.redirect(dest);
+    }
+    if (pathname === "/auth") {
+      const next = request.nextUrl.searchParams.get("next") ?? "/events";
+      const dest = request.nextUrl.clone();
+      dest.pathname = next.startsWith("/") ? next : "/events";
+      dest.search = "";
+      return NextResponse.redirect(dest);
+    }
+    return response;
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   });
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value)
-          );
-          supabaseResponse = NextResponse.next({
-            request,
-          });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          );
-        },
+  const supabase = createServerClient(url, key, {
+    cookies: {
+      getAll() {
+        return request.cookies.getAll();
       },
-    }
-  );
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value }) =>
+          request.cookies.set(name, value)
+        );
+        supabaseResponse = NextResponse.next({
+          request,
+        });
+        cookiesToSet.forEach(({ name, value, options }) =>
+          supabaseResponse.cookies.set(name, value, options)
+        );
+      },
+    },
+  });
 
   const {
     data: { user },
@@ -61,12 +72,10 @@ export async function updateSession(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
 
-  // Auth callback must remain accessible for OAuth
   if (pathname.startsWith("/auth/callback")) {
     return supabaseResponse;
   }
 
-  // Protected API routes - require auth
   if (isProtectedApiRoute(pathname, request.method)) {
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -74,7 +83,6 @@ export async function updateSession(request: NextRequest) {
     return supabaseResponse;
   }
 
-  // Protected page: dashboard
   if (pathname === "/dashboard" && !user) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth";
@@ -82,7 +90,6 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Auth page - redirect authenticated users away
   if (pathname === "/auth" && user) {
     const next = request.nextUrl.searchParams.get("next") ?? "/events";
     const url = request.nextUrl.clone();

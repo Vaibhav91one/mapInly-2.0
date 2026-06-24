@@ -2,21 +2,31 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 export async function createClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+
+  // ponytail: return mock client when Supabase not configured
+  // so UI renders without auth, add env vars when ready for auth
+  if (!url || !key) {
+    const mockAuth = {
+      getUser: async () => ({ data: { user: null }, error: null }),
+      signInWithOAuth: async () => ({ data: null, error: null }),
+      exchangeCodeForSession: async () => ({ data: null, error: null }),
+    };
+    return { auth: mockAuth } as ReturnType<typeof createServerClient>;
+  }
+
   const cookieStore = await cookies();
-  return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options)
-          );
-        },
+  return createServerClient(url, key, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
       },
-    }
-  );
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value, options }) =>
+          cookieStore.set(name, value, options)
+        );
+      },
+    },
+  });
 }
