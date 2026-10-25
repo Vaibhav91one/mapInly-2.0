@@ -13,7 +13,8 @@ export const INTRO = {
   ease: [0.33, 1, 0.68, 1] as [number, number, number, number],
 };
 
-export const GITHUB_URL = "https://github.com/Vaibhav91one/mapInly-2.0";
+export const GITHUB_REPO = "Vaibhav91one/mapInly-2.0";
+export const GITHUB_URL = `https://github.com/${GITHUB_REPO}`;
 
 // The intro plays once per browser session: reloads and revisits skip the preloader and hero animation.
 // The same key is read by the inline <head> script in app/layout.tsx (it adds html.intro-seen before first paint).

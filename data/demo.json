@@ -1,0 +1,888 @@
+{
+  "users": [
+    {
+      "id": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "displayName": "Elena Rossi",
+      "avatarUrl": null
+    },
+    {
+      "id": "c419d77a-2afb-49ab-ab56-e19fb17c0e0b",
+      "displayName": "Marco Bianchi",
+      "avatarUrl": null
+    },
+    {
+      "id": "demo-user",
+      "displayName": "You (demo)",
+      "avatarUrl": null
+    }
+  ],
+  "events": [
+    {
+      "id": "evt-welcome-to-mapinly",
+      "slug": "welcome-to-mapinly",
+      "title": "Welcome to Mapinly",
+      "tagline": "Discover events, join event chat in your language, automatic translations.",
+      "shortDescription": "This event shows how Mapinly works: find events, register, and chat with other attendees. Messages are translated so everyone can join in their preferred language.",
+      "startOffsetDays": 4,
+      "durationDays": 0,
+      "timeRange": "2:00 PM - 4:00 PM",
+      "location": {
+        "displayName": "Online / Mapinly",
+        "latitude": 46.0037,
+        "longitude": 8.9511
+      },
+      "tags": [
+        "mapinly",
+        "intro",
+        "community"
+      ],
+      "image": "gradient:#6366f1,#8b5cf6,#a855f7,#d946ef",
+      "imageOverlay": "MAPINLY",
+      "sourceLocale": "en",
+      "createdBy": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "createdOffsetDays": -16,
+      "registrations": [
+        "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+        "c419d77a-2afb-49ab-ab56-e19fb17c0e0b",
+        "demo-user"
+      ],
+      "translations": {
+        "es": {
+          "title": "Bienvenido a Mapinly",
+          "tagline": "Descubre eventos, chatea en tu idioma, traducciones automáticas.",
+          "shortDescription": "Este evento muestra cómo funciona Mapinly: encuentra eventos, regístrate y chatea con otros. Los mensajes se traducen para que todos participen en su idioma."
+        },
+        "de": {
+          "title": "Willkommen bei Mapinly",
+          "tagline": "Events entdecken, Chat in deiner Sprache, automatische Übersetzungen.",
+          "shortDescription": "Dieses Event zeigt, wie Mapinly funktioniert: Events finden, anmelden und mit anderen chatten. Nachrichten werden übersetzt, damit alle in ihrer Sprache dabei sein können."
+        }
+      }
+    },
+    {
+      "id": "evt-lugano-ai-week-2025",
+      "slug": "lugano-ai-week-2025",
+      "title": "Lugano AI Week 2025",
+      "tagline": "Thursday, May 8, discover how data and AI are transforming Lugano",
+      "shortDescription": "A free event open to the public to understand, discuss and imagine the future of the city through the use of data and emerging technologies.",
+      "startOffsetDays": 12,
+      "durationDays": 2,
+      "timeRange": "6:00 PM - 8:00 PM",
+      "location": {
+        "displayName": "Asilo Ciani, Lugano",
+        "latitude": 46.0037,
+        "longitude": 8.9511
+      },
+      "tags": [
+        "AI",
+        "community",
+        "formazione"
+      ],
+      "image": "https://picsum.photos/seed/lugano-city/1920/1080",
+      "imageOverlay": "AI WEEK",
+      "sourceLocale": "en",
+      "createdBy": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "createdOffsetDays": -8,
+      "registrations": [
+        "demo-user"
+      ],
+      "translations": {
+        "es": {
+          "title": "Lugano AI Week 2025",
+          "tagline": "El 8 de mayo, descubre cómo los datos y la IA transforman Lugano.",
+          "shortDescription": "Un evento gratuito abierto al público para entender, debatir e imaginar el futuro de la ciudad mediante datos y tecnologías emergentes."
+        },
+        "de": {
+          "title": "Lugano AI Week 2025",
+          "tagline": "Am 8. Mai: wie Daten und KI Lugano transformieren.",
+          "shortDescription": "Eine kostenlose Veranstaltung für die Öffentlichkeit, um die Zukunft der Stadt durch Daten und neue Technologien zu verstehen und zu gestalten."
+        }
+      }
+    },
+    {
+      "id": "evt-ticino-tech-meetup",
+      "slug": "ticino-tech-meetup",
+      "title": "Ticino Tech Meetup",
+      "tagline": "Monthly meetup for tech enthusiasts in Ticino. Connect, learn and share.",
+      "shortDescription": "A free monthly meetup bringing together developers, founders and tech enthusiasts to discuss trends, projects and opportunities in Ticino.",
+      "startOffsetDays": 21,
+      "durationDays": 0,
+      "timeRange": "6:00 PM - 9:00 PM",
+      "location": {
+        "displayName": "USI Campus, Lugano",
+        "latitude": 46.0055,
+        "longitude": 8.9524
+      },
+      "tags": [
+        "tech",
+        "community",
+        "innovation"
+      ],
+      "image": "gradient:#6366f1,#8b5cf6,#a855f7,#d946ef",
+      "imageOverlay": null,
+      "sourceLocale": "en",
+      "createdBy": "c419d77a-2afb-49ab-ab56-e19fb17c0e0b",
+      "createdOffsetDays": 1,
+      "registrations": [
+        "fef2cf13-0435-4ae9-9c34-3fed9aa280ba"
+      ],
+      "translations": {
+        "es": {
+          "title": "Ticino Tech Meetup",
+          "tagline": "Meetup mensual para entusiastas de la tecnología en Ticino.",
+          "shortDescription": "Un meetup mensual que reúne a desarrolladores, fundadores y entusiastas para hablar de tendencias, proyectos y oportunidades en Ticino."
+        },
+        "de": {
+          "title": "Ticino Tech Meetup",
+          "tagline": "Monatliches Meetup für Tech-Enthusiasten im Tessin.",
+          "shortDescription": "Ein monatliches Meetup für Entwickler, Gründer und Tech-Interessierte zu Trends, Projekten und Chancen im Tessin."
+        }
+      }
+    },
+    {
+      "id": "evt-data-science-workshop",
+      "slug": "data-science-workshop",
+      "title": "Data Science Workshop",
+      "tagline": "Hands-on workshop on data analysis and machine learning basics.",
+      "shortDescription": "A practical introduction to data science: from cleaning data to building simple models. Bring your laptop. No prior experience required.",
+      "startOffsetDays": -30,
+      "durationDays": 0,
+      "timeRange": "2:00 PM - 5:00 PM",
+      "location": {
+        "displayName": "Lugano Innovation Hub",
+        "latitude": 46.004,
+        "longitude": 8.95
+      },
+      "tags": [
+        "data",
+        "workshop",
+        "ML"
+      ],
+      "image": "gradient:#0ea5e9,#06b6d4,#14b8a6,#10b981",
+      "imageOverlay": null,
+      "sourceLocale": "en",
+      "createdBy": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "createdOffsetDays": -50,
+      "registrations": [],
+      "translations": {
+        "es": {
+          "title": "Taller de Data Science",
+          "tagline": "Taller práctico de análisis de datos y fundamentos de ML.",
+          "shortDescription": "Introducción práctica a la ciencia de datos: desde limpiar datos hasta construir modelos simples. Trae tu portátil. No se requiere experiencia."
+        },
+        "de": {
+          "title": "Data-Science-Workshop",
+          "tagline": "Praktischer Workshop zu Datenanalyse und Machine Learning.",
+          "shortDescription": "Praktische Einführung in Data Science: von der Datenbereinigung bis zu einfachen Modellen. Laptop mitbringen. Keine Vorkenntnisse nötig."
+        }
+      }
+    },
+    {
+      "id": "evt-startup-pitch-night",
+      "slug": "startup-pitch-night",
+      "title": "Startup Pitch Night",
+      "tagline": "Pitch your startup to investors and the local ecosystem.",
+      "shortDescription": "An evening of short pitches from early-stage startups. Get feedback, meet mentors, and connect with other founders and investors.",
+      "startOffsetDays": 40,
+      "durationDays": 0,
+      "timeRange": "6:30 PM - 9:00 PM",
+      "location": {
+        "displayName": "Palazzo dei Congressi, Lugano",
+        "latitude": 46.002,
+        "longitude": 8.948
+      },
+      "tags": [
+        "startup",
+        "pitch",
+        "invest"
+      ],
+      "image": "https://picsum.photos/seed/startup-pitch/1920/1080",
+      "imageOverlay": null,
+      "sourceLocale": "en",
+      "createdBy": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "createdOffsetDays": 20,
+      "registrations": [
+        "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+        "c419d77a-2afb-49ab-ab56-e19fb17c0e0b",
+        "demo-user"
+      ],
+      "translations": {
+        "es": {
+          "title": "Startup Pitch Night",
+          "tagline": "Presenta tu startup a inversores y al ecosistema local.",
+          "shortDescription": "Una noche de pitches de startups en fase inicial. Recibe feedback, conoce mentores y conecta con fundadores e inversores."
+        },
+        "de": {
+          "title": "Startup Pitch Night",
+          "tagline": "Präsentiere dein Startup vor Investoren und dem Ökosystem.",
+          "shortDescription": "Ein Abend mit kurzen Pitches von Early-Stage-Startups. Feedback, Mentoren und Vernetzung mit Gründern und Investoren."
+        }
+      }
+    },
+    {
+      "id": "evt-open-source-lugano",
+      "slug": "open-source-lugano",
+      "title": "Open Source Lugano",
+      "tagline": "Monthly open source contributors meetup. Code, review, and collaborate.",
+      "shortDescription": "Bring your laptop and your favorite open source project. We pair up, fix issues, and share tips. All skill levels welcome.",
+      "startOffsetDays": -60,
+      "durationDays": 0,
+      "timeRange": "5:00 PM - 8:00 PM",
+      "location": {
+        "displayName": "Coworking Lugano Sud",
+        "latitude": 46.001,
+        "longitude": 8.949
+      },
+      "tags": [
+        "opensource",
+        "dev",
+        "community"
+      ],
+      "image": "gradient:#f59e0b,#ef4444,#ec4899,#d946ef",
+      "imageOverlay": null,
+      "sourceLocale": "en",
+      "createdBy": "c419d77a-2afb-49ab-ab56-e19fb17c0e0b",
+      "createdOffsetDays": -80,
+      "registrations": [],
+      "translations": {
+        "es": {
+          "title": "Open Source Lugano",
+          "tagline": "Meetup mensual de contribuidores open source. Código, revisión y colaboración.",
+          "shortDescription": "Trae tu portátil y tu proyecto open source favorito. Emparejamos, corregimos issues y compartimos trucos. Todos los niveles bienvenidos."
+        },
+        "de": {
+          "title": "Open Source Lugano",
+          "tagline": "Monatliches Meetup für Open-Source-Contributor. Code, Review, Zusammenarbeit.",
+          "shortDescription": "Bring deinen Laptop und dein Lieblings-Open-Source-Projekt mit. Wir arbeiten zu zweit, beheben Issues und tauschen Tipps aus."
+        }
+      }
+    },
+    {
+      "id": "evt-design-engineers-meetup",
+      "slug": "design-engineers-meetup",
+      "title": "Design Engineers Meetup",
+      "tagline": "Where design systems meet production code. Demos, pizza, no slides.",
+      "shortDescription": "An evening for people who live between Figma and the codebase. Five-minute lightning demos, open mic, and plenty of time to talk shop. You organised this one: try editing it from the dashboard.",
+      "startOffsetDays": 9,
+      "durationDays": 0,
+      "timeRange": "7:00 PM - 9:30 PM",
+      "location": {
+        "displayName": "LAC Lugano Arte e Cultura",
+        "latitude": 46.0057,
+        "longitude": 8.9533
+      },
+      "tags": [
+        "design",
+        "code",
+        "meetup"
+      ],
+      "image": "gradient:#22c55e,#14b8a6,#0ea5e9,#6366f1",
+      "imageOverlay": "DESIGN ENG",
+      "sourceLocale": "en",
+      "createdBy": "demo-user",
+      "createdOffsetDays": -3,
+      "registrations": [
+        "demo-user",
+        "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+        "c419d77a-2afb-49ab-ab56-e19fb17c0e0b"
+      ],
+      "translations": {
+        "es": {
+          "title": "Meetup de Design Engineers",
+          "tagline": "Donde los sistemas de diseño se encuentran con el código. Demos, pizza, sin diapositivas.",
+          "shortDescription": "Una tarde para quienes viven entre Figma y el código. Demos relámpago de cinco minutos, micrófono abierto y mucho tiempo para charlar. Tú organizaste este: prueba editarlo desde el panel."
+        },
+        "de": {
+          "title": "Design Engineers Meetup",
+          "tagline": "Wo Designsysteme auf Produktionscode treffen. Demos, Pizza, keine Folien.",
+          "shortDescription": "Ein Abend für alle, die zwischen Figma und Codebase leben. Fünfminütige Lightning-Demos, offenes Mikrofon und viel Zeit zum Fachsimpeln. Du hast dieses Event organisiert: bearbeite es im Dashboard."
+        }
+      }
+    }
+  ],
+  "forums": [
+    {
+      "id": "frm-how-mapinly-works",
+      "slug": "how-mapinly-works",
+      "title": "How Mapinly Works",
+      "tagline": "Community forums: discuss in your language, see translated threads.",
+      "shortDescription": "This forum explains Mapinly: post and reply in your preferred language. Threads are translated so everyone can join the conversation. Try switching the app language to see content in another locale.",
+      "status": "active",
+      "tags": [
+        "mapinly",
+        "intro",
+        "community"
+      ],
+      "image": "gradient:#6366f1,#8b5cf6,#a855f7,#d946ef",
+      "sourceLocale": "en",
+      "createdBy": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "createdOffsetDays": -14,
+      "translations": {
+        "es": {
+          "title": "Cómo funciona Mapinly",
+          "tagline": "Foros de comunidad: debate en tu idioma, hilos traducidos.",
+          "shortDescription": "Este foro explica Mapinly: publica y responde en tu idioma. Los hilos se traducen para que todos puedan seguir la conversación. Cambia el idioma de la app para ver el contenido en otro idioma."
+        },
+        "de": {
+          "title": "So funktioniert Mapinly",
+          "tagline": "Community-Foren: diskutiere in deiner Sprache, übersetzte Threads.",
+          "shortDescription": "Dieses Forum erklärt Mapinly: posten und antworten in deiner Sprache. Threads werden übersetzt, damit alle mitreden können. Wechsle die App-Sprache für andere Locales."
+        }
+      }
+    },
+    {
+      "id": "frm-lugano-ai-community",
+      "slug": "lugano-ai-community",
+      "title": "Lugano AI Community",
+      "tagline": "Discuss AI trends, share projects, and connect with local experts",
+      "shortDescription": "A community-driven forum for AI enthusiasts in Lugano. Share your projects, learn from others, and stay updated on the latest developments in artificial intelligence.",
+      "status": "active",
+      "tags": [
+        "AI",
+        "community",
+        "innovation"
+      ],
+      "image": "https://picsum.photos/seed/lugano-ai/1920/1080",
+      "sourceLocale": "en",
+      "createdBy": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "createdOffsetDays": -14,
+      "translations": {
+        "es": {
+          "title": "Comunidad Lugano AI",
+          "tagline": "Debate tendencias IA, comparte proyectos, conecta con expertos locales.",
+          "shortDescription": "Un foro impulsado por la comunidad para entusiastas de la IA en Lugano. Comparte proyectos, aprende y mantente al día."
+        },
+        "de": {
+          "title": "Lugano AI Community",
+          "tagline": "Diskutiere KI-Trends, teile Projekte, vernetze dich mit lokalen Experten.",
+          "shortDescription": "Ein community-getriebenes Forum für KI-Enthusiasten in Lugano. Projekte teilen, voneinander lernen, auf dem Laufenden bleiben."
+        }
+      }
+    },
+    {
+      "id": "frm-ticino-tech-hub",
+      "slug": "ticino-tech-hub",
+      "title": "Ticino Tech Hub",
+      "tagline": "Monthly discussions for developers and tech enthusiasts",
+      "shortDescription": "A forum for tech enthusiasts in the Ticino region. Connect, share knowledge, and discuss the latest trends in development and technology.",
+      "status": "closed",
+      "tags": [
+        "tech",
+        "meetup",
+        "dev"
+      ],
+      "image": "https://picsum.photos/seed/ticino-tech/1920/1080",
+      "sourceLocale": "en",
+      "createdBy": "c419d77a-2afb-49ab-ab56-e19fb17c0e0b",
+      "createdOffsetDays": -14,
+      "translations": {
+        "es": {
+          "title": "Ticino Tech Hub",
+          "tagline": "Debates mensuales para desarrolladores y entusiastas tech.",
+          "shortDescription": "Un foro para entusiastas tech en la región del Tesino. Conectar, compartir conocimiento y debatir tendencias en desarrollo y tecnología."
+        },
+        "de": {
+          "title": "Ticino Tech Hub",
+          "tagline": "Monatliche Diskussionen für Entwickler und Tech-Enthusiasten.",
+          "shortDescription": "Ein Forum für Tech-Enthusiasten in der Region Tessin. Vernetzen, Wissen teilen, aktuelle Trends diskutieren."
+        }
+      }
+    },
+    {
+      "id": "frm-startup-ideas",
+      "slug": "startup-ideas",
+      "title": "Startup Ideas",
+      "tagline": "Share and validate startup ideas with the community",
+      "shortDescription": "A place to post early-stage ideas, get feedback, and find co-founders or early users. Be constructive and respectful.",
+      "status": "active",
+      "tags": [
+        "startup",
+        "ideas",
+        "feedback"
+      ],
+      "image": "gradient:#6366f1,#8b5cf6,#a855f7,#d946ef",
+      "sourceLocale": "en",
+      "createdBy": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "createdOffsetDays": -14,
+      "translations": {
+        "es": {
+          "title": "Ideas Startup",
+          "tagline": "Comparte y valida ideas de startup con la comunidad.",
+          "shortDescription": "Un espacio para publicar ideas en fase inicial, recibir feedback y encontrar cofundadores o primeros usuarios. Sé constructivo y respetuoso."
+        },
+        "de": {
+          "title": "Startup-Ideen",
+          "tagline": "Teile und validiere Startup-Ideen mit der Community.",
+          "shortDescription": "Ein Ort für frühe Ideen, Feedback und die Suche nach Co-Foundern oder Early Users. Konstruktiv und respektvoll bleiben."
+        }
+      }
+    },
+    {
+      "id": "frm-open-source-ch",
+      "slug": "open-source-ch",
+      "title": "Open Source CH",
+      "tagline": "Open source projects and contributions in Switzerland",
+      "shortDescription": "Discuss open source projects, maintainers, and how to get involved. From first PR to long-term maintenance.",
+      "status": "closed",
+      "tags": [
+        "opensource",
+        "dev",
+        "CH"
+      ],
+      "image": null,
+      "sourceLocale": "en",
+      "createdBy": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "createdOffsetDays": -14,
+      "translations": {
+        "es": {
+          "title": "Open Source CH",
+          "tagline": "Proyectos y contribuciones open source en Suiza.",
+          "shortDescription": "Debate sobre proyectos open source, maintainers y cómo involucrarse. Desde el primer PR hasta el mantenimiento a largo plazo."
+        },
+        "de": {
+          "title": "Open Source CH",
+          "tagline": "Open-Source-Projekte und Beiträge in der Schweiz.",
+          "shortDescription": "Diskutiere Open-Source-Projekte, Maintainer und wie du einsteigen kannst. Vom ersten PR bis zur langfristigen Wartung."
+        }
+      }
+    },
+    {
+      "id": "frm-ask-the-demo-user",
+      "slug": "ask-the-demo-user",
+      "title": "Feedback on this demo",
+      "tagline": "Tell us what feels great and what feels off.",
+      "shortDescription": "You started this forum. Reply, vote, sort and reply-to-reply: everything resets on reload, so go wild.",
+      "status": "active",
+      "tags": [
+        "feedback",
+        "demo",
+        "ux"
+      ],
+      "image": null,
+      "sourceLocale": "en",
+      "createdBy": "demo-user",
+      "createdOffsetDays": -2,
+      "translations": {
+        "es": {
+          "title": "Opiniones sobre esta demo",
+          "tagline": "Cuéntanos qué funciona y qué no.",
+          "shortDescription": "Iniciaste este foro. Responde, vota, ordena y responde a respuestas: todo se reinicia al recargar, así que prueba lo que quieras."
+        },
+        "de": {
+          "title": "Feedback zu dieser Demo",
+          "tagline": "Sag uns, was sich gut anfühlt und was nicht.",
+          "shortDescription": "Du hast dieses Forum gestartet. Antworte, stimme ab, sortiere und antworte auf Antworten: beim Neuladen wird alles zurückgesetzt."
+        }
+      }
+    }
+  ],
+  "comments": [
+    {
+      "id": "cmt-1",
+      "forumSlug": "how-mapinly-works",
+      "parentId": null,
+      "authorId": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "content": "Welcome! In Mapinly you can post in your language. Others see your message translated into their preferred language. Try changing the app language to see this thread in another locale.",
+      "upvotes": 10,
+      "downvotes": 0,
+      "hoursAgo": 60,
+      "translations": {
+        "es": {
+          "content": "¡Bienvenido! En Mapinly puedes publicar en tu idioma. Los demás ven tu mensaje traducido al suyo. Cambia el idioma de la app para ver este hilo en otro idioma."
+        },
+        "de": {
+          "content": "Willkommen! In Mapinly kannst du in deiner Sprache posten. Andere sehen deine Nachricht in ihrer Sprache. Wechsle die App-Sprache, um diesen Thread in einer anderen Locale zu sehen."
+        }
+      }
+    },
+    {
+      "id": "cmt-2",
+      "forumSlug": "how-mapinly-works",
+      "parentId": "cmt-1",
+      "authorId": "c419d77a-2afb-49ab-ab56-e19fb17c0e0b",
+      "content": "That's really helpful. So the same thread appears in multiple languages automatically?",
+      "upvotes": 5,
+      "downvotes": 0,
+      "hoursAgo": 53,
+      "translations": {
+        "es": {
+          "content": "Muy útil. ¿Así que el mismo hilo aparece en varios idiomas automáticamente?"
+        },
+        "de": {
+          "content": "Sehr hilfreich. Erscheint derselbe Thread also automatisch in mehreren Sprachen?"
+        }
+      }
+    },
+    {
+      "id": "cmt-3",
+      "forumSlug": "how-mapinly-works",
+      "parentId": null,
+      "authorId": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "content": "Yes. Events work the same way: the event chat is translated so everyone can follow along in their language.",
+      "upvotes": 8,
+      "downvotes": 1,
+      "hoursAgo": 46,
+      "translations": {
+        "es": {
+          "content": "Sí. Los eventos funcionan igual: el chat se traduce para que todos puedan seguir en su idioma."
+        },
+        "de": {
+          "content": "Ja. Bei Events ist es dasselbe: Der Chat wird übersetzt, damit alle in ihrer Sprache folgen können."
+        }
+      }
+    },
+    {
+      "id": "cmt-4",
+      "forumSlug": "lugano-ai-community",
+      "parentId": null,
+      "authorId": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "content": "Welcome to the forum! Please remember to follow our community guidelines and be respectful in your discussions.",
+      "upvotes": 13,
+      "downvotes": 3,
+      "hoursAgo": 39,
+      "translations": {
+        "es": {
+          "content": "¡Bienvenido al foro! Recuerda seguir las normas de la comunidad y ser respetuoso."
+        },
+        "de": {
+          "content": "Willkommen im Forum! Bitte halte dich an die Community-Richtlinien und sei respektvoll."
+        }
+      }
+    },
+    {
+      "id": "cmt-5",
+      "forumSlug": "lugano-ai-community",
+      "parentId": "cmt-4",
+      "authorId": "c419d77a-2afb-49ab-ab56-e19fb17c0e0b",
+      "content": "Great discussion so far. I've been following the AI developments in Lugano and it's exciting to see the community grow.",
+      "upvotes": 5,
+      "downvotes": 0,
+      "hoursAgo": 32,
+      "translations": {
+        "es": {
+          "content": "Gran debate. He seguido los desarrollos de IA en Lugano y es emocionante ver crecer la comunidad."
+        },
+        "de": {
+          "content": "Tolle Diskussion. Ich verfolge die KI-Entwicklungen in Lugano und es ist spannend, wie die Community wächst."
+        }
+      }
+    },
+    {
+      "id": "cmt-6",
+      "forumSlug": "lugano-ai-community",
+      "parentId": "cmt-5",
+      "authorId": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "content": "I agree! The AI community here is really welcoming. Looking forward to the next meetup.",
+      "upvotes": 3,
+      "downvotes": 0,
+      "hoursAgo": 25,
+      "translations": {
+        "es": {
+          "content": "¡De acuerdo! La comunidad de IA aquí es muy acogedora. Ganas de la próxima quedada."
+        },
+        "de": {
+          "content": "Stimme zu! Die KI-Community hier ist sehr einladend. Freue mich auf das nächste Meetup."
+        }
+      }
+    },
+    {
+      "id": "cmt-7",
+      "forumSlug": "startup-ideas",
+      "parentId": null,
+      "authorId": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "content": "If you have an early-stage idea, post it here. Be constructive and respectful when giving feedback.",
+      "upvotes": 7,
+      "downvotes": 1,
+      "hoursAgo": 18,
+      "translations": {
+        "es": {
+          "content": "Si tienes una idea en fase inicial, publícala aquí. Sé constructivo y respetuoso al dar feedback."
+        },
+        "de": {
+          "content": "Wenn du eine frühe Idee hast, poste sie hier. Sei konstruktiv und respektvoll bei Feedback."
+        }
+      }
+    },
+    {
+      "id": "cmt-8",
+      "forumSlug": "ask-the-demo-user",
+      "parentId": null,
+      "authorId": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "content": "The map view on the events page is lovely. Could the list filter by tag too?",
+      "upvotes": 6,
+      "downvotes": 0,
+      "hoursAgo": 20,
+      "translations": {
+        "es": {
+          "content": "La vista de mapa en la página de eventos es preciosa. ¿Podría la lista filtrar también por etiqueta?"
+        },
+        "de": {
+          "content": "Die Kartenansicht auf der Events-Seite ist toll. Könnte die Liste auch nach Tags filtern?"
+        }
+      }
+    },
+    {
+      "id": "cmt-9",
+      "forumSlug": "ask-the-demo-user",
+      "parentId": "cmt-8",
+      "authorId": "demo-user",
+      "content": "Good call, tag filters are next on the list.",
+      "upvotes": 2,
+      "downvotes": 0,
+      "hoursAgo": 14,
+      "translations": {
+        "es": {
+          "content": "Buena idea, los filtros por etiqueta son lo siguiente."
+        },
+        "de": {
+          "content": "Gute Idee, Tag-Filter sind als Nächstes dran."
+        }
+      }
+    },
+    {
+      "id": "cmt-10",
+      "forumSlug": "how-mapinly-works",
+      "parentId": null,
+      "authorId": "demo-user",
+      "content": "Just tried the language switcher. Seeing this thread in Spanish and German is very neat.",
+      "upvotes": 3,
+      "downvotes": 0,
+      "hoursAgo": 3,
+      "translations": {
+        "es": {
+          "content": "Acabo de probar el selector de idioma. Ver este hilo en español y alemán es genial."
+        },
+        "de": {
+          "content": "Habe gerade den Sprachwechsler getestet. Diesen Thread auf Spanisch und Deutsch zu sehen ist richtig gut."
+        }
+      }
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg-1",
+      "eventSlug": "welcome-to-mapinly",
+      "userId": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "content": "Hi everyone! Looking forward to this.",
+      "minutesAgo": 240,
+      "translations": {
+        "es": {
+          "content": "¡Hola a todos! Ganas de que empiece."
+        },
+        "de": {
+          "content": "Hallo zusammen! Freue mich darauf."
+        }
+      }
+    },
+    {
+      "id": "msg-2",
+      "eventSlug": "welcome-to-mapinly",
+      "userId": "c419d77a-2afb-49ab-ab56-e19fb17c0e0b",
+      "content": "Same here, thanks for organizing.",
+      "minutesAgo": 220,
+      "translations": {
+        "es": {
+          "content": "Igual yo, gracias por organizar."
+        },
+        "de": {
+          "content": "Ebenso, danke für die Organisation."
+        }
+      }
+    },
+    {
+      "id": "msg-3",
+      "eventSlug": "welcome-to-mapinly",
+      "userId": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "content": "Will the session be recorded?",
+      "minutesAgo": 200,
+      "translations": {
+        "es": {
+          "content": "¿Se grabará la sesión?"
+        },
+        "de": {
+          "content": "Wird die Session aufgezeichnet?"
+        }
+      }
+    },
+    {
+      "id": "msg-4",
+      "eventSlug": "welcome-to-mapinly",
+      "userId": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "content": "Yes, we'll share the link in the chat after.",
+      "minutesAgo": 180,
+      "translations": {
+        "es": {
+          "content": "Sí, compartiremos el enlace en el chat después."
+        },
+        "de": {
+          "content": "Ja, wir teilen den Link danach im Chat."
+        }
+      }
+    },
+    {
+      "id": "msg-5",
+      "eventSlug": "welcome-to-mapinly",
+      "userId": "c419d77a-2afb-49ab-ab56-e19fb17c0e0b",
+      "content": "Perfect, see you there!",
+      "minutesAgo": 160,
+      "translations": {
+        "es": {
+          "content": "Perfecto, ¡nos vemos allí!"
+        },
+        "de": {
+          "content": "Perfekt, bis dahin!"
+        }
+      }
+    },
+    {
+      "id": "msg-6",
+      "eventSlug": "ticino-tech-meetup",
+      "userId": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "content": "Hi everyone! Looking forward to this.",
+      "minutesAgo": 237,
+      "translations": {
+        "es": {
+          "content": "¡Hola a todos! Ganas de que empiece."
+        },
+        "de": {
+          "content": "Hallo zusammen! Freue mich darauf."
+        }
+      }
+    },
+    {
+      "id": "msg-7",
+      "eventSlug": "ticino-tech-meetup",
+      "userId": "c419d77a-2afb-49ab-ab56-e19fb17c0e0b",
+      "content": "Same here, thanks for organizing.",
+      "minutesAgo": 217,
+      "translations": {
+        "es": {
+          "content": "Igual yo, gracias por organizar."
+        },
+        "de": {
+          "content": "Ebenso, danke für die Organisation."
+        }
+      }
+    },
+    {
+      "id": "msg-8",
+      "eventSlug": "ticino-tech-meetup",
+      "userId": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "content": "Will the session be recorded?",
+      "minutesAgo": 197,
+      "translations": {
+        "es": {
+          "content": "¿Se grabará la sesión?"
+        },
+        "de": {
+          "content": "Wird die Session aufgezeichnet?"
+        }
+      }
+    },
+    {
+      "id": "msg-9",
+      "eventSlug": "ticino-tech-meetup",
+      "userId": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "content": "Yes, we'll share the link in the chat after.",
+      "minutesAgo": 177,
+      "translations": {
+        "es": {
+          "content": "Sí, compartiremos el enlace en el chat después."
+        },
+        "de": {
+          "content": "Ja, wir teilen den Link danach im Chat."
+        }
+      }
+    },
+    {
+      "id": "msg-10",
+      "eventSlug": "ticino-tech-meetup",
+      "userId": "c419d77a-2afb-49ab-ab56-e19fb17c0e0b",
+      "content": "Perfect, see you there!",
+      "minutesAgo": 157,
+      "translations": {
+        "es": {
+          "content": "Perfecto, ¡nos vemos allí!"
+        },
+        "de": {
+          "content": "Perfekt, bis dahin!"
+        }
+      }
+    },
+    {
+      "id": "msg-11",
+      "eventSlug": "startup-pitch-night",
+      "userId": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "content": "Hi everyone! Looking forward to this.",
+      "minutesAgo": 234,
+      "translations": {
+        "es": {
+          "content": "¡Hola a todos! Ganas de que empiece."
+        },
+        "de": {
+          "content": "Hallo zusammen! Freue mich darauf."
+        }
+      }
+    },
+    {
+      "id": "msg-12",
+      "eventSlug": "startup-pitch-night",
+      "userId": "c419d77a-2afb-49ab-ab56-e19fb17c0e0b",
+      "content": "Same here, thanks for organizing.",
+      "minutesAgo": 214,
+      "translations": {
+        "es": {
+          "content": "Igual yo, gracias por organizar."
+        },
+        "de": {
+          "content": "Ebenso, danke für die Organisation."
+        }
+      }
+    },
+    {
+      "id": "msg-13",
+      "eventSlug": "startup-pitch-night",
+      "userId": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "content": "Will the session be recorded?",
+      "minutesAgo": 194,
+      "translations": {
+        "es": {
+          "content": "¿Se grabará la sesión?"
+        },
+        "de": {
+          "content": "Wird die Session aufgezeichnet?"
+        }
+      }
+    },
+    {
+      "id": "msg-14",
+      "eventSlug": "startup-pitch-night",
+      "userId": "fef2cf13-0435-4ae9-9c34-3fed9aa280ba",
+      "content": "Yes, we'll share the link in the chat after.",
+      "minutesAgo": 174,
+      "translations": {
+        "es": {
+          "content": "Sí, compartiremos el enlace en el chat después."
+        },
+        "de": {
+          "content": "Ja, wir teilen den Link danach im Chat."
+        }
+      }
+    },
+    {
+      "id": "msg-15",
+      "eventSlug": "startup-pitch-night",
+      "userId": "c419d77a-2afb-49ab-ab56-e19fb17c0e0b",
+      "content": "Perfect, see you there!",
+      "minutesAgo": 154,
+      "translations": {
+        "es": {
+          "content": "Perfecto, ¡nos vemos allí!"
+        },
+        "de": {
+          "content": "Perfekt, bis dahin!"
+        }
+      }
+    }
+  ]
+}
