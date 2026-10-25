@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { keys } from "@/lib/i18n/keys";
-import { INTRO, GITHUB_URL } from "@/lib/intro";
+import { INTRO, GITHUB_URL, useIntroReady } from "@/lib/intro";
 import { ArrowUpRight, Menu, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ScrollRotatingAsterisk from "../custom/ScrollingRotatingAsterisk";
@@ -26,13 +26,14 @@ const githubClasses = cn(
 export function Navbar() {
   const { t } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const ready = useIntroReady();
 
   return (
     <motion.header
       className="fixed top-0 left-0 right-0 z-50 w-full flex"
       initial={{ opacity: 0, y: -24 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.9, delay: INTRO.nav, ease: INTRO.ease }}
+      animate={ready ? { opacity: 1, y: 0 } : undefined}
+      transition={{ duration: 1.2, delay: INTRO.nav, ease: INTRO.ease }}
     >
       {/* Left: Green box - white asterisk only */}
       <div className="flex items-center justify-center min-h-[80px] p-4 bg-primary shrink-0">
