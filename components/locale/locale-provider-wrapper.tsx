@@ -10,7 +10,7 @@ import {
   setHasSeenLocaleDialog,
   type SupportedLocale,
 } from "@/lib/i18n/locale-cookie";
-import { INTRO } from "@/lib/intro";
+import { INTRO_SETTLED, introGate } from "@/lib/intro";
 import { LanguageSelectionDialog } from "./language-selection-dialog";
 
 interface LocaleProviderWrapperProps {
@@ -30,9 +30,16 @@ export function LocaleProviderWrapper({ children }: LocaleProviderWrapperProps) 
     }
     setInitialized(true);
     if (!hasSeenLocaleDialog()) {
-      // wait for the hero intro to finish before asking
-      const id = setTimeout(() => setShowDialog(true), (INTRO.nav + 1.2) * 1000);
-      return () => clearTimeout(id);
+      // ask only once the preloader and every hero animation have settled
+      let id: ReturnType<typeof setTimeout>;
+      let live = true;
+      introGate.then(() => {
+        id = setTimeout(() => live && setShowDialog(true), INTRO_SETTLED * 1000);
+      });
+      return () => {
+        live = false;
+        clearTimeout(id);
+      };
     }
   }, []);
 

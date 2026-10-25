@@ -15,24 +15,22 @@ export const INTRO = {
 
 export const GITHUB_URL = "https://github.com/Vaibhav91one/mapInly-2.0";
 
-// Load the shader image once so the orb never starts rising before it can be drawn.
-let assets: Promise<void> | undefined;
-function introAssets() {
-  assets ??= new Promise<void>((resolve) => {
-    const img = new Image();
-    const done = () => setTimeout(resolve, 400); // brief black beat before anything moves
-    img.onload = img.onerror = done;
-    img.src = "/svgs/Asterisk.svg";
-    setTimeout(resolve, 3000); // ponytail: don't hang the intro on a slow image
-  });
-  return assets;
-}
+// Settled = every intro animation has finished (nav fade ends at INTRO.nav + 1.2s) plus a short pause.
+export const INTRO_SETTLED = INTRO.nav + 1.2 + 0.8;
+
+// The preloader opens this gate when it has finished loading; the hero / navbar / language dialog all key off it.
+let open: () => void = () => {};
+export const introGate = new Promise<void>((resolve) => {
+  open = resolve;
+  if (typeof window !== "undefined") setTimeout(resolve, 7000); // ponytail: never hang the intro if the preloader fails
+});
+export const finishIntroGate = () => open();
 
 export function useIntroReady() {
   const [ready, setReady] = useState(false);
   useEffect(() => {
     let on = true;
-    introAssets().then(() => on && setReady(true));
+    introGate.then(() => setTimeout(() => on && setReady(true), 200)); // orb starts as the overlay begins to fade
     return () => {
       on = false;
     };
