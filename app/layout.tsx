@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Navbar } from "@/components/layout";
+import { Preloader } from "@/components/layout/preloader";
 import { I18nProvider } from "@/components/providers/i18n-provider";
 import { LocaleProviderWrapper } from "@/components/locale/locale-provider-wrapper";
 import { Toaster } from "@/components/ui/sonner";
@@ -49,9 +50,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="bg-black">
+      <head>
+        {/* reload must start at the top: otherwise the browser restores the old scroll and the intro plays on section 2 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "try{history.scrollRestoration='manual';scrollTo(0,0)}catch(e){}",
+          }}
+        />
+      </head>
       <body
         className={`${poppins.variable} font-sans antialiased min-h-screen flex flex-col bg-foreground text-background`}
       >
+        <Preloader />
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <I18nProvider>
           <LocaleProviderWrapper>
