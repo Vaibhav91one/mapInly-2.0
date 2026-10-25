@@ -6,11 +6,12 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { cn } from "@/lib/utils";
 import { sectionClasses, sectionInnerClasses } from "@/lib/layout-classes";
 import { keys } from "@/lib/i18n/keys";
-import { INTRO, useIntroReady } from "@/lib/intro";
+import { INTRO, seenAtLoad, useIntroReady } from "@/lib/intro";
 
 export function HeroSection() {
   const { t } = useTranslation();
   const ready = useIntroReady();
+  const fast = seenAtLoad; // already seen this session: jump straight to the final state
   const { scrollYProgress } = useScroll();
   const scrollRotate = useTransform(scrollYProgress, [0, 1], [0, 1080]);
 
@@ -21,14 +22,16 @@ export function HeroSection() {
         <div className="absolute inset-x-0 top-24 md:top-40 flex items-center justify-center">
           {/* entry: slow rotation + rise; fade is a separate, shorter tween so it dissolves in instead of popping */}
           <motion.div
+            data-intro
             initial={{ y: "100vh", rotate: -180 }}
             animate={ready ? { y: 0, rotate: 0 } : undefined}
-            transition={{ duration: INTRO.orb, ease: INTRO.ease }}
+            transition={fast ? { duration: 0 } : { duration: INTRO.orb, ease: INTRO.ease }}
           >
             <motion.div
+              data-intro
               initial={{ opacity: 0 }}
               animate={ready ? { opacity: 1 } : undefined}
-              transition={{ duration: INTRO.orbFade, ease: "easeOut" }}
+              transition={fast ? { duration: 0 } : { duration: INTRO.orbFade, ease: "easeOut" }}
             >
               <motion.div
                 className="origin-center scale-75 md:scale-100"
@@ -68,14 +71,16 @@ export function HeroSection() {
         <motion.h1
           initial={{ opacity: 0, y: 28 }}
           animate={ready ? { opacity: 1, y: 0 } : undefined}
-          transition={{ duration: 1.2, delay: INTRO.heading, ease: INTRO.ease }}
+          data-intro
+          transition={fast ? { duration: 0 } : { duration: 1.2, delay: INTRO.heading, ease: INTRO.ease }}
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl tracking-tight font-regular leading-tight text-left">
           {t(keys.hero.heading)}
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 28 }}
           animate={ready ? { opacity: 1, y: 0 } : undefined}
-          transition={{ duration: 1.2, delay: INTRO.subheading, ease: INTRO.ease }}
+          data-intro
+          transition={fast ? { duration: 0 } : { duration: 1.2, delay: INTRO.subheading, ease: INTRO.ease }}
           className="self-end text-left max-w-md text-base sm:text-lg tracking-tight leading-tight"
           aria-label={t(keys.hero.subheadingAria)}
         >
