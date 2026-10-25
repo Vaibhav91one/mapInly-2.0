@@ -7,8 +7,9 @@ import ScrollRotatingAsterisk from "@/components/custom/ScrollingRotatingAsteris
 import { cn } from "@/lib/utils";
 import { sectionClasses, sectionInnerClasses } from "@/lib/layout-classes";
 import { keys } from "@/lib/i18n/keys";
+import { GITHUB_URL } from "@/lib/intro";
 
-const EVENT_PAGE_URL = "/events";
+
 
 export function ConnectingSection() {
   const { t } = useTranslation();
@@ -47,9 +48,9 @@ export function ConnectingSection() {
             className="shrink-0"
           />
           <ArrowLinkButton
-            href={EVENT_PAGE_URL}
-            text={t(keys.connecting.seeAllEvents)}
-            ariaLabel={t(keys.connecting.seeAllEventsAria)}
+            href={GITHUB_URL}
+            text={t(keys.nav.starOnGithub)}
+            ariaLabel={t(keys.nav.starOnGithub)}
           />
         </div>
       </div>

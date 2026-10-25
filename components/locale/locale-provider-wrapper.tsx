@@ -10,6 +10,7 @@ import {
   setHasSeenLocaleDialog,
   type SupportedLocale,
 } from "@/lib/i18n/locale-cookie";
+import { INTRO } from "@/lib/intro";
 import { LanguageSelectionDialog } from "./language-selection-dialog";
 
 interface LocaleProviderWrapperProps {
@@ -27,10 +28,12 @@ export function LocaleProviderWrapper({ children }: LocaleProviderWrapperProps) 
       i18n.changeLanguage(cookieLocale).then(() => setInitialized(true));
       return;
     }
-    if (!hasSeenLocaleDialog()) {
-      setShowDialog(true);
-    }
     setInitialized(true);
+    if (!hasSeenLocaleDialog()) {
+      // wait for the hero intro to finish before asking
+      const id = setTimeout(() => setShowDialog(true), (INTRO.nav + 1.2) * 1000);
+      return () => clearTimeout(id);
+    }
   }, []);
 
   function handleLocaleSelect(locale: SupportedLocale) {
