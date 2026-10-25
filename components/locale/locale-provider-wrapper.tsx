@@ -10,7 +10,7 @@ import {
   setHasSeenLocaleDialog,
   type SupportedLocale,
 } from "@/lib/i18n/locale-cookie";
-import { INTRO_SETTLED, introGate } from "@/lib/intro";
+import { INTRO_SETTLED, introGate, seenAtLoad } from "@/lib/intro";
 import { LanguageSelectionDialog } from "./language-selection-dialog";
 
 interface LocaleProviderWrapperProps {
@@ -34,7 +34,7 @@ export function LocaleProviderWrapper({ children }: LocaleProviderWrapperProps) 
       let id: ReturnType<typeof setTimeout>;
       let live = true;
       introGate.then(() => {
-        id = setTimeout(() => live && setShowDialog(true), INTRO_SETTLED * 1000);
+        id = setTimeout(() => live && setShowDialog(true), (seenAtLoad ? 1 : INTRO_SETTLED) * 1000);
       });
       return () => {
         live = false;

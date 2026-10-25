@@ -1,0 +1,105 @@
+"use client";
+
+import { useTranslation } from "react-i18next";
+import Link from "next/link";
+import { toast } from "sonner";
+import { ArrowUpRight } from "lucide-react";
+import { EventChatSheet } from "./chat";
+import { cn } from "@/lib/utils";
+import { sectionClasses, sectionInnerClasses } from "@/lib/layout-classes";
+import { keys } from "@/lib/i18n/keys";
+import { useDataStore } from "@/stores/data-store";
+
+interface EventDetailsSectionProps {
+  headline: string;
+  description: string;
+  hasSignedUp?: boolean;
+  isPast?: boolean;
+  eventId?: string;
+  eventSlug?: string;
+  eventTitle?: string;
+  eventImage?: string;
+}
+
+export function EventDetailsSection({
+  headline,
+  description,
+  hasSignedUp = false,
+  isPast = false,
+  eventId = "",
+  eventSlug = "",
+  eventTitle = "",
+  eventImage,
+}: EventDetailsSectionProps) {
+  const { t } = useTranslation();
+  const registerForEvent = useDataStore((s) => s.registerForEvent);
+
+  const handleSignUp = () => {
+    if (!eventSlug) return;
+    registerForEvent(eventSlug);
+    toast.success("You've registered for this event!");
+  };
+
+  return (
+    <section
+      className={cn(
+        sectionClasses,
+        "bg-foreground"
+      )}
+    >
+      <div
+        className={cn(
+          sectionInnerClasses,
+          "grid min-h-[50vh] grid-cols-1 gap-8 lg:grid-cols-[1fr_3fr] lg:items-start lg:gap-16"
+        )}
+      >
+        {/* 1/4: / Events + Sign up or Chat */}
+        <div className="flex flex-col justify-between gap-56">
+          <p className="text-sm font-regular leading-tight tracking-tight text-background/70 md:text-base">
+            <Link href="/events" className="hover:text-background transition-colors">
+              {t(keys.eventDetail.breadcrumb)}
+            </Link>
+          </p>
+          {isPast ? (
+            <p className="mt-auto text-sm font-medium text-background/70">
+              {t(keys.eventDetail.eventEnded)}
+            </p>
+          ) : hasSignedUp ? (
+            <EventChatSheet
+              eventId={eventId}
+              eventSlug={eventSlug}
+              eventTitle={eventTitle}
+              eventImage={eventImage}
+              className="mt-auto w-fit"
+            />
+          ) : (
+            <button
+              type="button"
+              onClick={handleSignUp}
+              className={cn(
+                "mt-auto w-fit inline-flex items-center gap-2 px-4 py-3 md:px-5 md:py-4",
+                "bg-primary text-primary-foreground hover:bg-primary/90 transition-colors",
+                "font-medium text-base md:text-lg",
+                "disabled:opacity-70 disabled:pointer-events-none"
+              )}
+              aria-label={t(keys.eventDetail.signUpAria)}
+            >
+              <span>{t(keys.eventDetail.signUp)}</span>
+              <ArrowUpRight className="size-5 md:size-6 shrink-0 text-white" />
+            </button>
+          )}
+        </div>
+
+        {/* 3/4: headline + description */}
+        <div className="flex flex-col gap-26 max-w-3xl">
+          <h2 className="text-3xl font-regular leading-tight tracking-tight text-background md:text-4xl lg:text-4xl">
+            {headline}
+          </h2>
+          <p className="text-sm font-regular leading-tight tracking-tight text-white md:text-base">
+            {description}
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}

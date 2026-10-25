@@ -197,7 +197,7 @@ function CalendarDayButton({
       ref={ref}
       variant="ghost"
       size="icon"
-      data-day={day.date.toLocaleDateString()}
+      data-day={day.date.toLocaleDateString("en-GB")} // fixed locale: the default differs between server and browser (hydration mismatch)
       data-selected-single={
         modifiers.selected &&
         !modifiers.range_start &&

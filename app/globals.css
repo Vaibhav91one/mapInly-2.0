@@ -142,3 +142,6 @@
     --tw-ring-color: transparent !important;
   }
 }
+/* Intro already played this session: no preloader, hero/nav sit in their final state from first paint. */
+.intro-seen .preloader { display: none; }
+.intro-seen [data-intro] { opacity: 1 !important; transform: none !important; }

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
-import { finishIntroGate } from "@/lib/intro";
+import { finishIntroGate, seenAtLoad } from "@/lib/intro";
 
 const MIN_MS = 1200; // keep the counter on screen long enough to read as intentional
 
@@ -15,6 +15,11 @@ export function Preloader() {
   useEffect(() => {
     const html = document.documentElement;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (seenAtLoad) {
+      finishIntroGate();
+      setPhase("done");
+      return;
+    }
     window.scrollTo(0, 0);
     if (reduce) {
       finishIntroGate();

@@ -39,16 +39,6 @@ export function LanguageSwitcher() {
     await i18n.changeLanguage(locale);
     setOpen(false);
     router.refresh();
-
-    try {
-      await fetch("/api/users/locale", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ preferredLocale: locale }),
-      });
-    } catch {
-      // Ignore - user may be anonymous
-    }
   }
 
   const currentLocale = (i18n.language?.split("-")[0] ?? "en") as SupportedLocale;

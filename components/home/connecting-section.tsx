@@ -47,11 +47,18 @@ export function ConnectingSection() {
             size="size-14 md:size-16"
             className="shrink-0"
           />
-          <ArrowLinkButton
-            href={GITHUB_URL}
-            text={t(keys.nav.starOnGithub)}
-            ariaLabel={t(keys.nav.starOnGithub)}
-          />
+          <div className="flex flex-col items-center gap-3 sm:flex-row">
+            <ArrowLinkButton
+              href="/events"
+              text={t(keys.footer.getStarted)}
+              ariaLabel={t(keys.footer.getStartedAria)}
+            />
+            <ArrowLinkButton
+              href={GITHUB_URL}
+              text={t(keys.nav.starOnGithub)}
+              ariaLabel={t(keys.nav.starOnGithub)}
+            />
+          </div>
         </div>
       </div>
     </section>

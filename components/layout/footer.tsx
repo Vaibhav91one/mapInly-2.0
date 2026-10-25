@@ -41,6 +41,15 @@ export function Footer() {
               <Link href="/" className="text-sm text-white/70 hover:text-white">
                 {t(keys.footer.home)}
               </Link>
+              <Link href="/events" className="text-sm text-white/70 hover:text-white">
+                {t(keys.nav.events)}
+              </Link>
+              <Link href="/forums" className="text-sm text-white/70 hover:text-white">
+                {t(keys.nav.forums)}
+              </Link>
+              <Link href="/dashboard" className="text-sm text-white/70 hover:text-white">
+                {t(keys.nav.dashboard)}
+              </Link>
             </nav>
           </div>
           <div className="flex flex-col gap-4">

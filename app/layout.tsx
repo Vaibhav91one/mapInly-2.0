@@ -51,10 +51,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="bg-black">
       <head>
-        {/* reload must start at the top: otherwise the browser restores the old scroll and the intro plays on section 2 */}
+        {/* first visit: start at the top (else a reload restores the old scroll mid-intro). Already seen: mark html so CSS skips the intro. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: "try{history.scrollRestoration='manual';scrollTo(0,0)}catch(e){}",
+            __html:
+              "try{if(sessionStorage.getItem('mapinly-intro')==='1'){document.documentElement.classList.add('intro-seen');history.scrollRestoration='auto'}else{history.scrollRestoration='manual';scrollTo(0,0)}}catch(e){}",
           }}
         />
       </head>
