@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { cn } from "@/lib/utils";
 import { sectionClasses, sectionInnerClasses } from "@/lib/layout-classes";
 import { keys } from "@/lib/i18n/keys";
+import { INTRO } from "@/lib/intro";
 
 export function HeroSection() {
   const { t } = useTranslation();
@@ -16,6 +17,12 @@ export function HeroSection() {
     <section className={cn(sectionClasses, "min-h-screen relative")}>
       {/* LiquidMetal - absolute, behind text, scroll-driven rotation; smaller on mobile */}
       <div className="absolute left-0 top-24 md:top-40 z-0 flex items-center justify-center overflow-hidden w-full">
+        {/* entry: rises from the bottom, slow rotation settles to 0; inner div keeps the scroll rotation */}
+        <motion.div
+          initial={{ y: "70vh", rotate: -140, opacity: 0 }}
+          animate={{ y: 0, rotate: 0, opacity: 1 }}
+          transition={{ duration: INTRO.orb, ease: INTRO.ease }}
+        >
         <motion.div
           className="origin-center scale-75 md:scale-100"
           style={{ rotate: scrollRotate }}
@@ -39,6 +46,7 @@ export function HeroSection() {
             fit="contain"
           />
         </motion.div>
+        </motion.div>
       </div>
 
       {/* Text content - on top */}
@@ -48,15 +56,22 @@ export function HeroSection() {
           "relative z-10 min-h-screen items-start! justify-start! gap-8"
         )}
       >
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl tracking-tight font-regular leading-tight text-left">
+        <motion.h1
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: INTRO.heading, ease: INTRO.ease }}
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl tracking-tight font-regular leading-tight text-left">
           {t(keys.hero.heading)}
-        </h1>
-        <p
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: INTRO.subheading, ease: INTRO.ease }}
           className="self-end text-left max-w-md text-base sm:text-lg tracking-tight leading-tight"
           aria-label={t(keys.hero.subheadingAria)}
         >
           {t(keys.hero.subheading)}
-        </p>
+        </motion.p>
       </div>
     </section>
   );

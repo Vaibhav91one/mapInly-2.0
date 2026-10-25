@@ -9,7 +9,6 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { ProjectCard } from "./project-card";
-import { ArrowLinkButton } from "@/components/ui/arrow-link-button";
 import { StaticMeshGradient } from "@paper-design/shaders-react";
 import { cn } from "@/lib/utils";
 import { sectionClasses } from "@/lib/layout-classes";
@@ -48,14 +47,7 @@ export function CarouselSection({ events }: CarouselSectionProps) {
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-regular tracking-tight leading-tight text-background text-center order-1 md:order-2">
             {t(keys.carousel.upcomingEvents)}
           </h2>
-          <div className="order-3">
-            <ArrowLinkButton
-              href="/events"
-              text={t(keys.carousel.allEvents)}
-              ariaLabel={t(keys.carousel.viewAllEventsAria)}
-              className="bg-primary text-primary-foreground hover:bg-primary/90"
-            />
-          </div>
+          <div className="order-3 hidden md:block md:w-24" aria-hidden />
         </div>
       </div>
 
@@ -107,7 +99,6 @@ export function CarouselSection({ events }: CarouselSectionProps) {
                           />
                         ) : undefined
                       }
-                      href={`/events/${event.slug}`}
                       variant="simple"
                       timing={`${event.date} · ${event.timeRange}`}
                       location={event.location.displayName}

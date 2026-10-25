@@ -16,7 +16,8 @@
     "createEvent": "Create event",
     "createForum": "Create forum",
     "signOut": "Sign out",
-    "login": "Login"
+    "login": "Login",
+    "starOnGithub": "Star on GitHub"
   },
   "text": {
     "paragraph1a": "Mapinly brings people together across languages and cultures.",

@@ -17,6 +17,7 @@ export const keys = {
     createForum: "nav.createForum",
     signOut: "nav.signOut",
     login: "nav.login",
+    starOnGithub: "nav.starOnGithub",
   },
   values: {
     weListen: "values.weListen",

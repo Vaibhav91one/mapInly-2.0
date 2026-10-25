@@ -35,7 +35,6 @@ export function VelocityScrollSection() {
                 key={community.name}
                 name={community.name}
                 image={community.image}
-                href={`/communities/${community.name.toLowerCase().replace(/\s+/g, "-")}`}
               />
             ))}
           </div>
@@ -47,7 +46,6 @@ export function VelocityScrollSection() {
                 key={community.name}
                 name={community.name}
                 image={community.image}
-                href={`/communities/${community.name.toLowerCase().replace(/\s+/g, "-")}`}
               />
             ))}
           </div>
